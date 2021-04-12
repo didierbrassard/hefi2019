@@ -2,7 +2,7 @@
 #'
 #' This function scores dietary constituents provided in the input dataset
 #' according to the Healthy Eating Food Index (HEFI)-2019 scoring algorithm
-#' (Lamarche et al., 2021; Brassard et al., 2021). The original variables are
+#' (Brassard et al., 2021). The original variables are
 #' kept in the output data. New variables include density of intakes
 #' (i.e., ratios of dietary constituents), the total HEFI-2019 and its
 #' components subscores.
@@ -243,7 +243,7 @@ hefi2019 <-
             HEFI2019C5_PLANTPRO + HEFI2019C6_BEVERAGES + HEFI2019C7_FATTYACID + HEFI2019C8_SFAT +
             HEFI2019C9_SUGARS + HEFI2019C10_SODIUM)
         ) %>% # end of mutate
-        select(., -c(
+        dplyr::select(., -c(
           "unsweetmilk_RA", "unsweetplantbevpro_RA", "totfoodsRA", "totgrain", "totpro",
           "unsatfat", "FATmin", "FATmax", "totbev", "SFAmin", "SFAmax", "SUGmin", "SUGmax", "SODmin", "SODmax"
         )) # end of select, temporary variables are cleared
