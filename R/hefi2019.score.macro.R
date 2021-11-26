@@ -2,13 +2,25 @@
 #'
 #' This function scores dietary constituents provided in the input dataset
 #' according to the Healthy Eating Food Index (HEFI)-2019 scoring algorithm
-#' (Brassard et al., 2021). The original variables are
-#' kept in the output data. New variables include density of intakes
-#' (i.e., ratios of dietary constituents), the total HEFI-2019 and its
-#' components subscores.
+#' See Brassard et al., Journal 2021 for additional details and information
+#' on classification of foods.
+#' The original variables are kept in the output data. New variables include
+#' density of intakes (i.e., ratios of dietary constituents), the total
+#' HEFI-2019 score and its components scores.
+#' Of note, when no foods, beverages or energy is reported, ratios are
+#' not calculated and a score of 0 is assigned to the corresponding
+#' components.
+#'
+#'  (*) RAs indicate reference amounts (Brassard et al., Journal 2021).
+#'  Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",
+#'  "totfoodsRA", "totgrain", "totpro", "totbev", "unsatfat",
+#'  "RATIO_VF", "RATIO_WGTOT", "RATIO_WGGR", "RATIO_PRO",
+#'  "RATIO_PLANT", "RATIO_FA", "RATIO_BEV", "SFA_PERC", "SUG_PERC",
+#'  "SODDEN", "FATmin", "FATmax", "SFAmin", "SFAmax", "SUGmin",
+#'  "SUGmax", "SODmin", "SODmax" are reserved for this function.
 #'
 #' @param indata Input dataset with dietary constituents
-#' @param vegwfruit RAs from vegetables and (whole) fruits
+#' @param vegwfruits RAs* from vegetables and fruits (excludes fruit juices)
 #' @param wholegrfoods RAs from whole-grain foods
 #' @param nonwholegrfoods RAs from non-whole grain foods
 #' @param profoodsanimal RAs from animal-based protein foods
@@ -24,12 +36,12 @@
 #' @param unsweetmilk Grams of unsweetened milk (all % M.F.)
 #' @param unsweetplantbevpro Grams of unsweetened plant-based beverages
 #' @param otherbev Grams of all other beverages (artificially- or sugar-sweetened beverages, juices, sweetened milk or plant-based beverages. See definition in Lamarche et al. 2021)
-#' @return Input dataset (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total score and component subscores
+#' @return Input dataset (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total and component scores
 #' @export
 
 hefi2019 <-
   function(indata,
-           vegwfruit,
+           vegwfruits,
            wholegrfoods,
            nonwholegrfoods,
            profoodsanimal,
@@ -50,7 +62,7 @@ hefi2019 <-
     message("Healthy Eating Food Index-2019 Scoring Algorithm R version 1.1")
 
     # create quosure
-    vegwfruit <- dplyr::enquo(vegwfruit)
+    vegwfruits <- dplyr::enquo(vegwfruits)
     wholegrfoods <- dplyr::enquo(wholegrfoods)
     nonwholegrfoods <- dplyr::enquo(nonwholegrfoods)
     profoodsanimal <- dplyr::enquo(profoodsanimal)
@@ -78,7 +90,7 @@ hefi2019 <-
           unsweetplantbevpro_RA = (!!unsweetplantbevpro / 258),
 
           # calculate total reference amounts from foods and protein beverages
-          totfoodsRA = (!!vegwfruit + !!wholegrfoods + !!nonwholegrfoods + !!profoodsanimal + !!profoodsplant + !!otherfoods +
+          totfoodsRA = (!!vegwfruits + !!wholegrfoods + !!nonwholegrfoods + !!profoodsanimal + !!profoodsplant + !!otherfoods +
             unsweetmilk_RA + unsweetplantbevpro_RA),
 
           #********************************************
@@ -86,7 +98,7 @@ hefi2019 <-
           #********************************************
 
           # ratio
-          RATIO_VF = ifelse(totfoodsRA > 0, (!!vegwfruit / totfoodsRA), NA),
+          RATIO_VF = ifelse(totfoodsRA > 0, (!!vegwfruits / totfoodsRA), NA),
 
           # score
           HEFI2019C1_VF = ifelse(totfoodsRA > 0, (20 * (RATIO_VF / 0.50)), 0),
