@@ -25,19 +25,26 @@ mydata <- read_sas(paste0(path,"/scoreacutevf.sas7bdat")) %>% dplyr::rename(RA_q
 # Healthy Eating Food Index-2019
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 ## Background
 
-Canada’s Food Guide (CFG) 2019 includes dietary guidance both on food choices and food-related behaviors. The Healthy Eating Food Index 2019 (HEFI-2019) is a scoring tool developed to measure adherence to the recommendations on food choices in CFG. The HEFI-2019 has 10 components, of which 5 are based on the intake of foods, 1 on beverages, and 4 on nutrients, with the total score ranging from 0 to 80 points.
+Canada's Food Guide (CFG) 2019 includes dietary guidance both on food choices and food-related behaviors. The Healthy Eating Food Index 2019 (HEFI-2019) is a scoring tool developed to measure adherence to the recommendations on healthy food choices in CFG. The HEFI-2019 has 10 components, of which 5 are based on the intake of foods, 1 on beverages, and 4 on nutrients, with the total score ranging from 0 to 80 points.
 
 ## Scoring algorithm
-The goal of the *hefi2019* code is to apply the HEFI-2019 scoring algorithm to dietary constituents in the dataset provided by the user. The original variables are kept in the output data set, along with new variables including: 1) density of intakes (i.e., ratios of dietary constituents); 2) the HEFI-2019 component scores; and 3) the total HEFI-2019 score.
-See Brassard et al., Journal 2021 for details regarding the development and the evaluation of the HEFI-2019, as well as information on classification of foods. Of note, when no foods, beverages or energy is reported, ratios are not calculated and a score of 0 is assigned to the corresponding components.
+
+The goal of the *hefi2019* code is to apply the HEFI-2019 scoring algorithm to dietary constituents in the dataset provided by the user. The original variables are kept in the output data set, along with new variables including:
+
+1.  density of intakes (i.e., ratios of dietary constituents);
+2.  the HEFI-2019 component scores; and
+3.  the total HEFI-2019 score.
+
+See the published articles (Brassard et al., Appl Physiol Nutr Metab 2021) for details regarding the development and the evaluation of the HEFI-2019, as well as information on classification of foods. Of note, when no foods, beverages or energy is reported, ratios are not calculated and a score of 0 is assigned to the corresponding components.
 
 ## R Version
 
-### Installation 
+### Installation
 
 You can install the released version of the *hefi2019* from [GitHub](https://github.com) with:
 
@@ -77,12 +84,12 @@ mydata_scored <- hefi2019(indata         = mydata,
 
 ```
 
-
 ## Scoring Algorithm Output
 
 ### Density of intakes
+
 The scoring algorithm creates 10 variables for density of intakes: *`r knitr::combine_words(names(mydata_scored %>%  select( starts_with("RATIO"), "SFA_PERC", "SUG_PERC", "SODDEN")))`*.
 
 ### Total HEFI-2019 and its components
-The variable corresponding to the total HEFI-2019 is *`r noquote(names(mydata_scored %>%  select( starts_with("HEFI"))) [11])`* and the 10 variables corresponding to each component of the HEFI-2019 are *`r  knitr::combine_words(names(mydata_scored %>%  select( starts_with("HEFI"))) [1:10])`*.
 
+The variable corresponding to the total HEFI-2019 is *`r noquote(names(mydata_scored %>%  select( starts_with("HEFI"))) [11])`* and the 10 variables corresponding to each component of the HEFI-2019 are *`r  knitr::combine_words(names(mydata_scored %>%  select( starts_with("HEFI"))) [1:10])`*.
