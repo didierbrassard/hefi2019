@@ -6,7 +6,7 @@
 \usage{
 hefi2019(
   indata,
-  vegwfruit,
+  vegwfruits,
   wholegrfoods,
   nonwholegrfoods,
   profoodsanimal,
@@ -27,7 +27,7 @@ hefi2019(
 \arguments{
 \item{indata}{Input dataset with dietary constituents}
 
-\item{vegwfruit}{RAs from vegetables and (whole) fruits}
+\item{vegwfruits}{RAs* from vegetables and fruits (excludes fruit juices)}
 
 \item{wholegrfoods}{RAs from whole-grain foods}
 
@@ -60,13 +60,26 @@ hefi2019(
 \item{sodium}{Milligrams of sodium}
 }
 \value{
-Input dataset (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total score and component subscores
+Input dataset (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total and component scores
 }
 \description{
 This function scores dietary constituents provided in the input dataset
 according to the Healthy Eating Food Index (HEFI)-2019 scoring algorithm
-(Lamarche et al., 2021; Brassard et al., 2021). The original variables are
-kept in the output data. New variables include density of intakes
-(i.e., ratios of dietary constituents), the total HEFI-2019 and its
-components subscores.
+See Brassard et al., Journal 2021 for additional details and information
+on classification of foods.
+The original variables are kept in the output data. New variables include
+density of intakes (i.e., ratios of dietary constituents), the total
+HEFI-2019 score and its components scores.
+Of note, when no foods, beverages or energy is reported, ratios are
+not calculated and a score of 0 is assigned to the corresponding
+components.
+}
+\details{
+(*) RAs indicate reference amounts (Brassard et al., Journal 2021).
+Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",
+"totfoodsRA", "totgrain", "totpro", "totbev", "unsatfat",
+"RATIO_VF", "RATIO_WGTOT", "RATIO_WGGR", "RATIO_PRO",
+"RATIO_PLANT", "RATIO_FA", "RATIO_BEV", "SFA_PERC", "SUG_PERC",
+"SODDEN", "FATmin", "FATmax", "SFAmin", "SFAmax", "SUGmin",
+"SUGmax", "SODmin", "SODmax" are reserved for this function.
 }
