@@ -2,8 +2,8 @@
 #'
 #' This function scores dietary constituents provided in the input dataset
 #' according to the Healthy Eating Food Index (HEFI)-2019 scoring algorithm
-#' See Brassard et al., Journal 2021 for additional details and information
-#' on classification of foods.
+#' See Brassard et al., Appl Physiol Nutr Metab 2021 for details and
+#' information on classification of foods.
 #' The original variables are kept in the output data. New variables include
 #' density of intakes (i.e., ratios of dietary constituents), the total
 #' HEFI-2019 score and its components scores.
@@ -11,7 +11,7 @@
 #' not calculated and a score of 0 is assigned to the corresponding
 #' components.
 #'
-#'  (*) RAs indicate reference amounts (Brassard et al., Journal 2021).
+#'  (*) RAs indicate reference amounts (Brassard et al., Appl Physiol Nutr Metab 2021).
 #'  Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",
 #'  "totfoodsRA", "totgrain", "totpro", "totbev", "unsatfat",
 #'  "RATIO_VF", "RATIO_WGTOT", "RATIO_WGGR", "RATIO_PRO",
@@ -32,10 +32,10 @@
 #' @param sugars Grams of free sugars
 #' @param kcal Total energy intake, kcal
 #' @param sodium Milligrams of sodium
-#' @param water_and_other_healthy Grams of water and other healthy beverages (see definition in Lamarche et al. 2021)
+#' @param water_and_other_healthy Grams of water and other healthy beverages
 #' @param unsweetmilk Grams of unsweetened milk (all % M.F.)
 #' @param unsweetplantbevpro Grams of unsweetened plant-based beverages
-#' @param otherbev Grams of all other beverages (artificially- or sugar-sweetened beverages, juices, sweetened milk or plant-based beverages. See definition in Lamarche et al. 2021)
+#' @param otherbev Grams of all other beverages (artificially- or sugar-sweetened beverages, juices, sweetened milk or plant-based beverages.)
 #' @return Input dataset (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total and component scores
 #' @export
 
