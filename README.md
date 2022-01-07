@@ -20,7 +20,7 @@ algorithm to dietary constituents in the dataset provided by the user.
 The original variables are kept in the output data set, along with new
 variables including: 1) density of intakes (i.e., ratios of dietary
 constituents); 2) the HEFI-2019 component scores; and 3) the total
-HEFI-2019 score. See Brassard et al., Journal 2021 for details regarding
+HEFI-2019 score. See Brassard et al. (Appl Physiol Nutr Metab 2021;2022) for details regarding
 the development and the evaluation of the HEFI-2019, as well as
 information on classification of foods. Of note, when no foods,
 beverages or energy is reported, ratios are not calculated and a score
