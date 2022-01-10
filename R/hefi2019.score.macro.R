@@ -2,7 +2,7 @@
 #'
 #' This function scores dietary constituents provided in the input dataset
 #' according to the Healthy Eating Food Index (HEFI)-2019 scoring algorithm
-#' See Brassard et al., Appl Physiol Nutr Metab 2021 for details and
+#' See Brassard et al., Appl Physiol Nutr Metab 2021;2022 for details and
 #' information on classification of foods.
 #' The original variables are kept in the output data. New variables include
 #' density of intakes (i.e., ratios of dietary constituents), the total
@@ -11,7 +11,7 @@
 #' not calculated and a score of 0 is assigned to the corresponding
 #' components.
 #'
-#'  (*) RAs indicate reference amounts (Brassard et al., Appl Physiol Nutr Metab 2021).
+#'  (*) RAs indicate reference amounts (Brassard et al., Appl Physiol Nutr Metab 2022).
 #'  Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",
 #'  "totfoodsRA", "totgrain", "totpro", "totbev", "unsatfat",
 #'  "RATIO_VF", "RATIO_WGTOT", "RATIO_WGGR", "RATIO_PRO",
