@@ -64,8 +64,9 @@ The scoring algorithm is used by indicating the name of the input data set and t
 #library(hefi2019)
 devtools::load_all()
 
+# Apply the scoring algorithm to user-provided data
 mydata_scored <- hefi2019(indata         = mydata,
-                         vegwfruit       = RA_qty_vegwfruit,
+                         vegwfruits      = RA_qty_vegwfruit,
                          wholegrfoods    = RA_qty_grfoodswhole,
                          nonwholegrfoods = RA_qty_nonwgfoods,
                          profoodsanimal  = RA_qty_profoodsanimal,
@@ -73,7 +74,7 @@ mydata_scored <- hefi2019(indata         = mydata,
                          otherfoods      = RA_qty_other,
                          water_and_other_healthy = water_and_other_healthy,
                          unsweetmilk     = milk,
-                         unsweetplantbevpro = 0, # notice that this food was not consumed and is given a value of 0
+                         unsweetplantbevpro = 0, # 0 = if food was not consumed
                          otherbev        = otherbev ,
                          mufat           = mufa ,
                          pufat           = pufa ,
