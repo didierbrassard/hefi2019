@@ -1,7 +1,7 @@
 /*************************************************************************/
 /*                                                                       */
 /*              THE HEALTHY EATING FOOD INDEX SCORING MACRO              */
-/*                     VERSION 1.1        2021-02                        */
+/*                     VERSION 1.2        2022-01                        */
 /*                                                                       */
 /*             https://github.com/didierbrassard/hefi2019/               */
 /*************************************************************************/
@@ -67,11 +67,9 @@
 pufat=,satfat=,sugars=,kcal=,sodium=,water_and_other_healthy=,unsweetmilk=,unsweetplantbevpro=,otherbev=,
 outdata=); 
  
-%PUT # Healthy Eating Food Index-2019 Scoring Algorithm SAS version 1.1 ; 
+%PUT # Healthy Eating Food Index-2019 Scoring Algorithm SAS version 1.2 ; 
  
-data &outdata (drop=unsweetmilk_RA unsweetplantbevpro_RA totfoodsRA  
-                                              totgrain totpro unsatfat FATmin FATmax totbev  
-                                              SFAmin SFAmax SUGmin SUGmax SODmin SODmax ); 
+data &outdata; 
          set &indata; 
  
 /* calculate reference amounts from unsweetened milk and  
@@ -260,12 +258,18 @@ LABEL
          RATIO_FA='Ratio of unsaturated over saturated fats'
          RATIO_BEV='Ratio of beverages over total beverages'
          SFA_PERC='Percent of calories from sat fat'
-         SUG_PERC='Percent of calories from sugars'
+         SUG_PERC='Percent of calories from free sugars'
          SODDEN='Ratio of sodium per 1000 kcal'
+         totfoodsRA='Total foods (RA/d)'
 ; 
-run; 
+
+FORMAT HEFI2019: 8.1;
+
+DROP unsweetmilk_RA unsweetplantbevpro_RA totgrain totpro unsatfat FATmin FATmax totbev SFAmin SFAmax SUGmin SUGmax SODmin SODmax ;
+
+run;
 %mend HEFI2019; 
-   
+
 /*******************************************************************/
 /*                   END OF THE SCORING MACRO                      */
 /*******************************************************************/
