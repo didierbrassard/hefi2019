@@ -39,13 +39,13 @@ hefi2019(
 
 \item{otherfoods}{RAs from all others foods (i.e., not considered in the variables above)}
 
-\item{water_and_other_healthy}{Grams of water and other healthy beverages (see definition in Lamarche et al. 2021)}
+\item{water_and_other_healthy}{Grams of water and other healthy beverages}
 
 \item{unsweetmilk}{Grams of unsweetened milk (all \% M.F.)}
 
 \item{unsweetplantbevpro}{Grams of unsweetened plant-based beverages}
 
-\item{otherbev}{Grams of all other beverages (artificially- or sugar-sweetened beverages, juices, sweetened milk or plant-based beverages. See definition in Lamarche et al. 2021)}
+\item{otherbev}{Grams of all other beverages (artificially- or sugar-sweetened beverages, juices, sweetened milk or plant-based beverages.)}
 
 \item{mufat}{Grams of fat from monounsaturated fats}
 
@@ -65,8 +65,8 @@ Input dataset (\code{indata}) with additional variables including density of int
 \description{
 This function scores dietary constituents provided in the input dataset
 according to the Healthy Eating Food Index (HEFI)-2019 scoring algorithm
-See Brassard et al., Journal 2021 for additional details and information
-on classification of foods.
+See Brassard et al., Appl Physiol Nutr Metab 2022 for details and
+information on classification of foods.
 The original variables are kept in the output data. New variables include
 density of intakes (i.e., ratios of dietary constituents), the total
 HEFI-2019 score and its components scores.
@@ -75,7 +75,7 @@ not calculated and a score of 0 is assigned to the corresponding
 components.
 }
 \details{
-(*) RAs indicate reference amounts (Brassard et al., Journal 2021).
+(*) RAs indicate reference amounts (Brassard et al., Appl Physiol Nutr Metab 2022).
 Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",
 "totfoodsRA", "totgrain", "totpro", "totbev", "unsatfat",
 "RATIO_VF", "RATIO_WGTOT", "RATIO_WGGR", "RATIO_PRO",
