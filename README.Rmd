@@ -59,7 +59,7 @@ tidyr::tibble(
 
 ```
 
-[SAS](./SAS/hefi2019.scoring.macro.sas) and R versions of the scoring algorithm are available.
+[SAS](./SAS/hefi2019.scoring.macro.sas) and [R](./R/hefi2019.scoring.macro.R) versions of the scoring algorithm are available. Both versions will yield the same HEFI-2019 scores and output when applied to the same data. An example application for the R version is shown below.
 
 ## R Version
 
