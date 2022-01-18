@@ -48,8 +48,11 @@ columns, as shown below. Other layouts are also possible.
     #> 4            4     5     4     5 ...    
     #> 5            5     6     4     2 ...
 
-[SAS](./SAS/hefi2019.scoring.macro.sas) and R versions of the scoring
-algorithm are available.
+[SAS](./SAS/hefi2019.scoring.macro.sas) and
+[R](./R/hefi2019.scoring.macro.R) versions of the scoring algorithm are
+available. Both versions will yield the same HEFI-2019 scores and output
+when applied to the same data. An example application for the R version
+is shown below.
 
 ## R Version
 
