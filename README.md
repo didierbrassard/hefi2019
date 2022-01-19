@@ -37,15 +37,15 @@ corresponding components.
 
 The scoring algorithm should ideally be applied to a dataset in the
 “long” format, where observations are rows and dietary constituents are
-columns, as shown below. Other layouts are also possible.
+columns. Other layouts are also possible.
 
 | Participants | Food1 | Food2 | Food3 | Food… |
 |-------------:|------:|------:|------:|:------|
-|            1 |     1 |     2 |    15 | …     |
-|            2 |     3 |     5 |    11 | …     |
-|            3 |     2 |     8 |     5 | …     |
-|            4 |     4 |     5 |     4 | …     |
-|            5 |     4 |     5 |    13 | …     |
+|            1 |     2 |     1 |     9 | …     |
+|            2 |     4 |     4 |     5 | …     |
+|            3 |     2 |     7 |     6 | …     |
+|            4 |     5 |     4 |     5 | …     |
+|            5 |     6 |     4 |     2 | …     |
 
 [SAS](./SAS/hefi2019.scoring.macro.sas) and
 [R](./R/hefi2019.scoring.macro.R) versions of the scoring algorithm are
