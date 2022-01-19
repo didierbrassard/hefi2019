@@ -17,7 +17,7 @@ score has a maximum of 80 points.
 
 ## Scoring algorithm
 
-The goal of the *hefi2019* code is to apply the HEFI-2019 scoring
+The goal of the `hefi2019` code is to apply the HEFI-2019 scoring
 algorithm to dietary constituents in the dataset provided by the user.
 The original variables are kept in the output data set, along with new
 variables including:
@@ -39,14 +39,13 @@ The scoring algorithm should ideally be applied to a dataset in the
 “long” format, where observations are rows and dietary constituents are
 columns, as shown below. Other layouts are also possible.
 
-    #> # A tibble: 5 × 5
-    #>   Participants Food1 Food2 Food3 Food...
-    #>          <int> <int> <int> <int> <chr>  
-    #> 1            1     2     1     9 ...    
-    #> 2            2     4     4     5 ...    
-    #> 3            3     2     7     6 ...    
-    #> 4            4     5     4     5 ...    
-    #> 5            5     6     4     2 ...
+| Participants | Food1 | Food2 | Food3 | Food… |
+|-------------:|------:|------:|------:|:------|
+|            1 |     1 |     2 |    15 | …     |
+|            2 |     3 |     5 |    11 | …     |
+|            3 |     2 |     8 |     5 | …     |
+|            4 |     4 |     5 |     4 | …     |
+|            5 |     4 |     5 |    13 | …     |
 
 [SAS](./SAS/hefi2019.scoring.macro.sas) and
 [R](./R/hefi2019.scoring.macro.R) versions of the scoring algorithm are
@@ -58,7 +57,7 @@ is shown below.
 
 ### Installation
 
-You can install the released version of the *hefi2019* from
+You can install the released version of the `hefi2019` from
 [GitHub](https://github.com) with:
 
 ``` r
