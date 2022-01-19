@@ -11,7 +11,8 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-library(tidyverse)
+library(magrittr)
+library(dplyr)
 library(knitr)
 library(haven)
 
@@ -34,7 +35,7 @@ mydata <- read_sas(paste0(path,"/scoreacutevf.sas7bdat")) %>% dplyr::rename(RA_q
 
 ## Scoring algorithm
 
-The goal of the *hefi2019* code is to apply the HEFI-2019 scoring algorithm to dietary constituents in the dataset provided by the user. The original variables are kept in the output data set, along with new variables including:
+The goal of the `hefi2019` code is to apply the HEFI-2019 scoring algorithm to dietary constituents in the dataset provided by the user. The original variables are kept in the output data set, along with new variables including:
 
 1.  density of intakes (i.e., ratios of dietary constituents);
 2.  the HEFI-2019 component scores; and
@@ -44,7 +45,7 @@ See the development and evaluation articles for more details as well as informat
 
 ### Suggested layout for the input dataset
 
-The scoring algorithm should ideally be applied to a dataset in the "long" format, where observations are rows and dietary constituents are columns, as shown below. Other layouts are also possible.
+The scoring algorithm should ideally be applied to a dataset in the "long" format, where observations are rows and dietary constituents are columns. Other layouts are also possible.
 
 ```{r inputexample,echo=FALSE}
 
@@ -55,7 +56,7 @@ tidyr::tibble(
   Food2 = rpois(5,4),
   Food3 = rpois(5,5),
   `Food...` = "..."
-) %>% head()
+) %>% knitr::kable()
 
 ```
 
@@ -65,7 +66,7 @@ tidyr::tibble(
 
 ### Installation
 
-You can install the released version of the *hefi2019* from [GitHub](https://github.com) with:
+You can install the released version of the `hefi2019` from [GitHub](https://github.com) with:
 
 ``` r
 devtools::install_github("didierbrassard/hefi2019")
