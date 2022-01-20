@@ -12,7 +12,7 @@
 /* information on classification of foods.                               */
 /*                                                                       */
 /* The original variables are kept in the output data. The new variables */
-/* created include density of intakes (i.e., ratios of dietary           */
+/* the macro creates include density of intakes (i.e., ratios of dietary */
 /* constituents), the total HEFI-2019 score and component scores.        */
 /*                                                                       */
 /* Of note, when no foods, beverages or energy are reported, ratios are  */
@@ -22,8 +22,8 @@
 /*                                                                       */
 /* Suggested layout for the input dataset:                               */
 /* The macro should ideally be applied to a dataset in the long format,  */
-/* where observations are rows and dietary constituents are columns.     */
-/*                                                                       */
+/* where rows correspond to individuals and dietary constituents are     */
+/* columns.                                                              */
 /*************************************************************************/
 /*                                                                       */
 /* The syntax for calling the HEFI2019 macro is :                        */
@@ -51,8 +51,8 @@
 /* where                                                                 */
 /*                                                                       */
 /* indata                  = input dataset with dietary constituents     */
-/* vegwfruits              = RAs* from vegetables and fruits (excludes   */
-/*                           fruit juices)                               */
+/* vegwfruits              = Reference amount (RAs) from vegetables and  */
+/*                           fruits (excludes fruit juices)              */
 /* wholegrfoods            = RAs from whole-grain foods                  */
 /* nonwholegrfoods         = RAs from non-whole grain foods              */
 /* profoodsanimal          = RAs from animal-based protein foods         */
@@ -74,11 +74,10 @@
 /*                           sweetened milk or plant-based beverages,    */
 /*                           ... etc.)                                   */
 /*                          (see definition in Brassard et al. APNM 2022)*/
-/* outdata                 = Name of the output data with HEFI-2019      */
+/* outdata                 = Name of the output data set with HEFI-2019  */
 /*                           scores, component scores, and density of    */
 /*                           intakes.                                    */
 /*                                                                       */
-/*  * RAs indicate reference amounts (Brassard et al., APNM 2022).       */
 /*                                                                       */
 /* Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",   */
 /*   "totfoodsRA", "totgrain", "totpro", "totbev", "unsatfat",           */
@@ -141,30 +140,55 @@ data &outdata;
  
 /* calculate reference amounts from unsweetened milk and  
          unsweetened plant-based beverages protein foods,  
-         assuming average of 258g per RA*/
+         assuming average of 258g per RA*/          /*For your consideration. You could set a macro variable for this value and set a defaul value 258.
+	                                              This would allow users to use a different values. Does it make sense in this context?*/
 
-	unsweetmilk_RA = &unsweetmilk / 258 ; 
-	unsweetplantbevpro_RA  = &unsweetplantbevpro  / 258 ; 
+       if not missing(&unsweetmilk) then do;
+	  unsweetmilk_RA = &unsweetmilk / 258 ;
+       end;
+       else do;
+          unsweetmilk_RA = .
+	  %put NOTE:  &unsweetmilk is missing for some individual.;  /*Cannot remember if you can include a macro variable in a NOTE.*/;
+	  %put NOTE:  The following scores are set to missing for those individuals: protein food and total;
+       end;
+       
+       if not missing(&unsweetplantbevpro) then do;
+          unsweetplantbevpro_RA  = &unsweetplantbevpro  / 258 ; 
+       end;
+       else do;
+          unsweetplantbevpro_RA  = .;
+	  %put NOTE:  &unsweetplantbevpro is missing for some individual.; 
+	  %put NOTE:  The following scores are set to missing for those individuals: protein foods, plant-based protein foods, and total;
+       end;
+       
+       /*You can use the same idea in the computation of totfoodsRA.*/
  
-/* sum total reference amounts from foods and protein beverages */
+/* sum total reference amounts from foods and protein beverages */     
 	totfoodsRA = &vegwfruits + &wholegrfoods + &nonwholegrfoods +  
 				 &profoodsanimal + &profoodsplant + &otherfoods +  
-				 unsweetmilk_RA + unsweetplantbevpro_RA; 
+				 unsweetmilk_RA + unsweetplantbevpro_RA;          
  
 /********************************************/
 /* Component 1 - Vegetables and fruits      */
 /********************************************/
-	/* ratio */
-	if totfoodsRA > 0 then RATIO_VF = &vegwfruits / totfoodsRA ;
-	else RATIO_VF=.;
-
-	/* score */
-	if not missing(RATIO_VF) then do;
-		HEFI2019C1_VF = 20 * ( RATIO_VF / 0.50 );
-		if HEFI2019C1_VF > 20 then HEFI2019C1_VF = 20;
+	/*Suggest to do the same in subsequent components. This will alert the user about what's */
+	/* going on while reducing the amount of code;*/
+	/*Note I am proposing using only one if-else block of code instead of two. This could also*/
+	/*reduce computation time*/
+	
+	if totfoodsRA > 0 then do;
+	  /* ratio */
+	    RATIO_VF = &vegwfruits / totfoodsRA ;
+	  /* score */
+	    HEFI2019C1_VF    = 20 * ( RATIO_VF / 0.50 );
+	    if HEFI2019C1_VF > 20 then HEFI2019C1_VF = 20;
 	end;
 	else do;
-		HEFI2019C1_VF=.;
+	   RATIO_VF     =.;
+	   HEFI2019C1_VF=.;
+	   *Including informative notes for the user;
+	   %put NOTE: Total food intake is zero for some individual.; 
+	   %put NOTE: Vegetables and fruit component score and total score are set to missing for those individuals; /*Feel free to edit these notes at your convenience*/
 	end;
 
 /********************************************/
