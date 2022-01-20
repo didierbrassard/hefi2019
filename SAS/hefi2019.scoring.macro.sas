@@ -51,13 +51,13 @@
 /* where                                                                 */
 /*                                                                       */
 /* indata                  = input dataset with dietary constituents     */
-/* vegwfruits              = Reference amount (RAs) from vegetables and  */
+/* vegwfruits              = Reference amounts (RA) from vegetables and  */
 /*                           fruits (excludes fruit juices)              */
-/* wholegrfoods            = RAs from whole-grain foods                  */
-/* nonwholegrfoods         = RAs from non-whole grain foods              */
-/* profoodsanimal          = RAs from animal-based protein foods         */
-/* profoodsplant           = RAs from plant-based protein foods          */
-/* otherfoods              = RAs from all others foods (i.e., not        */
+/* wholegrfoods            = RA from whole-grain foods                   */
+/* nonwholegrfoods         = RA from non-whole grain foods               */
+/* profoodsanimal          = RA from animal-based protein foods          */
+/* profoodsplant           = RA from plant-based protein foods           */
+/* otherfoods              = RA from all others foods (i.e., not         */
 /*                           considered in the above variables)          */
 /* mufat                   = Grams of fat from monounsaturated fats      */
 /* pufat                   = Grams of fat from polyunsaturated fats      */
@@ -107,7 +107,7 @@
 %macro HEFI2019 (indata=,vegwfruits=,wholegrfoods=,nonwholegrfoods=,profoodsanimal=,profoodsplant=,otherfoods=,mufat=,
 pufat=,satfat=,sugars=,kcal=,sodium=,water_and_other_healthy=,unsweetmilk=,unsweetplantbevpro=,otherbev=,
 outdata=); 
- 
+
 %PUT # Healthy Eating Food Index-2019 Scoring Algorithm SAS version 2.0 ;
 
 /******************************************/
@@ -131,6 +131,11 @@ pufat satfat sugars kcal sodium water_and_other_healthy unsweetmilk unsweetplant
 	%if %sysevalf(%superq(&&x&kth)=,boolean) %then %put WARNING: Dietary constituent <%scan(&dietaryconstituents,&kth,%str( ))> was not defined. This could cause unexpected results;
 %end;
 
+/* Indicate gram per RA for unsweetened milk and
+	plant-based beverages with enough protein */
+	%local probev_gram_per_RA;
+	%let probev_gram_per_RA = 258;
+
 /******************************************/
 /*           Scoring algorithm            */
 /******************************************/
@@ -139,71 +144,56 @@ data &outdata;
          set &indata; 
  
 /* calculate reference amounts from unsweetened milk and  
-         unsweetened plant-based beverages protein foods,  
-         assuming average of 258g per RA*/          /*For your consideration. You could set a macro variable for this value and set a defaul value 258.
-	                                              This would allow users to use a different values. Does it make sense in this context?*/
-
-       if not missing(&unsweetmilk) then do;
-	  unsweetmilk_RA = &unsweetmilk / 258 ;
-       end;
-       else do;
-          unsweetmilk_RA = .
-	  %put NOTE:  &unsweetmilk is missing for some individual.;  /*Cannot remember if you can include a macro variable in a NOTE.*/;
-	  %put NOTE:  The following scores are set to missing for those individuals: protein food and total;
-       end;
+         unsweetened plant-based beverages protein foods */
+        
+	if not missing(&unsweetmilk) then do;
+		unsweetmilk_RA = &unsweetmilk / &probev_gram_per_RA ;
+ 	end;
+	else do;
+		unsweetmilk_RA = . ;
+	end;
        
-       if not missing(&unsweetplantbevpro) then do;
-          unsweetplantbevpro_RA  = &unsweetplantbevpro  / 258 ; 
-       end;
-       else do;
-          unsweetplantbevpro_RA  = .;
-	  %put NOTE:  &unsweetplantbevpro is missing for some individual.; 
-	  %put NOTE:  The following scores are set to missing for those individuals: protein foods, plant-based protein foods, and total;
-       end;
-       
-       /*You can use the same idea in the computation of totfoodsRA.*/
+	if not missing(&unsweetplantbevpro) then do;
+		unsweetplantbevpro_RA  = &unsweetplantbevpro  / &probev_gram_per_RA ; 
+	end;
+	else do;
+		unsweetplantbevpro_RA  = .;
+	end;
  
-/* sum total reference amounts from foods and protein beverages */     
-	totfoodsRA = &vegwfruits + &wholegrfoods + &nonwholegrfoods +  
-				 &profoodsanimal + &profoodsplant + &otherfoods +  
+/* sum total reference amounts from foods and protein beverages */
+	totfoodsRA = &vegwfruits + &wholegrfoods + &nonwholegrfoods +
+				 &profoodsanimal + &profoodsplant + &otherfoods +
 				 unsweetmilk_RA + unsweetplantbevpro_RA;          
  
 /********************************************/
 /* Component 1 - Vegetables and fruits      */
 /********************************************/
-	/*Suggest to do the same in subsequent components. This will alert the user about what's */
-	/* going on while reducing the amount of code;*/
-	/*Note I am proposing using only one if-else block of code instead of two. This could also*/
-	/*reduce computation time*/
-	
 	if totfoodsRA > 0 then do;
-	  /* ratio */
+	/* ratio */
 	    RATIO_VF = &vegwfruits / totfoodsRA ;
-	  /* score */
-	    HEFI2019C1_VF    = 20 * ( RATIO_VF / 0.50 );
-	    if HEFI2019C1_VF > 20 then HEFI2019C1_VF = 20;
+	
+	/* score */
+		HEFI2019C1_VF    = 20 * ( RATIO_VF / 0.50 );
+		if HEFI2019C1_VF > 20 then HEFI2019C1_VF = 20;
 	end;
 	else do;
 	   RATIO_VF     =.;
 	   HEFI2019C1_VF=.;
-	   *Including informative notes for the user;
-	   %put NOTE: Total food intake is zero for some individual.; 
-	   %put NOTE: Vegetables and fruit component score and total score are set to missing for those individuals; /*Feel free to edit these notes at your convenience*/
 	end;
 
 /********************************************/
 /* Component 2 -  Whole-grain foods         */
 /********************************************/
+	if totfoodsRA > 0 then do;
 	/* ratio */
-	if totfoodsRA > 0 then RATIO_WGTOT = &wholegrfoods / totfoodsRA ;
-	else RATIO_WGTOT=.;
-	 
+		RATIO_WGTOT = &wholegrfoods / totfoodsRA ;
+		
 	/* score */
-	if not missing(RATIO_WGTOT) then do;
 		HEFI2019C2_WHOLEGR = 5 * (RATIO_WGTOT / 0.25) ; 
 		if HEFI2019C2_WHOLEGR > 5 then HEFI2019C2_WHOLEGR = 5;
 	end;
 	else do;
+		RATIO_WGTOT       =.;
 		HEFI2019C2_WHOLEGR=.;
 	end;
                    
@@ -214,20 +204,22 @@ data &outdata;
 	/* total */
 	totgrain = &wholegrfoods + &nonwholegrfoods ; 
 	                   
+	if not missing(totgrain) and totgrain > 0 then do;
 	/* ratio */
-	if totgrain > 0 then RATIO_WGGR = &wholegrfoods / totgrain ;
-	else RATIO_WGGR=.;
+		RATIO_WGGR = &wholegrfoods / totgrain ;
 	 
 	/* score */
-	if not missing(RATIO_WGGR) then do;
 		HEFI2019C3_GRRATIO = 5 * (RATIO_WGGR) ; 
-		if HEFI2019C3_GRRATIO > 5 then HEFI2019C3_GRRATIO = 5; 
+		if HEFI2019C3_GRRATIO > 5 then HEFI2019C3_GRRATIO = 5;
+	end;
+	else if totgrain = 0 then do;
+		RATIO_WGGR         =.;
+		HEFI2019C3_GRRATIO = 0;
 	end;
 	else do;
+		RATIO_WGGR        =.;
 		HEFI2019C3_GRRATIO=.;
 	end;
-	
-	if totgrain = 0 then HEFI2019C3_GRRATIO = 0;
 	
 /*******************************************/
 /* Component 4 - Protein foods             */
@@ -235,38 +227,41 @@ data &outdata;
 	/* total */
 	totpro = &profoodsanimal + &profoodsplant + unsweetmilk_RA + unsweetplantbevpro_RA ; 
 	 
+	if totfoodsRA > 0 then do;
 	/* ratio */
-	if totfoodsRA > 0 then RATIO_PRO = totpro / totfoodsRA ;
-	else RATIO_PRO=.;
+		RATIO_PRO = totpro / totfoodsRA ;
 	          
 	/* score */
-	if not missing(RATIO_PRO) then do;
 		HEFI2019C4_PROFOODS = 5 * (RATIO_PRO / 0.25); 
 		if HEFI2019C4_PROFOODS > 5 then HEFI2019C4_PROFOODS = 5; 
 	end;
 	else do;
+		RATIO_PRO          =.;
 		HEFI2019C4_PROFOODS=.;
 	end;
 	 
 /*******************************************/
 /* Component 5 - Plant-based protein foods */
 /*******************************************/
+
+	if not missing(totpro) and totpro > 0 then do;
 	/* ratio */
-	if totpro > 0 then RATIO_PLANT = (&profoodsplant+unsweetplantbevpro_RA) / totpro ;
-	else RATIO_PLANT=.;
+		RATIO_PLANT = (&profoodsplant+unsweetplantbevpro_RA) / totpro ;
       
 	/* score */
-	if not missing(RATIO_PLANT) then do; 
 		HEFI2019C5_PLANTPRO = 5 * (RATIO_PLANT / 0.50000001); 
 		if HEFI2019C5_PLANTPRO > 5 then HEFI2019C5_PLANTPRO = 5; 
 	end;
+	else if totpro=0 then do;
+		RATIO_PLANT        =.;
+		HEFI2019C5_PLANTPRO=0;
+	end;
 	else do;
+		RATIO_PLANT        =.;
 		HEFI2019C5_PLANTPRO=.;
 	end;
-	
-	if totpro=0 then HEFI2019C5_PLANTPRO=0;
 
-/* no foods reported */
+/* zero food reported */
 	if totfoodsRA = 0 then do;
 		HEFI2019C1_VF       = 0;
 		HEFI2019C2_WHOLEGR  = 0;
@@ -279,20 +274,22 @@ data &outdata;
 	/* total */
 	totbev = &water_and_other_healthy + &unsweetmilk + &unsweetplantbevpro + &otherbev ; 
       
+	if not missing(totbev) and totbev > 0 then do;
 	/* ratio */
-	if totbev > 0 then RATIO_BEV = (&water_and_other_healthy + &unsweetmilk + &unsweetplantbevpro ) / totbev ;
-	else RATIO_BEV=.;
+	RATIO_BEV = (&water_and_other_healthy + &unsweetmilk + &unsweetplantbevpro ) / totbev ;
       
 	/* score */
-	if not missing(RATIO_BEV) then do;
 		HEFI2019C6_BEVERAGES = 10 * (RATIO_BEV ); 
 		if HEFI2019C6_BEVERAGES > 10 then HEFI2019C6_BEVERAGES = 10; 
 	end;
-	else do;
-		HEFI2019C6_BEVERAGES=.;
+	else if totbev = 0 then do;
+		RATIO_BEV           =.;
+		HEFI2019C6_BEVERAGES=0;
 	end;
-	
-	if totbev=0 then HEFI2019C6_BEVERAGES = 0;
+	else do;
+		RATIO_BEV           =.;
+		HEFI2019C6_BEVERAGES=.;	
+	end;
 	
 /*******************************************/
 /* Component 7 - Ratio of unsaturated fats */
