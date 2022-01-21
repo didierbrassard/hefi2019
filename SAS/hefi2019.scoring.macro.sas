@@ -132,7 +132,7 @@ pufat satfat sugars kcal sodium water_and_other_healthy unsweetmilk unsweetplant
 %end;
 
 /* Indicate gram per RA for unsweetened milk and
-	plant-based beverages with enough protein */
+	unsweetened plant-based beverages with enough protein */
 	%local probev_gram_per_RA;
 	%let probev_gram_per_RA = 258;
 
@@ -140,25 +140,19 @@ pufat satfat sugars kcal sodium water_and_other_healthy unsweetmilk unsweetplant
 /*           Scoring algorithm            */
 /******************************************/
 
-data &outdata; 
-         set &indata; 
+DATA &outdata; 
+         SET &indata; 
  
 /* calculate reference amounts from unsweetened milk and  
          unsweetened plant-based beverages protein foods */
         
-	if not missing(&unsweetmilk) then do;
+	if not missing(&unsweetmilk) then
 		unsweetmilk_RA = &unsweetmilk / &probev_gram_per_RA ;
- 	end;
-	else do;
-		unsweetmilk_RA = . ;
-	end;
+	else unsweetmilk_RA = . ;
        
-	if not missing(&unsweetplantbevpro) then do;
+	if not missing(&unsweetplantbevpro) then 
 		unsweetplantbevpro_RA  = &unsweetplantbevpro  / &probev_gram_per_RA ; 
-	end;
-	else do;
-		unsweetplantbevpro_RA  = .;
-	end;
+	else unsweetplantbevpro_RA  = .;
  
 /* sum total reference amounts from foods and protein beverages */
 	totfoodsRA = &vegwfruits + &wholegrfoods + &nonwholegrfoods +
@@ -276,7 +270,7 @@ data &outdata;
       
 	if not missing(totbev) and totbev > 0 then do;
 	/* ratio */
-	RATIO_BEV = (&water_and_other_healthy + &unsweetmilk + &unsweetplantbevpro ) / totbev ;
+		RATIO_BEV = (&water_and_other_healthy + &unsweetmilk + &unsweetplantbevpro ) / totbev ;
       
 	/* score */
 		HEFI2019C6_BEVERAGES = 10 * (RATIO_BEV ); 
@@ -415,9 +409,10 @@ LABEL
 
 FORMAT HEFI2019: 8.1;
 
-DROP unsweetmilk_RA unsweetplantbevpro_RA totgrain totpro unsatfat FATmin FATmax totbev SFAmin SFAmax SUGmin SUGmax SODmin SODmax ;
+DROP unsweetmilk_RA unsweetplantbevpro_RA totgrain totpro unsatfat
+	 FATmin FATmax totbev SFAmin SFAmax SUGmin SUGmax SODmin SODmax ;
 
-run;
+RUN;
 %mend HEFI2019; 
 
 /*******************************************************************/
