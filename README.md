@@ -73,9 +73,11 @@ reported in an entire sample, a 0 can be assigned to that variable. Upon
 execution, the title of the function is displayed.
 
 ``` r
-#library(hefi2019)
-devtools::load_all()
-#> ℹ Loading hefi2019
+# Install the hefi2019 scoring algorithm from GitHub
+devtools::install_github("didierbrassard/hefi2019")
+
+# Load library
+library(hefi2019)
 
 # Apply the scoring algorithm to user-provided data
 mydata_scored <- 
