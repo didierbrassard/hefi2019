@@ -24,30 +24,30 @@
 /* missing component score(s) and total score.                           */
 /*                                                                       */
 /* Suggested layout for the input dataset:                               */
-/* The macro should ideally be applied to a dataset in the long format,  */
-/* where rows correspond to individuals and dietary constituents are     */
-/* columns.                                                              */
+/* The macro should ideally be applied to a dataset where rows           */
+/* correspond to individuals and dietary constituents are columns.       */
+/*                                                                       */
 /*************************************************************************/
 /*                                                                       */
 /* The syntax for calling the HEFI2019 macro is :                        */
 /*                                                                       */
 /* %HEFI2019(indata                 =,                                   */
-/*          vegwfruits              =,                                   */
+/*          vegfruits               =,                                   */
 /*          wholegrfoods            =,                                   */
 /*          nonwholegrfoods         =,                                   */
 /*          profoodsanimal          =,                                   */
 /*          profoodsplant           =,                                   */
 /*          otherfoods              =,                                   */
+/*          waterhealthybev         =,                                   */
+/*          otherbeverages          =,                                   */
 /*          mufat                   =,                                   */
 /*          pufat                   =,                                   */
 /*          satfat                  =,                                   */
-/*          sugars                  =,                                   */
-/*          kcal                    =,                                   */
+/*          freesugars              =,                                   */
 /*          sodium                  =,                                   */
-/*          water_and_other_healthy =,                                   */
 /*          unsweetmilk             =,                                   */
 /*          unsweetplantbevpro      =,                                   */
-/*          otherbev                =,                                   */
+/*          energy                  =,                                   */
 /*          outdata                 =                                    */
 /*          );                                                           */
 /*                                                                       */
@@ -106,10 +106,11 @@
 /*  https://doi.org/10.1139/apnm-2021-0416                               */
 /*                                                                       */
 /*************************************************************************/
- 
-%macro HEFI2019 (indata=,vegwfruits=,wholegrfoods=,nonwholegrfoods=,profoodsanimal=,profoodsplant=,otherfoods=,mufat=,
-pufat=,satfat=,sugars=,kcal=,sodium=,water_and_other_healthy=,unsweetmilk=,unsweetplantbevpro=,otherbev=,
-outdata=); 
+
+%macro HEFI2019 (indata=, vegfruits=, wholegrfoods=, nonwholegrfoods=, 
+		profoodsanimal=, profoodsplant=, otherfoods=, waterhealthybev=, unsweetmilk=, 
+		unsweetplantbevpro=, otherbeverages=, mufat=, pufat=, satfat=, freesugars=, 
+		sodium=, energy=, outdata=);
 
 %PUT # Healthy Eating Food Index-2019 Scoring Algorithm SAS version 2.1 ;
 
@@ -126,8 +127,9 @@ outdata=);
 	%let outdata=&indata;
 %end;
 %local dietaryconstituents kth ;
-%let dietaryconstituents=vegwfruits wholegrfoods nonwholegrfoods profoodsanimal profoodsplant otherfoods mufat 
-pufat satfat sugars kcal sodium water_and_other_healthy unsweetmilk unsweetplantbevpro otherbev;
+%let dietaryconstituents=vegfruits wholegrfoods nonwholegrfoods profoodsanimal profoodsplant otherfoods 
+waterhealthybev unsweetmilk unsweetplantbevpro otherbeverages
+mufat pufat satfat freesugars sodium energy;
 %do kth=1 %to %sysfunc(countw(&dietaryconstituents,' '));
 	%local x&kth ;
 	%let x&kth = %scan(&dietaryconstituents,&kth,%str( ));
@@ -158,7 +160,7 @@ DATA &outdata;
 	else unsweetplantbevpro_RA  = .;
  
 /* sum total reference amounts from foods and protein beverages */
-	totfoodsRA = &vegwfruits + &wholegrfoods + &nonwholegrfoods +
+	totfoodsRA = &vegfruits + &wholegrfoods + &nonwholegrfoods +
 				 &profoodsanimal + &profoodsplant + &otherfoods +
 				 unsweetmilk_RA + unsweetplantbevpro_RA;          
  
@@ -167,7 +169,7 @@ DATA &outdata;
  /************************************************/
 	if totfoodsRA > 0 then do;
 	/* ratio */
-	    RATIO_VF = &vegwfruits / totfoodsRA ;
+	    RATIO_VF = &vegfruits / totfoodsRA ;
 	
 	/* score */
 		HEFI2019C1_VF    = 20 * ( RATIO_VF / 0.50 );
@@ -269,11 +271,11 @@ DATA &outdata;
  /* Component 6 - Beverages                      */
  /************************************************/
 	/* total */
-	totbev = &water_and_other_healthy + &unsweetmilk + &unsweetplantbevpro + &otherbev ; 
+	totbev = &waterhealthybev + &unsweetmilk + &unsweetplantbevpro + &otherbeverages ; 
       
 	if not missing(totbev) and totbev > 0 then do;
 	/* ratio */
-		RATIO_BEV = (&water_and_other_healthy + &unsweetmilk + &unsweetplantbevpro ) / totbev ;
+		RATIO_BEV = (&waterhealthybev + &unsweetmilk + &unsweetplantbevpro ) / totbev ;
       
 	/* score */
 		HEFI2019C6_BEVERAGES = 10 * (RATIO_BEV ); 
@@ -317,7 +319,7 @@ DATA &outdata;
 	SFAmax=15; 
                
 	/* ratio */
-	if (&kcal > 0 and not missing(&satfat)) then SFA_PERC = 100 * (&satfat * 9 / &kcal);
+	if (&energy > 0 and not missing(&satfat)) then SFA_PERC = 100 * (&satfat * 9 / &energy);
 	else SFA_PERC=.;
       
 	/* score */
@@ -338,17 +340,17 @@ DATA &outdata;
 	SUGmax=20; 
                
 	/* ratio */
-	if (&kcal > 0 and not missing(&sugars)) then SUG_PERC = 100 * (&sugars * 4 / &kcal);
+	if (&energy > 0 and not missing(&freesugars)) then SUG_PERC = 100 * (&freesugars * 4 / &energy);
 	else SUG_PERC=.;
       
 	/* score */
     if not missing(SUG_PERC) then do;
-		if SUG_PERC < SUGmin then HEFI2019C9_SUGARS = 10; 
-		else if SUG_PERC >= SUGmax then HEFI2019C9_SUGARS=0; 
-		else HEFI2019C9_SUGARS = 10 - ( 10* (SUG_PERC-SUGmin) / (SUGmax-SUGmin) ); 
+		if SUG_PERC < SUGmin then HEFI2019C9_FREESUGARS = 10; 
+		else if SUG_PERC >= SUGmax then HEFI2019C9_FREESUGARS=0; 
+		else HEFI2019C9_FREESUGARS = 10 - ( 10* (SUG_PERC-SUGmin) / (SUGmax-SUGmin) ); 
 	end;
 	else do;
-		HEFI2019C9_SUGARS=.;
+		HEFI2019C9_FREESUGARS=.;
 	end;
 	
  /************************************************/
@@ -359,7 +361,7 @@ DATA &outdata;
 	SODmax=2.0; 
       
 	/* ratio */
-	if (&kcal > 0 and not missing(&sodium)) then SODDEN = &sodium / &kcal;
+	if (&energy > 0 and not missing(&sodium)) then SODDEN = &sodium / &energy;
 	else SODDEN=.;
       
 	/* score */
@@ -373,9 +375,9 @@ DATA &outdata;
 	end;
  
 /* Zero energy reported */
-		if &kcal = 0 then do; 
+		if &energy = 0 then do; 
           HEFI2019C8_SFAT=0; 
-          HEFI2019C9_SUGARS=0; 
+          HEFI2019C9_FREESUGARS=0; 
           HEFI2019C10_SODIUM=0; 
          end; 
 
@@ -386,7 +388,7 @@ DATA &outdata;
 /* Calculate the Healthy Eating Food Index total score (i.e., the sum of its component scores) */
 	HEFI2019_TOTAL_SCORE = HEFI2019C1_VF + HEFI2019C2_WHOLEGR + HEFI2019C3_GRRATIO + HEFI2019C4_PROFOODS +
 		HEFI2019C5_PLANTPRO + HEFI2019C6_BEVERAGES + HEFI2019C7_FATTYACID + HEFI2019C8_SFAT +
-		HEFI2019C9_SUGARS + HEFI2019C10_SODIUM ; 
+		HEFI2019C9_FREESUGARS + HEFI2019C10_SODIUM ; 
  
 LABEL  
          HEFI2019_TOTAL_SCORE = "Total Healthy Eating Food Index (/80)"
@@ -398,7 +400,7 @@ LABEL
          HEFI2019C6_BEVERAGES = 'HEFI2019 C6 Beverages'
          HEFI2019C7_FATTYACID = 'HEFI2019 C7 Fatty acids ratio'
          HEFI2019C8_SFAT = 'HEFI2019 C8 Saturated fats'
-         HEFI2019C9_SUGARS = 'HEFI2019 C9 Free sugars'
+         HEFI2019C9_FREESUGARS = 'HEFI2019 C9 Free sugars'
          HEFI2019C10_SODIUM = 'HEFI2019 C10 Sodium'
           
          RATIO_VF='Ratio of vegetable and fruits over total foods'
