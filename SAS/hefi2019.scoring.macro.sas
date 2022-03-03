@@ -1,9 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
 /*              THE HEALTHY EATING FOOD INDEX SCORING MACRO              */
-/*                     VERSION 2.0        2022-01                        */
+/*                 Apply the HEFI-2019 scoring algorithm                 */
 /*                                                                       */
-/*             https://github.com/didierbrassard/hefi2019/               */
+/* Version: 2.1                                                          */
+/* Date: 2022-03                                                         */
+/* Details: https://github.com/didierbrassard/hefi2019/                  */
+/*                                                                       */
 /*************************************************************************/
 /*                                                                       */
 /* This macro scores dietary constituents provided in the input data set */
@@ -90,17 +93,17 @@
 /*                                                                       */
 /* References:                                                           */
 /*                                                                       */
-/*   Brassard D, Elvidge Munene LA, St-Pierre S, Guenther PM,            */
-/*   Kirkpatrick SI, Slater J, et al. Development of the Healthy Eating  */
-/*   Food Index (HEFI)-2019 measuring adherence to Canada's Food Guide   */
-/*   2019 recommendations on healthy food choices. 2022.                 */
-/*   https://doi.org/10.1139/apnm-2021-0415                              */
+/*  Brassard D, Elvidge Munene LA, St-Pierre S, Guenther PM,             */
+/*  Kirkpatrick SI, Slater J, et al. Development of the Healthy Eating   */
+/*  Food Index (HEFI)-2019 measuring adherence to Canada's Food Guide    */
+/*  2019 recommendations on healthy food choices. 2022.                  */
+/*  https://doi.org/10.1139/apnm-2021-0415                               */
 /*                                                                       */
-/*   Brassard D, Elvidge Munene LA, St-Pierre S, Gonzalez A, Guenther PM,*/
-/*   Jessri M, et al. Evaluation of the Healthy Eating Food Index (HEFI)-*/
-/*   2019 measuring adherence to Canada's Food Guide 2019 recommendations*/
-/*   on healthy food choices. Appl Physiol Nutr Metab. 2022.             */
-/*   https://doi.org/10.1139/apnm-2021-0416                              */
+/*  Brassard D, Elvidge Munene LA, St-Pierre S, Gonzalez A, Guenther PM, */
+/*  Jessri M, et al. Evaluation of the Healthy Eating Food Index (HEFI)- */
+/*  2019 measuring adherence to Canada's Food Guide 2019 recommendations */
+/*  on healthy food choices. Appl Physiol Nutr Metab. 2022.              */
+/*  https://doi.org/10.1139/apnm-2021-0416                               */
 /*                                                                       */
 /*************************************************************************/
  
@@ -108,7 +111,7 @@
 pufat=,satfat=,sugars=,kcal=,sodium=,water_and_other_healthy=,unsweetmilk=,unsweetplantbevpro=,otherbev=,
 outdata=); 
 
-%PUT # Healthy Eating Food Index-2019 Scoring Algorithm SAS version 2.0 ;
+%PUT # Healthy Eating Food Index-2019 Scoring Algorithm SAS version 2.1 ;
 
 /******************************************/
 /*       Confirm correct macro call       */
@@ -159,9 +162,9 @@ DATA &outdata;
 				 &profoodsanimal + &profoodsplant + &otherfoods +
 				 unsweetmilk_RA + unsweetplantbevpro_RA;          
  
-/********************************************/
-/* Component 1 - Vegetables and fruits      */
-/********************************************/
+ /************************************************/
+ /* Component 1 - Vegetables and fruits          */
+ /************************************************/
 	if totfoodsRA > 0 then do;
 	/* ratio */
 	    RATIO_VF = &vegwfruits / totfoodsRA ;
@@ -175,9 +178,9 @@ DATA &outdata;
 	   HEFI2019C1_VF=.;
 	end;
 
-/********************************************/
-/* Component 2 -  Whole-grain foods         */
-/********************************************/
+ /************************************************/
+ /* Component 2 -  Whole-grain foods             */
+ /************************************************/
 	if totfoodsRA > 0 then do;
 	/* ratio */
 		RATIO_WGTOT = &wholegrfoods / totfoodsRA ;
@@ -192,9 +195,9 @@ DATA &outdata;
 	end;
                    
  
-/********************************************/
-/* Component 3 -  Grain foods ratio         */
-/********************************************/
+ /************************************************/
+ /* Component 3 -  Grain foods ratio             */
+ /************************************************/
 	/* total */
 	totgrain = &wholegrfoods + &nonwholegrfoods ; 
 	                   
@@ -215,9 +218,9 @@ DATA &outdata;
 		HEFI2019C3_GRRATIO=.;
 	end;
 	
-/*******************************************/
-/* Component 4 - Protein foods             */
-/*******************************************/
+ /************************************************/
+ /* Component 4 - Protein foods                  */
+ /************************************************/
 	/* total */
 	totpro = &profoodsanimal + &profoodsplant + unsweetmilk_RA + unsweetplantbevpro_RA ; 
 	 
@@ -234,9 +237,9 @@ DATA &outdata;
 		HEFI2019C4_PROFOODS=.;
 	end;
 	 
-/*******************************************/
-/* Component 5 - Plant-based protein foods */
-/*******************************************/
+ /************************************************/
+ /* Component 5 - Plant-based protein foods      */
+ /************************************************/
 
 	if not missing(totpro) and totpro > 0 then do;
 	/* ratio */
@@ -262,9 +265,9 @@ DATA &outdata;
 		HEFI2019C4_PROFOODS = 0;
 	end;
           
-/********************************************/
-/* Component 6 - Beverages                  */
-/********************************************/
+ /************************************************/
+ /* Component 6 - Beverages                      */
+ /************************************************/
 	/* total */
 	totbev = &water_and_other_healthy + &unsweetmilk + &unsweetplantbevpro + &otherbev ; 
       
@@ -285,9 +288,9 @@ DATA &outdata;
 		HEFI2019C6_BEVERAGES=.;	
 	end;
 	
-/*******************************************/
-/* Component 7 - Ratio of unsaturated fats */
-/*******************************************/
+ /************************************************/
+ /* Component 7 - Ratio of unsaturated fats      */
+ /************************************************/
 	/* input limits */
 	FATmin=1.1 ; 
 	FATmax=2.6 ; 
@@ -306,9 +309,9 @@ DATA &outdata;
 	else if RATIO_FA <= FATmin then HEFI2019C7_FATTYACID=0; 
 	else  HEFI2019C7_FATTYACID=5* ( (RATIO_FA-FATmin) / (FATmax-FATmin) );
 		
-/********************************/
-/* Component 8 - Saturated fats */
-/********************************/
+ /************************************************/
+ /* Component 8 - Saturated fats                 */
+ /************************************************/
 	/* input limits */
 	SFAmin=10; 
 	SFAmax=15; 
@@ -327,9 +330,9 @@ DATA &outdata;
 		HEFI2019C8_SFAT=.;
 	end;
 	
-/********************************/
-/* Component 9 - Free sugars    */
-/********************************/
+ /************************************************/
+ /* Component 9 - Free sugars                    */
+ /************************************************/
 	/* input limits */
 	SUGmin=10; 
 	SUGmax=20; 
@@ -348,9 +351,9 @@ DATA &outdata;
 		HEFI2019C9_SUGARS=.;
 	end;
 	
-/********************************/
-/* Component 10 - Sodium        */
-/********************************/
+ /************************************************/
+ /* Component 10 - Sodium                        */
+ /************************************************/
 	/* input limits */
 	SODmin=0.9; 
 	SODmax=2.0; 
@@ -375,7 +378,11 @@ DATA &outdata;
           HEFI2019C9_SUGARS=0; 
           HEFI2019C10_SODIUM=0; 
          end; 
- 
+
+ /************************************************/
+ /*             Total HEFI-2019 score            */
+ /************************************************/
+
 /* Calculate the Healthy Eating Food Index total score (i.e., the sum of its component scores) */
 	HEFI2019_TOTAL_SCORE = HEFI2019C1_VF + HEFI2019C2_WHOLEGR + HEFI2019C3_GRRATIO + HEFI2019C4_PROFOODS +
 		HEFI2019C5_PLANTPRO + HEFI2019C6_BEVERAGES + HEFI2019C7_FATTYACID + HEFI2019C8_SFAT +
@@ -401,7 +408,7 @@ LABEL
          RATIO_PLANT='Ratio of plant-based over protein foods'
          RATIO_FA='Ratio of unsaturated over saturated fats'
          RATIO_BEV='Ratio of beverages over total beverages'
-         SFA_PERC='Percent of calories from sat fat'
+         SFA_PERC='Percent of calories from saturated fat'
          SUG_PERC='Percent of calories from free sugars'
          SODDEN='Ratio of sodium per 1000 kcal'
          totfoodsRA='Total foods (RA/d)'
