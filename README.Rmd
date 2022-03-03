@@ -95,7 +95,12 @@ devtools::install_github("didierbrassard/hefi2019")
 The scoring algorithm is used by indicating the name of the input data set and the name of each variable representing dietary constituents of the HEFI-2019. In the case where a given dietary constituents was not reported in an entire sample, a 0 can be assigned to that variable. Upon execution, the title of the function is displayed.
 
 ```{r example}
+# Install the hefi2019 scoring algorithm from GitHub
+devtools::install_github("didierbrassard/hefi2019")
+
+# Load library
 library(hefi2019)
+
 # Apply the scoring algorithm to user-provided data
 mydata_scored <- 
   hefi2019(indata             = mydata,
