@@ -39,47 +39,48 @@
 /*          profoodsplant           =,                                   */
 /*          otherfoods              =,                                   */
 /*          waterhealthybev         =,                                   */
+/*          unsweetmilk             =,                                   */
+/*          unsweetplantbevpro      =,                                   */
 /*          otherbeverages          =,                                   */
 /*          mufat                   =,                                   */
 /*          pufat                   =,                                   */
 /*          satfat                  =,                                   */
 /*          freesugars              =,                                   */
 /*          sodium                  =,                                   */
-/*          unsweetmilk             =,                                   */
-/*          unsweetplantbevpro      =,                                   */
 /*          energy                  =,                                   */
 /*          outdata                 =                                    */
 /*          );                                                           */
 /*                                                                       */
 /* where                                                                 */
 /*                                                                       */
-/* indata                  = input dataset with dietary constituents     */
-/* vegwfruits              = Reference amounts (RA) from vegetables and  */
-/*                           fruits (excludes fruit juices)              */
-/* wholegrfoods            = RA from whole-grain foods                   */
-/* nonwholegrfoods         = RA from non-whole grain foods               */
-/* profoodsanimal          = RA from animal-based protein foods          */
-/* profoodsplant           = RA from plant-based protein foods           */
-/* otherfoods              = RA from all others foods (i.e., not         */
-/*                           considered in the above variables)          */
-/* mufat                   = Grams of fat from monounsaturated fats      */
-/* pufat                   = Grams of fat from polyunsaturated fats      */
-/* satfat                  = Grams of fat from saturated fats            */
-/* sugars                  = Grams of free sugars                        */
-/* kcal                    = Total energy intake, kcal                   */
-/* sodium                  = Milligrams of sodium                        */
-/* water_and_other_healthy = Grams of water and other healthy beverages  */
-/*                         (see definition in Brassard et al. APNM 2022) */
-/* unsweetmilk             = Grams of unsweetened milk (all % M.F.)      */
-/* unsweetplantbevpro      = Grams of unsweetened plant-based beverages  */
-/* otherbev                = Grams of all other beverages (artificially- */
-/*                           or sugar-sweetened beverages, juices,       */
-/*                           sweetened milk or plant-based beverages,    */
-/*                           ... etc.)                                   */
-/*                          (see definition in Brassard et al. APNM 2022)*/
-/* outdata                 = Name of the output data set with HEFI-2019  */
-/*                           scores, component scores, and density of    */
-/*                           intakes.                                    */
+/* indata              = Input dataset with dietary constituents         */
+/* vegfruits           = Reference amounts (RA) from vegetables and      */
+/*                       fruits (excludes fruit juices)                  */
+/* wholegrfoods        = RA from whole-grain foods (includes whole wheat)*/
+/* nonwholegrfoods     = RA from non-whole grain foods                   */
+/* profoodsanimal      = RA from animal-based protein foods (excludes    */
+/*                       milk)                                           */
+/* profoodsplant       = RA from plant-based protein foods (excludes     */
+/*                       plant-based beverages)                          */
+/* otherfoods          = RA from all other foods not considered in the   */
+/*                       categories above (vegetables and fruits, grain  */
+/*                       foods, protein foods), excludes beverages       */
+/* waterhealthybev     = Grams of water and other healthy beverages not  */
+/*                       in unsweetened milk or unsweetened plant-based  */
+/*                       beverages with sufficient protein               */
+/* unsweetmilk         = Grams of unsweetened milk (includes all % M.F.) */
+/* unsweetplantbevpro  = Grams of unsweetened plant-based beverages with */
+/*                       sufficient protein                              */
+/* otherbeverages      = Grams of all other beverages (artificially-     */
+/*                       or sugar-sweetened beverages, juices,           */
+/*                       sweetened milk or plant-based beverages, etc.)  */
+/* mufat               = Grams of fat from monounsaturated fats          */
+/* pufat               = Grams of fat from polyunsaturated fats          */
+/* satfat              = Grams of fat from saturated fats                */
+/* freesugars          = Grams of free sugars                            */
+/* sodium              = Milligrams of sodium                            */
+/* energy              = Total energy intake, kcal                       */
+/* outdata             = Name of the output data set                     */
 /*                                                                       */
 /*                                                                       */
 /* Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",   */
