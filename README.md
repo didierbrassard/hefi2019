@@ -78,24 +78,26 @@ devtools::load_all()
 #> ℹ Loading hefi2019
 
 # Apply the scoring algorithm to user-provided data
-mydata_scored <- hefi2019(indata         = mydata,
-                         vegwfruits      = RA_qty_vegwfruit,
-                         wholegrfoods    = RA_qty_grfoodswhole,
-                         nonwholegrfoods = RA_qty_nonwgfoods,
-                         profoodsanimal  = RA_qty_profoodsanimal,
-                         profoodsplant   = RA_qty_profoodsplant,
-                         otherfoods      = RA_qty_other,
-                         water_and_other_healthy = water_and_other_healthy,
-                         unsweetmilk     = milk,
-                         unsweetplantbevpro = 0, # 0 = food was not consumed
-                         otherbev        = otherbev ,
-                         mufat           = mufa ,
-                         pufat           = pufa ,
-                         satfat          = sfa ,
-                         sugars          = sugfree,
-                         kcal            = energy,
-                         sodium          = sodium )
-#> Healthy Eating Food Index-2019 Scoring Algorithm R version 1.1
+mydata_scored <- 
+  hefi2019(indata             = mydata,
+           vegfruits          = RA_vegfruits,
+           wholegrfoods       = RA_wholegrfoods,
+           nonwholegrfoods    = RA_nonwgfoods,
+           profoodsanimal     = RA_profoodsanimal,
+           profoodsplant      = RA_profoodsplant,
+           otherfoods         = RA_otherfoods,
+           waterhealthybev    = G_waterhealthybev,
+           unsweetmilk        = G_milk,
+           unsweetplantbevpro = G_plantbevpro,
+           otherbeverages     = G_otherbeverages ,
+           mufat              = G_mufa ,
+           pufat              = G_pufa ,
+           satfat             = G_sfa ,
+           freesugars         = G_freesugars,
+           sodium             = MG_sodium,
+           energy             = energy
+           )
+#> Healthy Eating Food Index-2019 Scoring Algorithm R version 1.2
 ```
 
 ## Scoring Algorithm Output
@@ -103,17 +105,17 @@ mydata_scored <- hefi2019(indata         = mydata,
 ### Density of intakes
 
 The scoring algorithm creates 10 variables for density of intakes:
-*RATIO\_VF, RATIO\_WGTOT, RATIO\_WGGR, RATIO\_PRO, RATIO\_PLANT,
-RATIO\_BEV, RATIO\_UNSFAT, SFA\_PERC, SUG\_PERC, and SODDEN*.
+*RATIO_VF, RATIO_WGTOT, RATIO_WGGR, RATIO_PRO, RATIO_PLANT, RATIO_BEV,
+RATIO_UNSFAT, RATIO_FA, SFA_PERC, SUG_PERC, and SODDEN*.
 
 ### Total HEFI-2019 and its components
 
 The variable corresponding to the total HEFI-2019 is
-*HEFI2019\_TOTAL\_SCORE* and the 10 variables corresponding to each
-component of the HEFI-2019 are *HEFI2019C1\_VF, HEFI2019C2\_WHOLEGR,
-HEFI2019C3\_GRRATIO, HEFI2019C4\_PROFOODS, HEFI2019C5\_PLANTPRO,
-HEFI2019C6\_BEVERAGES, HEFI2019C7\_FATTYACID, HEFI2019C8\_SFAT,
-HEFI2019C9\_SUGARS, and HEFI2019C10\_SODIUM*.
+*HEFI2019_TOTAL_SCORE* and the 10 variables corresponding to each
+component of the HEFI-2019 are *HEFI2019C1_VF, HEFI2019C2_WHOLEGR,
+HEFI2019C3_GRRATIO, HEFI2019C4_PROFOODS, HEFI2019C5_PLANTPRO,
+HEFI2019C6_BEVERAGES, HEFI2019C7_FATTYACID, HEFI2019C8_SFAT,
+HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 # References
 
