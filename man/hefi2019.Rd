@@ -6,46 +6,46 @@
 \usage{
 hefi2019(
   indata,
-  vegwfruits,
+  vegfruits,
   wholegrfoods,
   nonwholegrfoods,
   profoodsanimal,
   profoodsplant,
   otherfoods,
-  water_and_other_healthy,
+  waterhealthybev,
   unsweetmilk,
   unsweetplantbevpro,
-  otherbev,
+  otherbeverages,
   mufat,
   pufat,
   satfat,
-  sugars,
-  kcal,
+  freesugars,
+  energy,
   sodium
 )
 }
 \arguments{
-\item{indata}{Input dataset with dietary constituents}
+\item{indata}{Input data set with dietary constituents}
 
-\item{vegwfruits}{RAs* from vegetables and fruits (excludes fruit juices)}
+\item{vegfruits}{Reference amounts (RA) from vegetables and fruits (excludes fruit juices)}
 
-\item{wholegrfoods}{RAs from whole-grain foods}
+\item{wholegrfoods}{RA from whole-grain foods (includes whole wheat)}
 
-\item{nonwholegrfoods}{RAs from non-whole grain foods}
+\item{nonwholegrfoods}{RA from non-whole grain foods}
 
-\item{profoodsanimal}{RAs from animal-based protein foods}
+\item{profoodsanimal}{RA from animal-based protein foods (excludes milk)}
 
-\item{profoodsplant}{RAs from plant-based protein foods}
+\item{profoodsplant}{RA from plant-based protein foods (excludes plant-based beverages)}
 
-\item{otherfoods}{RAs from all others foods (i.e., not considered in the variables above)}
+\item{otherfoods}{RA from all other foods not considered in the categories above (vegetables and fruits, grain foods, protein foods), excludes beverages}
 
-\item{water_and_other_healthy}{Grams of water and other healthy beverages}
+\item{waterhealthybev}{Grams of water and other healthy beverages not in unsweetened milk or unsweetened plant-based beverages with sufficient protein}
 
-\item{unsweetmilk}{Grams of unsweetened milk (all \% M.F.)}
+\item{unsweetmilk}{Grams of unsweetened milk (includes all \% M.F.)}
 
-\item{unsweetplantbevpro}{Grams of unsweetened plant-based beverages}
+\item{unsweetplantbevpro}{Grams of unsweetened plant-based beverages with sufficient protein}
 
-\item{otherbev}{Grams of all other beverages (artificially- or sugar-sweetened beverages, juices, sweetened milk or plant-based beverages.)}
+\item{otherbeverages}{Grams of all other beverages (artificially- or sugar-sweetened beverages, juices, sweetened milk or plant-based beverages, etc.)}
 
 \item{mufat}{Grams of fat from monounsaturated fats}
 
@@ -53,29 +53,33 @@ hefi2019(
 
 \item{satfat}{Grams of fat from saturated fats}
 
-\item{sugars}{Grams of free sugars}
+\item{freesugars}{Grams of free sugars}
 
-\item{kcal}{Total energy intake, kcal}
+\item{energy}{Total energy intake, kcal}
 
 \item{sodium}{Milligrams of sodium}
 }
 \value{
-Input dataset (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total and component scores
+Input data set (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total and component scores
 }
 \description{
-This function scores dietary constituents provided in the input dataset
+This function scores dietary constituents provided in the input data set
 according to the Healthy Eating Food Index (HEFI)-2019 scoring algorithm
 See Brassard et al., Appl Physiol Nutr Metab 2022 for details and
 information on classification of foods.
-The original variables are kept in the output data. New variables include
+The original variables are kept in the output data. The new variables include
 density of intakes (i.e., ratios of dietary constituents), the total
-HEFI-2019 score and its components scores.
-Of note, when no foods, beverages or energy is reported, ratios are
+HEFI-2019 score and component scores.
+Of note, when no foods, beverages or energy are reported, ratios are
 not calculated and a score of 0 is assigned to the corresponding
-components.
+components. Missing data for any dietary constituents will results in
+missing components score(s) and total score.
 }
 \details{
-(*) RAs indicate reference amounts (Brassard et al., Appl Physiol Nutr Metab 2022).
+Suggested layout for the input data set:
+the function should ideally be applied to a data set where rows correspond
+to individuals and dietary constituents are columns.
+
 Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",
 "totfoodsRA", "totgrain", "totpro", "totbev", "unsatfat",
 "RATIO_VF", "RATIO_WGTOT", "RATIO_WGGR", "RATIO_PRO",
