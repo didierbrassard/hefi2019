@@ -20,8 +20,8 @@ hefi2019(
   pufat,
   satfat,
   freesugars,
-  energy,
-  sodium
+  sodium,
+  energy
 )
 }
 \arguments{
@@ -55,9 +55,9 @@ hefi2019(
 
 \item{freesugars}{Grams of free sugars}
 
-\item{energy}{Total energy intake, kcal}
-
 \item{sodium}{Milligrams of sodium}
+
+\item{energy}{Total energy intake, kcal}
 }
 \value{
 Input data set (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total and component scores
