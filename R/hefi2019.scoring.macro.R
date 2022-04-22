@@ -59,8 +59,8 @@ hefi2019 <-
            pufat,
            satfat,
            freesugars,
-           energy,
-           sodium) {
+           sodium,
+           energy) {
 
     # general message
     message("Healthy Eating Food Index-2019 Scoring Algorithm R version 1.2")
