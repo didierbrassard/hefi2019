@@ -1,0 +1,352 @@
+# Session Information: SYSSCP=WIN SYSSCPL=X64_DSRV19 SYSVER=9.4 SYSVLONG=9.04.01M7P080520 (13APR2022)
+83         /* !! PLEASE NOTE THAT THIS EXAMPLE CODE IS PROVIDED `AS IS`, WITHOUT
+84         	WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. THIS CODE INVOLVES THE SOLE
+85         	RESPONSABILITY OF THE AUTHOR AND IS NOT ENDORSED BY STATISTICS CANADA
+86         	OR HEALTH CANADA. !! */
+87         
+88          /*************************************************************************/
+89          /*                                                                       */
+90          /*                     CCHS 2015 - Nutrition (PUMF)                      */
+91          /*                                                                       */
+92          /*         Descriptive statistics based on a single 24-h recall          */
+93          /*                                                                       */
+94          /*                        Author: Didier Brassard                        */
+95          /*                                                                       */
+96          /*                               Version 1                               */
+97          /*                               13APR2022                               */
+98          /*                                                                       */
+99          /* NOTE: This code assumes that <01_CCHS2015_Data_preparation.sas>       */
+100         /* was executed beforehand.                                              */
+101         /*                                                                       */
+102         /*************************************************************************/
+103        
+104         /*************************************************************************/
+105         /*                                                                       */
+106         /*             General set-up: location of files, libraries              */
+107         /*                                                                       */
+108         /*************************************************************************/
+109        
+110        /* TO DO: indicate location of project folder */
+111        	%let path = C:/Users/DIBRA22/Documents/hefi2019/ ;
+112        	
+113        /* TO DO: indicate location of cchs files (could be the same as <path>) */
+114        	%let pathCCHS = C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF/;
+115        	
+116        	/* note: data pertaining to the 2015 Canadian Community Health Survey -
+117        		Nutrition (Public Use Microdata Files) are available upon request to
+118        		Statistics Canada online: https://www150.statcan.gc.ca/n1/en/catalogue/82M0024X2018001 */	
+119        
+120        /* AUTOMATIC: library to retrieve files in project folder */
+121        	libname proj "&path./Example_SAS_cchs/";
+NOTE: Libref PROJ was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\DIBRA22\Documents\hefi2019\\Example_SAS_cchs
+122        	libname fmt "&path./Example_SAS_cchs/Fmtdata/";
+NOTE: Libref FMT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\DIBRA22\Documents\hefi2019\\Example_SAS_cchs\Fmtdata
+123        	
+124        /* AUTOMATIC: load the HEFI-2019 scoring algorithm (update path if macro is stored elsewhere) */
+125        	%include "&path./SAS/hefi2019.scoring.macro.sas" ;
+556        	
+557         /*************************************************************************/
+558         /*                                                                       */
+2                                                          The SAS System                      Wednesday, April 13, 2022 12:59:46 PM
+
+559         /*            Estimate mean scores for the first 24-h recall             */
+560         /*                       (population ratio method)                       */
+561         /*                                                                       */
+562         /*                    See Freedman et al. J Nutr 2008                    */
+563         /*               https://pubmed.ncbi.nlm.nih.gov/18716176/               */
+564         /*                                                                       */
+565         /*************************************************************************/
+566        
+567        /* 1) Combine dietary intakes of the first recall with sociodemo data */
+568        	
+568      !  data intake_and_sociodeom(drop=nonzero_energy);
+569        		merge fmt.intake_per24hr(in=a)
+570        			  fmt.hs_nci(in=b keep=adm_rno suppid wts_p drig );
+571        		by adm_rno suppid;
+572        	* remove 24-h recall with 0 energy intake ;
+573        		if energy=0 then delete ;
+574        	* keep adm_rno present in both data + singel 24-h recall only ;
+575        		if (a and b) and suppid=1 then output;
+576        	run;
+
+NOTE: There were 27544 observations read from the data set FMT.INTAKE_PER24HR.
+NOTE: There were 27544 observations read from the data set FMT.HS_NCI.
+NOTE: The data set WORK.INTAKE_AND_SOCIODEOM has 20103 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+577        	
+578        	/* note: sample size of respondents 2y+ for first 24-h recall = 20,103 */
+579        
+580        /* 2) Calculate mean intakes of HEFI-2019 dietary constituents, weighted using sampling weights */
+581        	options fmtsearch=(fmt.hsfmt);
+582        	
+582      !  proc means data=intake_and_sociodeom mean;
+583        	format drig drigfmt.;
+584        	class drig ;
+585        	var vf wg rg pfab pfpb otherfoods water milk plantbev otherbevs sfa mufa pufa freesugars sodium energy ;
+586        	weight WTS_P;
+587        	output out=popratio mean=;
+588        	run;
+
+NOTE: There were 20103 observations read from the data set WORK.INTAKE_AND_SOCIODEOM.
+NOTE: The data set WORK.POPRATIO has 15 observations and 19 variables.
+NOTE: The PROCEDURE MEANS printed pages 1-5.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.22 seconds
+      cpu time            0.20 seconds
+      
+
+589        
+590        	/* some formatting */
+591        	
+591      !  data popratio(drop=_TYPE_ rename=(_FREQ_=numsubject));
+592        		set popratio;
+593        	*indicate the `all ` row ;
+594        	if _TYPE_ = 0 then drig=0;
+595        	label _FREQ_ ="n, unweighted";
+3                                                          The SAS System                      Wednesday, April 13, 2022 12:59:46 PM
+
+596        	run;
+
+NOTE: There were 15 observations read from the data set WORK.POPRATIO.
+NOTE: The data set WORK.POPRATIO has 15 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+597        
+598        	/* note: sampling weights are applied, but variance ignored at this point */
+599        
+600        /* 3) Apply the HEFI-2019 socring algorithm (see macro SAS file for details)*/
+601        
+602        	%HEFI2019(indata             = popratio,
+603        			  vegfruits          = vf,
+604        			  wholegrfoods       = wg,
+605        			  nonwholegrfoods    = rg,
+606        			  profoodsanimal     = pfab,
+607        			  profoodsplant      = pfpb,
+608        			  otherfoods         = otherfoods,
+609        			  waterhealthybev    = water,
+610        			  unsweetmilk        = milk,
+611        			  unsweetplantbevpro = plantbev,
+612        			  otherbeverages     = otherbevs,
+613        			  mufat              = mufa,
+614        			  pufat              = pufa,
+615        			  satfat             = sfa,
+616        			  freesugars         = freesugars,
+617        			  sodium             = sodium,
+618        			  energy             = energy,
+619        			  outdata            = popratio_scored
+620        		  	);
+# Healthy Eating Food Index-2019 Scoring Algorithm SAS version 2.1
+
+NOTE: There were 15 observations read from the data set WORK.POPRATIO.
+NOTE: The data set WORK.POPRATIO_SCORED has 15 observations and 40 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+621        		
+622        /* 4) Show results */
+623        	
+623      !  proc print data=popratio_scored ;
+624        	title1 "HEFI-2019 scores estimated using the population ratio method, by DRI group";
+625        	title2 "first 24-h recall, CCHS 2015 - Nutrition (n=20,103)";
+626        	id drig numsubject ;
+627        	var hefi2019: ;
+628        	run;
+
+NOTE: There were 15 observations read from the data set WORK.POPRATIO_SCORED.
+NOTE: The PROCEDURE PRINT printed page 6.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.06 seconds
+      
+4                                                          The SAS System                      Wednesday, April 13, 2022 12:59:47 PM
+
+
+629        	title1;
+630        	title2;
+631        
+632        	/* note: based on Freedman et al. J Nutr 2008, the pop. ratio method scores are
+633        		slightly biased vs. scores based on measurement-error corrected data. However,
+634        		the bias is less than the mean score based on the average of all respondent scores. */
+635        
+636         /*************************************************************************/
+637         /*                                                                       */
+638         /*           Estimate population ratio scores and differences            */
+639         /*                                                                       */
+640         /*************************************************************************/
+641        
+642        	/* goal: estimate mean scores in subgroups and calculate score differences */
+643        
+644        /* 1) Combine dietary intakes of the first recall with sociodemo data */
+645        	
+645      !  data intake_and_sociodeom(drop=nonzero_energy);
+646        		merge fmt.intake_per24hr(in=a)
+647        			  fmt.hs_nci(in=b keep=adm_rno suppid wts_p sex age smoking );
+648        		by adm_rno suppid;
+649        	* recode smoking as yes or no ;
+650        		if smoking in (1 2) then smoking=1;
+651        	* keep only adults 19 y +  ;
+652        		if age < 19 then delete;
+653        	* remove 24-h recall with 0 energy intake ;
+654        		if energy=0 then delete ;
+655        	* keep adm_rno present in both data + singel 24-h recall only ;
+656        		if (a and b) and suppid=1 then output;
+657        	run;
+
+NOTE: There were 27544 observations read from the data set FMT.INTAKE_PER24HR.
+NOTE: There were 27544 observations read from the data set FMT.HS_NCI.
+NOTE: The data set WORK.INTAKE_AND_SOCIODEOM has 13908 observations and 22 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+658        
+659        /* 2) Calculate mean intakes of HEFI-2019 dietary constituents, weighted using sampling weights */
+660        	
+660      !  proc means data=intake_and_sociodeom mean;
+661        	class smoking ;
+662        	var vf wg rg pfab pfpb otherfoods water milk plantbev otherbevs sfa mufa pufa freesugars sodium energy ;
+663        	weight wts_p ;
+664        	output out=popratio_smk mean=;
+665        	run;
+
+NOTE: There were 13908 observations read from the data set WORK.INTAKE_AND_SOCIODEOM.
+NOTE: The data set WORK.POPRATIO_SMK has 3 observations and 19 variables.
+NOTE: The PROCEDURE MEANS printed page 7.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.07 seconds
+      
+
+5                                                          The SAS System                      Wednesday, April 13, 2022 12:59:47 PM
+
+666        
+667        	/* some formatting */
+668        	
+668      !  data popratio_smk(drop=_TYPE_ rename=(_FREQ_=numsubject));
+669        		set popratio_smk;
+670        	*delete the `all ` row ;
+671        	if _TYPE_ = 0 then delete;
+672        	label _FREQ_ ="n, unweighted";
+673        	run;
+
+NOTE: There were 3 observations read from the data set WORK.POPRATIO_SMK.
+NOTE: The data set WORK.POPRATIO_SMK has 2 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+674        
+675        	/* note: sampling weights are applied, but variance ignored at this point */
+676        
+677        /* 3) Apply the HEFI-2019 socring algorithm (see macro SAS file for details)*/
+678        
+679        	%HEFI2019(indata             = popratio_smk,
+680        			  vegfruits          = vf,
+681        			  wholegrfoods       = wg,
+682        			  nonwholegrfoods    = rg,
+683        			  profoodsanimal     = pfab,
+684        			  profoodsplant      = pfpb,
+685        			  otherfoods         = otherfoods,
+686        			  waterhealthybev    = water,
+687        			  unsweetmilk        = milk,
+688        			  unsweetplantbevpro = plantbev,
+689        			  otherbeverages     = otherbevs,
+690        			  mufat              = mufa,
+691        			  pufat              = pufa,
+692        			  satfat             = sfa,
+693        			  freesugars         = freesugars,
+694        			  sodium             = sodium,
+695        			  energy             = energy,
+696        			  outdata            = popratio_smk_scored
+697        		  	);
+# Healthy Eating Food Index-2019 Scoring Algorithm SAS version 2.1
+
+NOTE: There were 2 observations read from the data set WORK.POPRATIO_SMK.
+NOTE: The data set WORK.POPRATIO_SMK_SCORED has 2 observations and 40 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+698        
+699        /* 4) Calculate score differences according to smoking status */
+700        
+701        	
+701      !  proc transpose data=popratio_smk_scored out=popratio_smk_scored_w prefix=smk_ ;
+702        	var hefi2019: ;
+703        	run;
+
+6                                                          The SAS System                      Wednesday, April 13, 2022 12:59:47 PM
+
+NOTE: There were 2 observations read from the data set WORK.POPRATIO_SMK_SCORED.
+NOTE: The data set WORK.POPRATIO_SMK_SCORED_W has 11 observations and 4 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+704        	
+705        	
+705      !  data smk_diff;
+706        		set popratio_smk_scored_w(rename=(smk_1=non_smokers smk_2=smokers));
+707        	Difference = smokers - non_smokers ;
+708        	label _NAME_ = "Variable name" _LABEL_ = "Component name";
+709        	rename _NAME_ = name _LABEL_ = label;
+710        	run;
+
+NOTE: There were 11 observations read from the data set WORK.POPRATIO_SMK_SCORED_W.
+NOTE: The data set WORK.SMK_DIFF has 11 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+711        	
+712        /* 5) show results */
+713        	
+713      !  proc print data=smk_diff label;
+714        	title1 "Mean HEFI-2019 scores estimated using the population ratio method, by smoking status";
+715        	title2 "First 24-h recall, CCHS 2015 - Nutrition (n=20,103)";
+716        	format non_smokers smokers difference 4.1;
+717        	id name label ;
+718        	var non_smokers smokers difference;
+719        	label smokers = "Smokers"
+720        		  non_smokers = "Non-smokers"
+721        		  difference = "Difference"
+722        		  ;
+723        	run;
+
+NOTE: There were 11 observations read from the data set WORK.SMK_DIFF.
+NOTE: The PROCEDURE PRINT printed page 8.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+724        	title1;	
+725        	title1;
+726        	
+727        
+728        	/* note: confidence interval for mean and mean differences can be estimated
+729        		by looping step 2 to 4 through the 500 bootstrap weight replicates,
+730        		and calculating the standard deviation of the resulting sampling distribution
+731        		(i.e., `bootstrap` standard errors). */
+732        	
+733        
+734        PROC PRINTTO;RUN;
+
