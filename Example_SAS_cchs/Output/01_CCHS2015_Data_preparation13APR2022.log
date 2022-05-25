@@ -1,0 +1,1126 @@
+# Session Information: SYSSCP=WIN SYSSCPL=X64_DSRV19 SYSVER=9.4 SYSVLONG=9.04.01M7P080520 (13APR2022)
+83         /* !! PLEASE NOTE THAT THIS EXAMPLE CODE IS PROVIDED `AS IS`, WITHOUT
+84         	WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. THIS CODE INVOLVES THE SOLE
+85         	RESPONSABILITY OF THE AUTHOR AND IS NOT ENDORSED BY STATISTICS CANADA
+86         	OR HEALTH CANADA. !! */
+87         
+88          /*************************************************************************/
+89          /*                                                                       */
+90          /*                     CCHS 2015 - Nutrition (PUMF)                      */
+91          /*                                                                       */
+92          /*   Prepare a data suitable to apply the HEFI-2019 scoring algorithm    */
+93          /*                                                                       */
+94          /*                        Author: Didier Brassard                        */
+95          /*                                                                       */
+96          /*                               Version 1                               */
+97          /*                               12APR2022                               */
+98          /*                                                                       */
+99          /*************************************************************************/
+100        
+101         /*************************************************************************/
+102         /*                                                                       */
+103         /*             General set-up: location of files, libraries              */
+104         /*                                                                       */
+105         /*************************************************************************/
+106        
+107        /* TO DO: indicate location of repository */
+108        	%let path = C:/Users/DIBRA22/Documents/hefi2019/ ;
+109        
+110        /* TO DO: indicate location of cchs files (could be the same as <path>) */
+111        	%let pathCCHS = C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF/;
+112        	
+113        	/* note: data pertaining to the 2015 Canadian Community Health Survey -
+114        		Nutrition (Public Use Microdata Files) are available upon request to
+115        		Statistics Canada online: https://www150.statcan.gc.ca/n1/en/catalogue/82M0024X2018001 */	
+116        
+117        /* AUTOMATIC: library to output files in project folder */
+118        	options dlcreatedir; * option to create folder if not already done;
+119        	libname proj "&path./Example_SAS_cchs/";
+NOTE: Libref PROJ was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\DIBRA22\Documents\hefi2019\\Example_SAS_cchs
+120        	libname fmt "&path./Example_SAS_cchs/Fmtdata/";
+NOTE: Libref FMT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\DIBRA22\Documents\hefi2019\\Example_SAS_cchs\Fmtdata
+121        	libname temp "&path./Example_SAS_cchs/Temp/";
+NOTE: Libref TEMP was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\DIBRA22\Documents\hefi2019\\Example_SAS_cchs\Temp
+121      !                                                * temporary (large) files are saved there;
+122        	
+123         /*************************************************************************/
+124         /*                                                                       */
+125         /*            Import and format HEFI-2019 classification data            */
+2                                                          The SAS System                      Wednesday, April 13, 2022 12:59:12 PM
+
+126         /*                                                                       */
+127         /*************************************************************************/
+128        
+129        	/* note: assuming the file is at the <path> location */
+130        
+131        /* 1) import file using proc import */
+132        	options validvarname=v7;
+133        	
+133      !  PROC IMPORT DATAFILE="&path./Example_SAS_cchs/HEFI2019_foodcat_2022-03.xlsx"
+134        		DBMS=XLSX
+135        		OUT=WORK.hefifoodcat replace;
+136        		GETNAMES=YES;
+137        		sheet="CAT";
+138        	RUN;
+
+NOTE: One or more variables were converted because the data type is not supported by the V9 engine. For more details, run with 
+      options MSGLEVEL=I.
+NOTE: The import data set has 7040 observations and 4 variables.
+NOTE: WORK.HEFIFOODCAT data set was successfully created.
+NOTE: PROCEDURE IMPORT used (Total process time):
+      real time           0.34 seconds
+      cpu time            0.34 seconds
+      
+
+139        	
+140        /* 2) prepare classification to merge with other cchs files */
+141        	
+141      !  data fmt.hefifoodcat(rename=(FoodRecipeCode = FID_CDE FDC_DEN = FDC_DEN_foodcat));
+142        		set hefifoodcat;
+143        	* format the RA_g variable as numerical ;
+144        		if index(RA_g,"NA")>0 then grams_for_1RA = .;
+145        		else grams_for_1RA = input(RA_g,10.);
+146        	* recode hefi2019 foot categories for easier handling ;
+147        		if HEFI2019Cat = "vegfruits" then hefi2019subgrp = 1;
+148        		else if HEFI2019Cat = "wholegrfoods" then hefi2019subgrp = 2;
+149        		else if HEFI2019Cat = "nonwholegrfoods" then hefi2019subgrp = 3;
+150        		else if HEFI2019Cat = "profoodsanimal" then hefi2019subgrp = 4;
+151        		else if HEFI2019Cat = "profoodsplant" then hefi2019subgrp = 5;
+152        		else if HEFI2019Cat = "otherfoods" then hefi2019subgrp = 6;
+153        		else if HEFI2019Cat = "waterhealthybev" then hefi2019subgrp = 7;
+154        		else if HEFI2019Cat = "unsweetmilk" then hefi2019subgrp = 8;
+155        		else if HEFI2019Cat = "unsweetplantbevpro" then hefi2019subgrp = 9;
+156        		else if HEFI2019Cat = "otherbeverages" then hefi2019subgrp = 10;
+157        		else  hefi2019subgrp = 99 ;
+158        	* further classify one food with missing value for RA but can be considered in beverages nonetheless;
+159        		if FoodRecipeCode = 5628 then hefi2019subgrp = 10 ;
+160        	keep FoodRecipeCode FDC_DEN grams_for_1RA  hefi2019subgrp;
+161        	run;
+
+NOTE: There were 7040 observations read from the data set WORK.HEFIFOODCAT.
+NOTE: The data set FMT.HEFIFOODCAT has 7040 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+162        	
+163        	
+3                                                          The SAS System                      Wednesday, April 13, 2022 12:59:13 PM
+
+163      !  proc sort data=fmt.hefifoodcat;
+164        		by FID_CDE;
+165        	run;
+
+NOTE: There were 7040 observations read from the data set FMT.HEFIFOODCAT.
+NOTE: The data set FMT.HEFIFOODCAT has 7040 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+166        	
+167        	/* make labels for hefi2019subgrp */
+168        		
+168      !   proc format;
+169        			
+169      !    value hefi2019subgrpfmt
+170        			1='1-Vegetables and fruits'
+171        			2='2-Whole-grain foods'
+172        			3='3-Non-whole grain foods'
+173        			4='4-Protein foods, animal-based'
+174        			5='5-Protein foods, plant-based'
+175        			6='6-Other foods'
+176        			7='7-Water and other healthy beverages'
+177        			8='8-Milk, unsweetened'
+178        			9='9-Plant-based beverages with proteins, unsweetened'
+179        			10='10-Other beverages'
+180        			99 = '99-Not considered (e.g., herbs, spices, fats, oils)'
+181        			;
+NOTE: Format HEFI2019SUBGRPFMT is already on the library WORK.FORMATS.
+NOTE: Format HEFI2019SUBGRPFMT has been output.
+182        		run;
+
+NOTE: PROCEDURE FORMAT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+183        	
+184        	/* Overview of all classified foods */
+185        	
+185      !  proc freq data=fmt.hefifoodcat;
+186        	title1 "Distribution of HEFI-2019 food categories among selected CNF items";
+187        	format hefi2019subgrp hefi2019subgrpfmt.;
+188        	table hefi2019subgrp;
+189        	run;
+
+NOTE: There were 7040 observations read from the data set FMT.HEFIFOODCAT.
+NOTE: The PROCEDURE FREQ printed page 26.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.04 seconds
+      
+
+190        	title1;
+191        
+192         /*************************************************************************/
+193         /*                                                                       */
+4                                                          The SAS System                      Wednesday, April 13, 2022 12:59:13 PM
+
+194         /*                  Import and format free sugars data                   */
+195         /*                                                                       */
+196         /*************************************************************************/
+197        
+198        	/* note: data on free sugars is available at
+199        		https://www.mdpi.com/article/10.3390/nu13051471/s1 (Rana et al. Nutrients 2021) */
+200        
+201        /* 1) import file using proc import */	
+202        	options validvarname=v7;
+203        	
+203      !  PROC IMPORT DATAFILE="&path./Example_SAS_cchs/nutrients-1173784-supplementary.xlsx"
+204        		DBMS=XLSX
+205        		OUT=WORK.freesugars replace;
+206        		GETNAMES=YES;
+207        	RUN;
+
+NOTE:    Variable Name Change.  Reported in CCHS-Nutrition 2015 -> Reported_in_CCHS_Nutrition_2015 
+NOTE:    Variable Name Change.  Name English -> Name_English                    
+NOTE:    Variable Name Change.  Name French -> Name_French                     
+NOTE:    Variable Name Change.  Estimate free sugar amount (g/10 -> Estimate_free_sugar_amount__g_10
+NOTE: One or more variables were converted because the data type is not supported by the V9 engine. For more details, run with 
+      options MSGLEVEL=I.
+NOTE: The import data set has 7041 observations and 5 variables.
+NOTE: WORK.FREESUGARS data set was successfully created.
+NOTE: PROCEDURE IMPORT used (Total process time):
+      real time           0.43 seconds
+      cpu time            0.42 seconds
+      
+
+208        	
+209        /* 2) prepare free sugars data to merge with other cchs files */
+210        	
+210      !  data fmt.freesugars(rename=(Name_English=FDC_DEN_freesugars));
+211        	retain FID_CDE freesugars_per_g ;
+212        		set freesugars(where=(not missing(Code)));
+213        	
+214        	* ensure code is numerical;
+215        	FID_CDE = input(compress(Code,,'dk'),10.);
+216        	
+217        	* change to free sugars per 1 (one) gram ;
+218        	freesugars_per_g = Estimate_free_sugar_amount__g_10 /100 ;
+219        	keep FID_CDE freesugars_per_g Name_English ;
+220        	run;
+
+NOTE: Missing values were generated as a result of performing an operation on missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      8 at 218:54   
+NOTE: There were 7040 observations read from the data set WORK.FREESUGARS.
+      WHERE not MISSING(Code);
+NOTE: The data set FMT.FREESUGARS has 7040 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+221        
+222        	
+222      !  proc sort data=fmt.freesugars;
+5                                                          The SAS System                      Wednesday, April 13, 2022 12:59:13 PM
+
+223        		by FID_CDE;
+224        	run;
+
+NOTE: There were 7040 observations read from the data set FMT.FREESUGARS.
+NOTE: The data set FMT.FREESUGARS has 7040 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+225        	
+226         /*************************************************************************/
+227         /*                                                                       */
+228         /*   Import and format total nutrient intakes and sociodemo data [HS]    */
+229         /*                                                                       */
+230         /*************************************************************************/
+231        
+232        /* 1) Import HS_NCI data, save to fmt folder */
+233        	
+233      !  data FMT.HS_NCI (rename=(ADMFW=r24_weekend ADMDD=r24_day ADM_MOI=r24_month R24DCNT=r24_nfoods
+234        							GEO_PRV=province DHH_SEX=sex DHH_AGE=age DHHDDRI=drig EDUG21=education
+235        							FSDDWTG=foodwgt FSDDEKC=energy FSDDSOD=sodium
+236        							FSDDFAS=sfa FSDDFAM=mufa FSDDFAP=pufa
+237        							));
+238        	retain ADM_RNO SUPPID WTS_P ;
+239        	%let datafid = "&pathCCHS./Data_Donnee/HS_NCI.txt";
+240        	%include "&pathCCHS./SAS_SPSS/SAS/HS_NCI_i.sas";
+584        	%include "&pathCCHS./SAS_SPSS/SAS/HS_NCI_lbe.sas";
+927        	
+928        	* recode missing values;
+929        		* education level;
+930        			if EDUG21 = 9 then EDUG21 =.;
+931        	
+932        	* recode smoking;
+933        		if SMK_202 = 3 then smoking=0;
+934        			else if SMK_202 = 2 then smoking=1;
+935        				else if SMK_202 = 1 then smoking=2;
+936        					else smoking=.;
+937        			
+938        			label smoking = "Type of smoker";
+939        	
+940        	* keep only respondents aged 2 years and older (i.e., target population of Canada`s food guide);
+941        		if DHH_AGE lt 2 then delete;
+942        		
+943        	keep /* id */ ADM_RNO WTS_P
+944        		 /* 24hr */ suppid ADMDD ADM_MOI R24DCNT
+945        		 /*characteristics */ GEO_PRV DHH_AGE DHH_SEX DHHDDRI EDUG21 SMOKING ADMFW
+946        		 /* dietary intakes*/ FSDDWTG FSDDEKC FSDDSOD FSDDFAT FSDDFAS FSDDFAM FSDDFAP;
+947        	run;
+
+NOTE: The infile "C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF//Data_Donnee/HS_NCI.txt" is:
+      Filename=C:\Users\DIBRA22\Documents\CCHS_Nutrition_2015_PUMF\\Data_Donnee\HS_NCI.txt,
+      RECFM=V,LRECL=2703,File Size (bytes)=75996975,
+      Last Modified=11Jan2022:12:44:52,
+      Create Time=20Dec2018:15:05:04
+
+NOTE: 28095 records were read from the infile "C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF//Data_Donnee/HS_NCI.txt".
+      The minimum record length was 2703.
+6                                                          The SAS System                      Wednesday, April 13, 2022 12:59:14 PM
+
+      The maximum record length was 2703.
+NOTE: The data set FMT.HS_NCI has 27544 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.32 seconds
+      cpu time            0.32 seconds
+      
+
+948        	
+949        	/* note: additional characteristics needed from the HS file would need to be added here */
+950        	
+951        	
+951      !  proc sort data=FMT.HS_NCI;
+952        		by ADM_RNO SUPPID;
+953        	run;
+
+NOTE: There were 27544 observations read from the data set FMT.HS_NCI.
+NOTE: The data set FMT.HS_NCI has 27544 observations and 20 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+954        
+955        	/* format characteristics in main file */
+956        	
+956      !  PROC FORMAT lib=fmt.hsfmt;
+957        		
+957      !   value SexFMT
+958        			1 = "Male"
+959        			2 = "Female"
+960        		;
+NOTE: Format SEXFMT is already on the library FMT.HSFMT.
+NOTE: Format SEXFMT has been written to FMT.HSFMT.
+961        		
+961      !   value DRIgFMT
+962        			0 = "All Canadians, 2 y and older"
+963        			2 = "2 TO 3 YEARS"
+964        			3 = "4 TO 8 YEARS"
+965        			4 = "MALE, 9 TO 13 YEARS"
+966        			5 = "FEMALE, 9 TO 13 YEARS"
+967        			6 = "MALE, 14 TO 18 YEARS"
+968        			7 = "FEMALE, 14 TO 18 YEARS"
+969        			8 =	"MALE, 19 TO 30 YEARS"
+970        			9 =	"FEMALE, 19 TO 30 YEARS"
+971        			10 = "MALE, 31 TO 50 YEARS"
+972        			11 = "FEMALE, 31 TO 50 YEARS"
+973        			12 = "MALE, 51 TO 70 YEARS"
+974        			13 = "FEMALE, 51 TO 70 YEARS"
+975        			14 = "MALE, 71 OR OLDER"
+976        			15 = "FEMALE, 71 OR OLDER"
+977        		;
+NOTE: Format DRIGFMT is already on the library FMT.HSFMT.
+NOTE: Format DRIGFMT has been written to FMT.HSFMT.
+978        		
+978      !   value EducationFMT
+979        			1 = "No diploma"
+980        			2 = "Highschool"
+981        			3 = "Trade school, some college"
+7                                                          The SAS System                      Wednesday, April 13, 2022 12:59:14 PM
+
+982        			4 = "University"
+983        		;
+NOTE: Format EDUCATIONFMT is already on the library FMT.HSFMT.
+NOTE: Format EDUCATIONFMT has been written to FMT.HSFMT.
+984        		
+984      !   value SmokingFMT
+985        			0 = "Not smoking"
+986        			1 = "Occasionally smoking"
+987        			2 = "Daily smoking"
+988        		;
+NOTE: Format SMOKINGFMT is already on the library FMT.HSFMT.
+NOTE: Format SMOKINGFMT has been written to FMT.HSFMT.
+989        		
+989      !   value R24_dayFMT
+990        			1 = "Sunday"
+991        			2 = "Monday"
+992        			3 = "Tuesday"
+993        			4 = "Wednesday"
+994        			5 = "Thursday"
+995        			6 = "Friday"
+996        			7 = "Saturday"
+997        		;
+NOTE: Format R24_DAYFMT is already on the library FMT.HSFMT.
+NOTE: Format R24_DAYFMT has been written to FMT.HSFMT.
+998        	run;
+
+NOTE: PROCEDURE FORMAT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+999        
+1000       	/* check some freq for adequacy */
+1001       		options fmtsearch=(fmt.hsfmt);
+1002       		
+1002     !   proc surveyfreq data=fmt.HS_NCI(where=(suppid=1));
+1003       		title1 "Some characteristics of CCHS 2015 - Nutrition respondents";
+1004       		format drig drigfmt. sex sexfmt. education educationfmt. smoking smokingfmt. ;
+1005       		table drig sex education smoking ;
+1006       		weight WTS_P;
+1007       		run;
+
+NOTE: The input data set is subset by WHERE, OBS, or FIRSTOBS. This provides a completely separate analysis of the subset. It does 
+      not provide a statistically valid subpopulation or domain analysis, where the total number of units in the subpopulation is 
+      not known with certainty. If you want a domain analysis, you should include the domain variables in the TABLES request.
+NOTE: The PROCEDURE SURVEYFREQ printed pages 27-28.
+NOTE: PROCEDURE SURVEYFREQ used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.06 seconds
+      
+
+1008       		title1;
+1009       
+1010        /*************************************************************************/
+1011        /*                                                                       */
+1012        /*       Import and format food or ingredient level data [FID,FRL]       */
+1013        /*                                                                       */
+1014        /*************************************************************************/
+8                                                          The SAS System                      Wednesday, April 13, 2022 12:59:14 PM
+
+1015       
+1016       /* 1) Import FID + FRL data, save to temp folder since these are large files*/
+1017       	
+1017     !  data temp.fid;
+1018       		%let datafid = "&pathCCHS./Data_Donnee/FID.txt";
+1019       		%include "&pathCCHS./SAS_SPSS/SAS/FID_i.sas";
+1081       		%include "&pathCCHS./SAS_SPSS/SAS/FID_lbe.sas";
+1142       	run;
+
+NOTE: The infile "C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF//Data_Donnee/FID.txt" is:
+      Filename=C:\Users\DIBRA22\Documents\CCHS_Nutrition_2015_PUMF\\Data_Donnee\FID.txt,
+      RECFM=V,LRECL=544,File Size (bytes)=552008184,
+      Last Modified=11Jan2022:12:44:39,
+      Create Time=17Dec2018:11:51:32
+
+NOTE: 1011004 records were read from the infile "C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF//Data_Donnee/FID.txt".
+      The minimum record length was 544.
+      The maximum record length was 544.
+NOTE: The data set TEMP.FID has 1011004 observations and 57 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.51 seconds
+      cpu time            2.53 seconds
+      
+
+1143       	
+1144       	
+1144     !  data temp.frl;
+1145       		%let datafid = "&pathCCHS./Data_Donnee/FRL.txt";
+1146       		%include "&pathCCHS./SAS_SPSS/SAS/FRL_i.sas";
+1208       		%include "&pathCCHS./SAS_SPSS/SAS/FRL_lbe.sas";
+1269       	run;
+
+NOTE: The infile "C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF//Data_Donnee/FRL.txt" is:
+      Filename=C:\Users\DIBRA22\Documents\CCHS_Nutrition_2015_PUMF\\Data_Donnee\FRL.txt,
+      RECFM=V,LRECL=544,File Size (bytes)=77237706,
+      Last Modified=11Jan2022:12:44:32,
+      Create Time=17Dec2018:11:25:52
+
+NOTE: 141461 records were read from the infile "C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF//Data_Donnee/FRL.txt".
+      The minimum record length was 544.
+      The maximum record length was 544.
+NOTE: The data set TEMP.FRL has 141461 observations and 57 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.35 seconds
+      cpu time            0.34 seconds
+      
+
+1270       
+1271       /* 2) Append both data together and save to temp folder as FIDFRL */
+1272       
+1273       	/* append both data */
+1274       		
+1274     !   data temp.fidfrl;
+1275       			set temp.fid temp.frl;
+1276       		run;
+
+NOTE: There were 1011004 observations read from the data set TEMP.FID.
+NOTE: There were 141461 observations read from the data set TEMP.FRL.
+9                                                          The SAS System                      Wednesday, April 13, 2022 12:59:17 PM
+
+NOTE: The data set TEMP.FIDFRL has 1152465 observations and 57 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.59 seconds
+      cpu time            0.45 seconds
+      
+
+1277       		
+1278       	/* sort by subject (adm_rno), recall (suppid) and sequence of foods recall (seqid) */
+1279       		
+1279     !   proc sort;
+1280       			by ADM_RNO SUPPID SEQID;
+1281       		run;
+
+NOTE: There were 1152465 observations read from the data set TEMP.FIDFRL.
+NOTE: The data set TEMP.FIDFRL has 1152465 observations and 57 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.72 seconds
+      cpu time            1.12 seconds
+      
+
+1282       
+1283       /* 3) import CFG data (useful to keep only `true` unique foods) and fdc data */
+1284       
+1285       	/* import cfg-2007 data */
+1286       		
+1286     !   data temp.cfg;
+1287       			%let datafid = "&pathCCHS./Data_Donnee/CFG.txt";
+1288       			%include "&pathCCHS./SAS_SPSS/SAS/CFG_i.sas";
+1300       			%include "&pathCCHS./SAS_SPSS/SAS/CFG_lbe.sas";
+1311       		run;
+
+NOTE: The infile "C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF//Data_Donnee/CFG.txt" is:
+      Filename=C:\Users\DIBRA22\Documents\CCHS_Nutrition_2015_PUMF\\Data_Donnee\CFG.txt,
+      RECFM=V,LRECL=45,File Size (bytes)=33168605,
+      Last Modified=11Jan2022:12:44:49,
+      Create Time=14Dec2018:11:11:08
+
+NOTE: 705715 records were read from the infile "C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF//Data_Donnee/CFG.txt".
+      The minimum record length was 45.
+      The maximum record length was 45.
+NOTE: The data set TEMP.CFG has 705715 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.23 seconds
+      cpu time            0.23 seconds
+      
+
+1312       
+1313       	/* sort by subject (adm_rno), recall (suppid) and sequence of foods recall (seqid) */
+1314       		
+1314     !   proc sort;
+1315       			by ADM_RNO SUPPID SEQID;
+1316       		run;
+
+NOTE: There were 705715 observations read from the data set TEMP.CFG.
+NOTE: The data set TEMP.CFG has 705715 observations and 7 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.10 seconds
+      cpu time            0.20 seconds
+10                                                         The SAS System                      Wednesday, April 13, 2022 12:59:18 PM
+
+      
+
+1317       
+1318       /* 4) merge FIDFRL with CFG */
+1319       
+1320       	/* note: fidfrl_cfg has 705,715 rows */
+1321       	
+1322       	
+1322     !  data temp.fidfrl_cfg(drop=i);
+1323       	merge temp.fidfrl (in=a) temp.cfg(in=b);
+1324       		by ADM_RNO SUPPID SEQID;
+1325       	* recode missing values for nutrients;
+1326       	array nutrients(*) FID_WTG FID_EKC FID_CAR FID_FI FID_SUG FID_FAT FID_FAS FID_FAM FID_FAP FID_FAL FID_FAN FID_CHO
+1326     ! FID_PRO FID_ALC FID_RAE FID_DMG FID_C FID_THI FID_RIB FID_NIA FID_B6 FID_B12 FID_FON FID_FOA FID_DFE FID_FOL FID_CAL
+1326     ! FID_PHO FID_MAG FID_IRO FID_ZIN FID_SOD FID_POT FID_CAF FID_MOI FID_DHA FID_DPA FID_EPA FID_ODA ;
+1327       		do i=1 to dim(nutrients);
+1328       			if nutrients(i) gt 99999 then nutrients(i)=.;
+1329       		end;
+1330       	* only keep CFG food rows (exclude recipes which would double-count some foods);		
+1331       	if b then output;
+1332       	run;
+
+NOTE: There were 1152465 observations read from the data set TEMP.FIDFRL.
+NOTE: There were 705715 observations read from the data set TEMP.CFG.
+NOTE: The data set TEMP.FIDFRL_CFG has 705715 observations and 60 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.02 seconds
+      cpu time            1.01 seconds
+      
+
+1333       	
+1334       	
+1334     !  proc sort data=temp.fidfrl_cfg;
+1335       		by FID_CDE;
+1336       	run;
+
+NOTE: There were 705715 observations read from the data set TEMP.FIDFRL_CFG.
+NOTE: The data set TEMP.FIDFRL_CFG has 705715 observations and 60 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.48 seconds
+      cpu time            0.86 seconds
+      
+
+1337       
+1338       /* 5) delete temporary files to save disk space */
+1339       	
+1339     !  proc datasets lib=temp nolist nodetails;
+1340       		delete fid frl fidfrl cfg;
+1341       	run;
+
+NOTE: Deleting TEMP.FID (memtype=DATA).
+NOTE: Deleting TEMP.FRL (memtype=DATA).
+NOTE: Deleting TEMP.FIDFRL (memtype=DATA).
+NOTE: Deleting TEMP.CFG (memtype=DATA).
+1342       
+1343        /*************************************************************************/
+1344        /*                                                                       */
+1345        /*         Merge hefi2019 classification, free sugars and fidfrl         */
+11                                                         The SAS System                      Wednesday, April 13, 2022 12:59:20 PM
+
+1346        /*                                                                       */
+1347        /*************************************************************************/
+1348       
+1349       	
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.50 seconds
+      cpu time            0.09 seconds
+      
+
+1349     !  data fmt.cchs24hr_detailed ;
+1350       		merge temp.fidfrl_cfg(in=cchs keep=FID_CDE ADM_RNO SUPPID FID_WTG)
+1351       			  fmt.freesugars
+1352       			  fmt.hefifoodcat;
+1353       		by FID_CDE;
+1354       	* Calculate the number of reference amounts consumed;
+1355       		if (not missing(FID_WTG)) AND (not missing(grams_for_1RA)) then
+1356       			ra_qty = FID_WTG / grams_for_1RA;
+1357       		else ra_qty =.;
+1358       	
+1359       	* Calculate intake of free sugars ;
+1360       		if (not missing(FID_WTG)) AND (not missing(freesugars_per_g)) then
+1361       			freesugars = FID_WTG * freesugars_per_g ;
+1362       		else freesugars = .;
+1363       		
+1364       	* keep only foods reported in CCHS 2015 - Nutrition;
+1365       	if cchs then output;
+1366       	run;
+
+NOTE: There were 705715 observations read from the data set TEMP.FIDFRL_CFG.
+NOTE: There were 7040 observations read from the data set FMT.FREESUGARS.
+NOTE: There were 7040 observations read from the data set FMT.HEFIFOODCAT.
+NOTE: The data set FMT.CCHS24HR_DETAILED has 705715 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.40 seconds
+      cpu time            0.40 seconds
+      
+
+1367       	
+1368       	/* confirm reported intakes are classified */
+1369       	
+1369     !  proc freq data=fmt.cchs24hr_detailed;
+1370       	title1 "HEFI-2019 categories distribution among reported dietary intakes in CCHS 2015 - Nutrition";
+1371       	footnote1 "Frequencies do not reflect unique respondent";
+1372       	format hefi2019subgrp hefi2019subgrpfmt.;
+1373       	table hefi2019subgrp;
+1374       	run;
+
+NOTE: There were 705715 observations read from the data set FMT.CCHS24HR_DETAILED.
+NOTE: The PROCEDURE FREQ printed page 29.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.17 seconds
+      cpu time            0.15 seconds
+      
+
+1375       	title1;
+1376       	footnote1;
+1377       	
+12                                                         The SAS System                      Wednesday, April 13, 2022 12:59:21 PM
+
+1378        /*************************************************************************/
+1379        /*                                                                       */
+1380        /*           Calculate intake per respondent, recall, category           */
+1381        /*                                                                       */
+1382        /*************************************************************************/
+1383       
+1384       /* 1) Calculate total food intake (RA) per respondent, recall and category */
+1385       	
+1386       	/* 1.1 sort data*/
+1387       	
+1387     !  proc sort data=fmt.cchs24hr_detailed ;
+1388       	by ADM_RNO SUPPID hefi2019subgrp;
+1389       	run;
+
+NOTE: There were 705715 observations read from the data set FMT.CCHS24HR_DETAILED.
+NOTE: The data set FMT.CCHS24HR_DETAILED has 705715 observations and 11 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.51 seconds
+      cpu time            0.89 seconds
+      
+
+1390       	
+1391       	/* 1.2 Sum RA per participant, recall and hefi categories */
+1392       	
+1392     !  proc means data=fmt.cchs24hr_detailed sum noprint ;
+1393       	by ADM_RNO SUPPID hefi2019subgrp;
+1394       	var ra_qty;
+1395       	where hefi2019subgrp not in (. 7 8 9 10 99) ; * exclude rows not considered in foods;
+1396       	output out=food_sum sum=sum_ra_qty ;
+1397       	run;
+
+NOTE: There were 432432 observations read from the data set FMT.CCHS24HR_DETAILED.
+      WHERE hefi2019subgrp not in (., 7, 8, 9, 10, 99);
+NOTE: The data set WORK.FOOD_SUM has 129778 observations and 6 variables.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.38 seconds
+      cpu time            0.39 seconds
+      
+
+1398       	
+1399       	/* 1.3 transpose summed intakes (tall->wide) */
+1400       	
+1400     !  proc transpose data=food_sum out=food_sum_t prefix=hefi_; *define common prefix ;
+1401       	by ADM_RNO SUPPID ;
+1402       	var sum_ra_qty;
+1403       	id hefi2019subgrp;
+1404       	run;
+
+NOTE: There were 129778 observations read from the data set WORK.FOOD_SUM.
+NOTE: The data set WORK.FOOD_SUM_T has 28056 observations and 9 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.18 seconds
+      cpu time            0.17 seconds
+      
+
+1405       
+1406       	/* note: missing data indicates that a given food category was not reported */
+1407       	
+13                                                         The SAS System                      Wednesday, April 13, 2022 12:59:22 PM
+
+1408       	/* 1.4 format the `wide` (i.e. transposed) output */
+1409       	
+1409     !  data food_sum_t(drop=i hefi_1-hefi_6);
+1410       	retain hefi_1 hefi_2 hefi_3 hefi_4 hefi_5 hefi_6 ;
+1411       		set food_sum_t;
+1412       	* change numbering to more explicit names and missing to zero;
+1413       	array hefivarsNo(*) hefi: ;
+1414       	array hefivarsDesc(*) vf wg rg pfab pfpb otherfoods  ;
+1415       	do i=1 to dim(hefivarsDesc);
+1416       		if missing(hefivarsNo(i)) then hefivarsDesc(i) = 0;
+1417       		else  hefivarsDesc(i) = hefivarsNo(i);
+1418       	end;
+1419       	run;
+
+NOTE: There were 28056 observations read from the data set WORK.FOOD_SUM_T.
+NOTE: The data set WORK.FOOD_SUM_T has 28056 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+1420       	
+1421       	/* 1.5 Confirm that final output for foods is consistent with expectations */
+1422       	title1 "Food sum overview";
+1423       	
+1423     !  proc print data=food_sum_t(obs=5) ;run;
+
+NOTE: There were 5 observations read from the data set WORK.FOOD_SUM_T.
+NOTE: The PROCEDURE PRINT printed page 30.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+1424       	
+1425       	
+1425     !  proc freq data=food_sum_t;
+1426       	table SUPPID ;
+1427       	run;
+
+NOTE: There were 28056 observations read from the data set WORK.FOOD_SUM_T.
+NOTE: The PROCEDURE FREQ printed page 31.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+1428       
+1429       	/* note: respondent that reported no foods would not be counted here */
+1430       	
+1431       	
+1431     !  proc means data=food_sum_t n nmiss mean min max stackods;
+1432       	class suppid;
+1433       	var vf wg rg pfab pfpb otherfoods ;
+1434       	run;
+
+NOTE: There were 28056 observations read from the data set WORK.FOOD_SUM_T.
+NOTE: The PROCEDURE MEANS printed page 32.
+14                                                         The SAS System                      Wednesday, April 13, 2022 12:59:22 PM
+
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+
+1435       
+1436       	title1;
+1437       
+1438       /* 2) Calculate total beverage intake (grams) per respondent, recall and category */
+1439       	
+1440       	/* 2.1 sort data*/
+1441       	
+1441     !  proc sort data=fmt.cchs24hr_detailed ;
+1442       	by ADM_RNO SUPPID hefi2019subgrp;
+1443       	run;
+
+NOTE: Input data set is already sorted, no sorting done.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+1444       	
+1445       	/* 2.2 Sum RA per participant, recall and hefi categories */
+1446       	
+1446     !  proc means data=fmt.cchs24hr_detailed sum noprint ;
+1447       	by ADM_RNO SUPPID hefi2019subgrp;
+1448       	var FID_WTG;
+1449       	where hefi2019subgrp in (7 8 9 10) ; * exclude rows not considered in beverages;
+1450       	output out=bev_sum sum=sum_grams ;
+1451       	run;
+
+NOTE: There were 160065 observations read from the data set FMT.CCHS24HR_DETAILED.
+      WHERE hefi2019subgrp in (7, 8, 9, 10);
+NOTE: The data set WORK.BEV_SUM has 65053 observations and 6 variables.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.24 seconds
+      cpu time            0.25 seconds
+      
+
+1452       	
+1453       	/* 2.3 transpose summed intakes (tall->wide) */
+1454       	
+1454     !  proc transpose data=bev_sum out=bev_sum_t prefix=hefi_; *define common prefix ;
+1455       	by ADM_RNO SUPPID ;
+1456       	var sum_grams;
+1457       	id hefi2019subgrp;
+1458       	run;
+
+NOTE: There were 65053 observations read from the data set WORK.BEV_SUM.
+NOTE: The data set WORK.BEV_SUM_T has 28062 observations and 8 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.11 seconds
+      cpu time            0.10 seconds
+      
+
+1459       
+1460       	/* note: missing data indicates that a given food category was not reported */
+15                                                         The SAS System                      Wednesday, April 13, 2022 12:59:22 PM
+
+1461       	
+1462       	/* 2.4 format the `wide` (i.e. transposed) output */
+1463       	
+1463     !  data bev_sum_t(drop=i hefi_7-hefi_10);
+1464       	retain hefi_7 hefi_8 hefi_9 hefi_10 ;
+1465       		set bev_sum_t;
+1466       	* change numbering to more explicit names and missing to zero;
+1467       	array hefivarsNo(*) hefi: ;
+1468       	array hefivarsDesc(*) water milk plantbev otherbevs  ;
+1469       	do i=1 to dim(hefivarsDesc);
+1470       		if missing(hefivarsNo(i)) then hefivarsDesc(i) = 0;
+1471       		else  hefivarsDesc(i) = hefivarsNo(i);
+1472       	end;
+1473       	run;
+
+NOTE: There were 28062 observations read from the data set WORK.BEV_SUM_T.
+NOTE: The data set WORK.BEV_SUM_T has 28062 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+1474       	
+1475       	/* 2.5 Confirm that final output for foods is consistent with expectations */
+1476       	title1 "Beverages sum overview";
+1477       	
+1477     !  proc print data=bev_sum_t(obs=5) ;run;
+
+NOTE: There were 5 observations read from the data set WORK.BEV_SUM_T.
+NOTE: The PROCEDURE PRINT printed page 33.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+1478       	
+1479       	
+1479     !  proc freq data=bev_sum_t;
+1480       	table SUPPID ;
+1481       	run;
+
+NOTE: There were 28062 observations read from the data set WORK.BEV_SUM_T.
+NOTE: The PROCEDURE FREQ printed page 34.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+1482       
+1483       	/* note: respondent that reported no beverages would not be counted here */
+1484       	
+1485       	
+1485     !  proc means data=bev_sum_t n nmiss mean min max stackods;
+1486       	class suppid;
+1487       	var water milk plantbev otherbevs  ;
+1488       	run;
+
+NOTE: There were 28062 observations read from the data set WORK.BEV_SUM_T.
+16                                                         The SAS System                      Wednesday, April 13, 2022 12:59:23 PM
+
+NOTE: The PROCEDURE MEANS printed page 35.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+1489       
+1490       	title1;
+1491       
+1492       /* 3) Calculate total free sugars (grams) per respondent, recall and category */
+1493       
+1494       	/* 3.1 Sum grams per participant, recall */
+1495       	
+1495     !  proc means data=fmt.cchs24hr_detailed sum noprint ;
+1496       	by ADM_RNO SUPPID ;
+1497       	var freesugars;
+1498       	output out=freesug_sum sum=freesugars;
+1499       	run;
+
+NOTE: There were 705715 observations read from the data set FMT.CCHS24HR_DETAILED.
+NOTE: The data set WORK.FREESUG_SUM has 28091 observations and 5 variables.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.22 seconds
+      cpu time            0.21 seconds
+      
+
+1500       
+1501       	/* 3.2 Confirm that final output for foods is consistent with expectations */
+1502       	title1 "Free sugars sum overview";
+1503       	
+1503     !  proc print data=freesug_sum(obs=5) ;run;
+
+NOTE: There were 5 observations read from the data set WORK.FREESUG_SUM.
+NOTE: The PROCEDURE PRINT printed page 36.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+1504       	
+1505       	
+1505     !  proc freq data=freesug_sum;
+1506       	table SUPPID ;
+1507       	run;
+
+NOTE: There were 28091 observations read from the data set WORK.FREESUG_SUM.
+NOTE: The PROCEDURE FREQ printed page 37.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+1508       
+1509       	/* note: respondent that reported no beverages would not be counted here */
+1510       	
+1511       	
+1511     !  proc means data=freesug_sum n nmiss mean min max stackods;
+1512       	class suppid;
+17                                                         The SAS System                      Wednesday, April 13, 2022 12:59:23 PM
+
+1513       	var freesugars  ;
+1514       	run;
+
+NOTE: There were 28091 observations read from the data set WORK.FREESUG_SUM.
+NOTE: The PROCEDURE MEANS printed page 38.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+1515       	
+1516       	title1;
+1517       	
+1518        /*************************************************************************/
+1519        /*                                                                       */
+1520        /*            Merge total nutrient, food and beverage intakes            */
+1521        /*                                                                       */
+1522        /*************************************************************************/
+1523       
+1524       	/* note: goal is to have a single data with 1 row per participant per recall
+1525       		where columns are the dietary constituents of the hefi-2019 */
+1526       
+1527       /* Merge all data into one by subject and recall number */
+1528       	
+1528     !  data fmt.intake_per24hr(drop=i);
+1529       		merge food_sum_t
+1530       			  bev_sum_t
+1531       			  freesug_sum
+1532       			  fmt.hs_nci(in=hs keep=ADM_RNO SUPPID energy sfa mufa pufa sodium);
+1533       		by ADM_RNO SUPPID;
+1534       	
+1535       	* any missing value for a dietary constituent is due to not consuming a given category  ;
+1536       		array all(*) _NUMERIC_ ;
+1537       		do i=1 to dim(all);
+1538       			if missing(all(i)) then all(i) = 0;		
+1539       		end;
+1540       	
+1541       	* flag null reported energy intake ;
+1542       		nonzero_energy=0;
+1543       		if energy>0 then nonzero_energy=1;
+1544       		
+1545       	* add labels to dietary constituents ;
+1546       	label
+1547       		vf   = "Vegetables and fruits, RA/d"
+1548       		wg   = "Whole grain foods, RA/d"
+1549       		rg   = "Refined grain foods, RA/d"
+1550       		pfab = "Protein foods, animal-based, RA/d (excludes bev.)"
+1551       		pfpb = "Protein foods, plant-based, RA/d (excludes bev.)"
+1552       		otherfoods = "Other foods, RA/d"
+1553       		water     = "Water and unsweetened beverages, g/d"
+1554       		milk      = "Unsweetened milk, g/d"
+1555       		plantbev  = "Unsweetened plant-based bev. with protein, g/d"
+1556       		otherbevs = "Other (sweetened) beverages, g/d"
+1557       		freesugars = "Total free sugars, g/d"
+1558       		;
+1559       	
+1560       	* drop temporary variables from proc transpose, proc means, etc;
+1561       	drop _: ;
+18                                                         The SAS System                      Wednesday, April 13, 2022 12:59:23 PM
+
+1562       	
+1563       	* keep only respondent aged 2y and older from the HS file;
+1564       	if hs then output;
+1565       	RUN;
+
+NOTE: There were 28056 observations read from the data set WORK.FOOD_SUM_T.
+NOTE: There were 28062 observations read from the data set WORK.BEV_SUM_T.
+NOTE: There were 28091 observations read from the data set WORK.FREESUG_SUM.
+NOTE: There were 27544 observations read from the data set FMT.HS_NCI.
+NOTE: The data set FMT.INTAKE_PER24HR has 27544 observations and 19 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+1566       
+1567        /*************************************************************************/
+1568        /*                                                                       */
+1569        /*                   Overview of `raw` dietary intakes                   */
+1570        /*                                                                       */
+1571        /*************************************************************************/
+1572       
+1573       /* 1) Define a macro variable for all dietary constituents of the HEFI-2019 */
+1574       	%let hefi2019_vars = vf wg rg pfab pfpb otherfoods water milk plantbev otherbevs sfa mufa pufa freesugars sodium energy;
+1575       
+1576       /* 2) Define format for zeros */
+1577       	
+1577     !  proc format;
+1578       	
+1578     !  value zerofmt
+1579       		0-<0.001 = "Zero"
+1580       		0.001-high = "Non-zero"
+1581       		;
+NOTE: Format ZEROFMT is already on the library WORK.FORMATS.
+NOTE: Format ZEROFMT has been output.
+1582       	run;
+
+NOTE: PROCEDURE FORMAT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+1583       
+1584       /* 3) Descriptive statistics */
+1585       	
+1585     !  proc freq data=fmt.intake_per24hr ;
+1586       	format &hefi2019_vars zerofmt. ;
+1587       	table &hefi2019_vars ;
+1588       	where suppid=1 and nonzero_energy=1; * first 24-h recall only, non-zero energy intake;
+1589       	ods output OneWayFreqs=pZero(where=(CumPercent < 99.9));
+1590       	run;
+
+NOTE: The data set WORK.PZERO has 13 observations and 37 variables.
+NOTE: There were 20103 observations read from the data set FMT.INTAKE_PER24HR.
+      WHERE (suppid=1) and (nonzero_energy=1);
+NOTE: The PROCEDURE FREQ printed pages 39-41.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.36 seconds
+19                                                         The SAS System                      Wednesday, April 13, 2022 12:59:23 PM
+
+      cpu time            0.20 seconds
+      
+
+1591       	
+1592       	
+1592     !  proc sort data=pZero;
+1593       		by descending percent;
+1594       	run;
+
+NOTE: There were 13 observations read from the data set WORK.PZERO.
+NOTE: The data set WORK.PZERO has 13 observations and 37 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+1595       	
+1596       	
+1596     !  proc print data=pZero;
+1597       	title1 "Proportion of zero intake among HEFI-2019 dietary constituents for first 24-h recall, CCHS 2015 - Nutrition
+1597     ! (n=20,103)";
+1598       	id table;
+1599       	var Frequency Percent ;
+1600       	run;
+
+NOTE: There were 13 observations read from the data set WORK.PZERO.
+NOTE: The PROCEDURE PRINT printed page 42.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+1601       	title1;
+1602       
+1603       /* delete temporary files to save disk space */
+1604       	
+1604     !  proc datasets lib=temp nolist nodetails;
+1605       		delete fidfrl_cfg;
+1606       	run;
+
+NOTE: Deleting TEMP.FIDFRL_CFG (memtype=DATA).
+1607       
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+1608       PROC PRINTTO;RUN;
+
