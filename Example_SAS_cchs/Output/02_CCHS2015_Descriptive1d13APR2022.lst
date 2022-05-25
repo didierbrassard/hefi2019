@@ -1,0 +1,378 @@
+                                                                                           Wednesday, April 13, 2022 12:59:46 PM   1
+
+                                                        The MEANS Procedure
+
+ Age/sex groupings -
+ Dietary Reference Intakes
+ (DRIs) - (D)                    N Obs    Variable      Label                                                                  Mean
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+ 2 TO 3 YEARS                      951    vf            Vegetables and fruits, RA/d                                       2.5971083
+                                          wg            Whole grain foods, RA/d                                           0.5753954
+                                          rg            Refined grain foods, RA/d                                         1.5810193
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 1.8124309
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.3373387
+                                          otherfoods    Other foods, RA/d                                                 1.8043380
+                                          water         Water and unsweetened beverages, g/d                            421.2194479
+                                          milk          Unsweetened milk, g/d                                           358.8604393
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                180.8972464
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            18.9538208
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      17.1326772
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)       8.5806278
+                                          freesugars    Total free sugars, g/d                                           42.9056632
+                                          sodium        Sodium intake from food sources - mg - (D)                          1748.83
+                                          energy        Energy intake from food sources in kilocalories - (D)               1371.58
+
+ 4 TO 8 YEARS                     1233    vf            Vegetables and fruits, RA/d                                       2.6982091
+                                          wg            Whole grain foods, RA/d                                           0.7528562
+                                          rg            Refined grain foods, RA/d                                         2.2793155
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 1.7712225
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.3767029
+                                          otherfoods    Other foods, RA/d                                                 3.1494331
+                                          water         Water and unsweetened beverages, g/d                            506.6907231
+                                          milk          Unsweetened milk, g/d                                           247.9083415
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                283.0777399
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            20.4976220
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      19.8199678
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      10.7237894
+                                          freesugars    Total free sugars, g/d                                           64.2845054
+                                          sodium        Sodium intake from food sources - mg - (D)                          2288.97
+                                          energy        Energy intake from food sources in kilocalories - (D)               1657.16
+
+ MALE, 9 TO 13 YEARS              1047    vf            Vegetables and fruits, RA/d                                       2.6940139
+                                          wg            Whole grain foods, RA/d                                           0.9769698
+                                          rg            Refined grain foods, RA/d                                         2.8872019
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 2.3240072
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.3254890
+                                          otherfoods    Other foods, RA/d                                                 4.2187246
+                                          water         Water and unsweetened beverages, g/d                            730.9008325
+                                          milk          Unsweetened milk, g/d                                           246.7434682
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                378.9517784
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            25.5569286
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      25.9519788
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      13.8580448
+                                          freesugars    Total free sugars, g/d                                           78.4041933
+                                          sodium        Sodium intake from food sources - mg - (D)                          2932.65
+                                          energy        Energy intake from food sources in kilocalories - (D)               2024.38
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                                                           Wednesday, April 13, 2022 12:59:46 PM   2
+
+                                                        The MEANS Procedure
+
+ Age/sex groupings -
+ Dietary Reference Intakes
+ (DRIs) - (D)                    N Obs    Variable      Label                                                                  Mean
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+ FEMALE, 9 TO 13 YEARS             969    vf            Vegetables and fruits, RA/d                                       2.7142884
+                                          wg            Whole grain foods, RA/d                                           0.7713121
+                                          rg            Refined grain foods, RA/d                                         2.6087195
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 1.9143452
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.2235948
+                                          otherfoods    Other foods, RA/d                                                 3.7279868
+                                          water         Water and unsweetened beverages, g/d                            655.5836086
+                                          milk          Unsweetened milk, g/d                                           224.6561230
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                353.7233513
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            23.4116670
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      22.8723833
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      12.3593731
+                                          freesugars    Total free sugars, g/d                                           72.5909048
+                                          sodium        Sodium intake from food sources - mg - (D)                          2578.04
+                                          energy        Energy intake from food sources in kilocalories - (D)               1843.26
+
+ MALE, 14 TO 18 YEARS              960    vf            Vegetables and fruits, RA/d                                       3.0481148
+                                          wg            Whole grain foods, RA/d                                           1.1167816
+                                          rg            Refined grain foods, RA/d                                         3.0590672
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 3.0947371
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.5867591
+                                          otherfoods    Other foods, RA/d                                                 4.8483041
+                                          water         Water and unsweetened beverages, g/d                                1080.75
+                                          milk          Unsweetened milk, g/d                                           255.2412350
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                598.2096812
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            29.9687510
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      33.1508076
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      18.1042879
+                                          freesugars    Total free sugars, g/d                                           91.4904480
+                                          sodium        Sodium intake from food sources - mg - (D)                          3529.59
+                                          energy        Energy intake from food sources in kilocalories - (D)               2439.67
+
+ FEMALE, 14 TO 18 YEARS           1035    vf            Vegetables and fruits, RA/d                                       2.6533707
+                                          wg            Whole grain foods, RA/d                                           0.7700741
+                                          rg            Refined grain foods, RA/d                                         2.1326850
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 2.0402287
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.4052595
+                                          otherfoods    Other foods, RA/d                                                 3.9226983
+                                          water         Water and unsweetened beverages, g/d                            983.0112694
+                                          milk          Unsweetened milk, g/d                                           170.6202732
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                351.5518451
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            22.9665519
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      23.3217411
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      12.8420383
+                                          freesugars    Total free sugars, g/d                                           67.5239724
+                                          sodium        Sodium intake from food sources - mg - (D)                          2484.73
+                                          energy        Energy intake from food sources in kilocalories - (D)               1758.90
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                                                           Wednesday, April 13, 2022 12:59:46 PM   3
+
+                                                        The MEANS Procedure
+
+ Age/sex groupings -
+ Dietary Reference Intakes
+ (DRIs) - (D)                    N Obs    Variable      Label                                                                  Mean
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+ MALE, 19 TO 30 YEARS              882    vf            Vegetables and fruits, RA/d                                       3.0008311
+                                          wg            Whole grain foods, RA/d                                           0.8880363
+                                          rg            Refined grain foods, RA/d                                         2.7382903
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 3.6010710
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.7446584
+                                          otherfoods    Other foods, RA/d                                                 5.5018280
+                                          water         Water and unsweetened beverages, g/d                                1531.28
+                                          milk          Unsweetened milk, g/d                                           172.8987328
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                732.5842801
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            30.1623600
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      34.7116338
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      18.8277376
+                                          freesugars    Total free sugars, g/d                                           77.2741990
+                                          sodium        Sodium intake from food sources - mg - (D)                          3567.29
+                                          energy        Energy intake from food sources in kilocalories - (D)               2430.35
+
+ FEMALE, 19 TO 30 YEARS           1019    vf            Vegetables and fruits, RA/d                                       3.0363906
+                                          wg            Whole grain foods, RA/d                                           0.6616263
+                                          rg            Refined grain foods, RA/d                                         1.8861064
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 2.1563482
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.3857266
+                                          otherfoods    Other foods, RA/d                                                 4.1113693
+                                          water         Water and unsweetened beverages, g/d                                1250.70
+                                          milk          Unsweetened milk, g/d                                           150.8959907
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                380.1282079
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            20.2837837
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      22.7220737
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      12.5297659
+                                          freesugars    Total free sugars, g/d                                           53.7704803
+                                          sodium        Sodium intake from food sources - mg - (D)                          2414.52
+                                          energy        Energy intake from food sources in kilocalories - (D)               1674.76
+
+ MALE, 31 TO 50 YEARS             2077    vf            Vegetables and fruits, RA/d                                       3.5000647
+                                          wg            Whole grain foods, RA/d                                           0.9154677
+                                          rg            Refined grain foods, RA/d                                         2.5097344
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 2.9611627
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.7557834
+                                          otherfoods    Other foods, RA/d                                                 5.0004953
+                                          water         Water and unsweetened beverages, g/d                                1525.17
+                                          milk          Unsweetened milk, g/d                                           131.4138740
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                609.4748865
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            26.6340865
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      31.6749128
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      17.0665693
+                                          freesugars    Total free sugars, g/d                                           64.2962722
+                                          sodium        Sodium intake from food sources - mg - (D)                          3250.13
+                                          energy        Energy intake from food sources in kilocalories - (D)               2226.14
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                                                           Wednesday, April 13, 2022 12:59:46 PM   4
+
+                                                        The MEANS Procedure
+
+ Age/sex groupings -
+ Dietary Reference Intakes
+ (DRIs) - (D)                    N Obs    Variable      Label                                                                  Mean
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+ FEMALE, 31 TO 50 YEARS           2468    vf            Vegetables and fruits, RA/d                                       3.4501742
+                                          wg            Whole grain foods, RA/d                                           0.7333642
+                                          rg            Refined grain foods, RA/d                                         1.8359116
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 2.1971326
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.6202347
+                                          otherfoods    Other foods, RA/d                                                 3.6332785
+                                          water         Water and unsweetened beverages, g/d                                1417.78
+                                          milk          Unsweetened milk, g/d                                           125.5557691
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                314.8452579
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            20.2455440
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      23.0224374
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      13.5080694
+                                          freesugars    Total free sugars, g/d                                           44.3139658
+                                          sodium        Sodium intake from food sources - mg - (D)                          2429.23
+                                          energy        Energy intake from food sources in kilocalories - (D)               1644.54
+
+ MALE, 51 TO 70 YEARS             2242    vf            Vegetables and fruits, RA/d                                       3.6758454
+                                          wg            Whole grain foods, RA/d                                           0.9324231
+                                          rg            Refined grain foods, RA/d                                         2.0906391
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 2.6563169
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.6318422
+                                          otherfoods    Other foods, RA/d                                                 5.0460946
+                                          water         Water and unsweetened beverages, g/d                                1346.59
+                                          milk          Unsweetened milk, g/d                                           135.0856071
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                511.3940848
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            24.7644531
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      29.4440741
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      17.1007740
+                                          freesugars    Total free sugars, g/d                                           54.0713345
+                                          sodium        Sodium intake from food sources - mg - (D)                          3050.96
+                                          energy        Energy intake from food sources in kilocalories - (D)               2083.58
+
+ FEMALE, 51 TO 70 YEARS           2418    vf            Vegetables and fruits, RA/d                                       3.5532210
+                                          wg            Whole grain foods, RA/d                                           0.7695322
+                                          rg            Refined grain foods, RA/d                                         1.4929887
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 1.9727308
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.5279110
+                                          otherfoods    Other foods, RA/d                                                 3.5986150
+                                          water         Water and unsweetened beverages, g/d                                1424.82
+                                          milk          Unsweetened milk, g/d                                           115.0703706
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                302.9795759
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            18.8078286
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      21.1848627
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      12.4002456
+                                          freesugars    Total free sugars, g/d                                           43.8185741
+                                          sodium        Sodium intake from food sources - mg - (D)                          2194.79
+                                          energy        Energy intake from food sources in kilocalories - (D)               1578.95
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                                                           Wednesday, April 13, 2022 12:59:46 PM   5
+
+                                                        The MEANS Procedure
+
+ Age/sex groupings -
+ Dietary Reference Intakes
+ (DRIs) - (D)                    N Obs    Variable      Label                                                                  Mean
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+ MALE, 71 OR OLDER                1246    vf            Vegetables and fruits, RA/d                                       3.5288787
+                                          wg            Whole grain foods, RA/d                                           0.8268055
+                                          rg            Refined grain foods, RA/d                                         1.9503356
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 1.9157438
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.4115215
+                                          otherfoods    Other foods, RA/d                                                 4.1039699
+                                          water         Water and unsweetened beverages, g/d                                1032.17
+                                          milk          Unsweetened milk, g/d                                           149.2392271
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                    0.1248425
+                                          otherbevs     Other (sweetened) beverages, g/d                                371.0753457
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            22.0536809
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      24.5020383
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      13.5564788
+                                          freesugars    Total free sugars, g/d                                           50.5633429
+                                          sodium        Sodium intake from food sources - mg - (D)                          2646.81
+                                          energy        Energy intake from food sources in kilocalories - (D)               1795.54
+
+ FEMALE, 71 OR OLDER              1556    vf            Vegetables and fruits, RA/d                                       3.0419083
+                                          wg            Whole grain foods, RA/d                                           0.7988601
+                                          rg            Refined grain foods, RA/d                                         1.5036892
+                                          pfab          Protein foods, animal-based, RA/d (excludes bev.)                 1.6885530
+                                          pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.3433406
+                                          otherfoods    Other foods, RA/d                                                 3.0139009
+                                          water         Water and unsweetened beverages, g/d                                1105.73
+                                          milk          Unsweetened milk, g/d                                           123.7558768
+                                          plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                          otherbevs     Other (sweetened) beverages, g/d                                238.9700896
+                                          sfa           Total saturated fatty acid intake from food - g - (D)            17.4912243
+                                          mufa          Total monounsaturated fatty acid intake from food - g - (D)      18.2958855
+                                          pufa          Total polyunsaturated fatty acid intake from food - g - (D)      10.8908078
+                                          freesugars    Total free sugars, g/d                                           41.7011467
+                                          sodium        Sodium intake from food sources - mg - (D)                          2098.69
+                                          energy        Energy intake from food sources in kilocalories - (D)               1416.10
+ ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                             HEFI-2019 scores estimated using the population ratio method, by DRI group                            6
+                                        first 24-h recall, CCHS 2015 - Nutrition (n=20,103)    Wednesday, April 13, 2022 12:59:46 PM
+
+ 
+                                              HEFI2019C1_    HEFI2019C2_    HEFI2019C3_    HEFI2019C4_    HEFI2019C5_    HEFI2019C6_
+drig                            numsubject        VF           WHOLEGR        GRRATIO       PROFOODS       PLANTPRO       BEVERAGES
+
+All Canadians, 2 y and older       20103            9.5            1.2            1.4            5.0            1.6            7.7  
+2 TO 3 YEARS                         951           10.3            1.1            1.3            5.0            1.0            8.1  
+4 TO 8 YEARS                        1233            9.0            1.3            1.2            5.0            1.2            7.3  
+MALE, 9 TO 13 YEARS                 1047            7.5            1.4            1.3            5.0            0.9            7.2  
+FEMALE, 9 TO 13 YEARS                969            8.5            1.2            1.1            4.7            0.7            7.1  
+MALE, 14 TO 18 YEARS                 960            7.3            1.3            1.3            5.0            1.3            6.9  
+FEMALE, 14 TO 18 YEARS              1035            8.4            1.2            1.3            4.9            1.3            7.7  
+MALE, 19 TO 30 YEARS                 882            7.0            1.0            1.2            5.0            1.5            7.0  
+FEMALE, 19 TO 30 YEARS              1019            9.5            1.0            1.3            4.9            1.2            7.9  
+MALE, 31 TO 50 YEARS                2077            8.7            1.1            1.3            5.0            1.8            7.3  
+FEMALE, 31 TO 50 YEARS              2468           10.7            1.1            1.4            5.0            1.9            8.3  
+MALE, 51 TO 70 YEARS                2242            9.5            1.2            1.5            4.9            1.7            7.4  
+FEMALE, 51 TO 70 YEARS              2418           11.5            1.2            1.7            4.8            1.8            8.4  
+MALE, 71 OR OLDER                   1246           10.6            1.2            1.5            4.4            1.4            7.6  
+FEMALE, 71 OR OLDER                 1556           11.2            1.5            1.7            4.6            1.4            8.4  
+
+                                                                                                           HEFI2019_
+                                              HEFI2019C7_    HEFI2019C8_    HEFI2019C9_    HEFI2019C10_     TOTAL_
+drig                            numsubject     FATTYACID        SFAT        FREESUGARS        SODIUM         SCORE
+
+All Canadians, 2 y and older       20103            2.2            4.0            7.9             5.0          45.5 
+2 TO 3 YEARS                         951            0.9            2.6            7.5             6.6          44.3 
+4 TO 8 YEARS                        1233            1.3            3.9            4.5             5.6          40.3 
+MALE, 9 TO 13 YEARS                 1047            1.5            3.6            4.5             5.0          37.9 
+FEMALE, 9 TO 13 YEARS                969            1.3            3.6            4.2             5.5          38.0 
+MALE, 14 TO 18 YEARS                 960            2.0            3.9            5.0             5.0          39.1 
+FEMALE, 14 TO 18 YEARS              1035            1.6            3.2            4.6             5.3          39.7 
+MALE, 19 TO 30 YEARS                 882            2.3            3.8            7.3             4.8          40.9 
+FEMALE, 19 TO 30 YEARS              1019            2.1            4.1            7.2             5.1          44.2 
+MALE, 31 TO 50 YEARS                2077            2.4            4.2            8.4             4.9          45.3 
+FEMALE, 31 TO 50 YEARS              2468            2.3            3.9            9.2             4.8          48.6 
+MALE, 51 TO 70 YEARS                2242            2.6            4.3            9.6             4.9          47.6 
+FEMALE, 51 TO 70 YEARS              2418            2.3            4.3            8.9             5.5          50.4 
+MALE, 71 OR OLDER                   1246            2.1            3.9            8.7             4.8          46.3 
+FEMALE, 71 OR OLDER                 1556            1.9            3.9            8.2             4.7          47.5 
+                                                                                           Wednesday, April 13, 2022 12:59:47 PM   7
+
+                                                        The MEANS Procedure
+
+              Type of
+               smoker    N Obs    Variable      Label                                                                  Mean
+         ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                    0    11183    vf            Vegetables and fruits, RA/d                                       3.5446390
+                                  wg            Whole grain foods, RA/d                                           0.8727367
+                                  rg            Refined grain foods, RA/d                                         1.9749127
+                                  pfab          Protein foods, animal-based, RA/d (excludes bev.)                 2.4132861
+                                  pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.6245210
+                                  otherfoods    Other foods, RA/d                                                 4.0736998
+                                  water         Water and unsweetened beverages, g/d                                1362.89
+                                  milk          Unsweetened milk, g/d                                           136.1682723
+                                  plantbev      Unsweetened plant-based bev. with protein, g/d                    0.0081263
+                                  otherbevs     Other (sweetened) beverages, g/d                                398.2360455
+                                  sfa           Total saturated fatty acid intake from food - g - (D)            22.2829936
+                                  mufa          Total monounsaturated fatty acid intake from food - g - (D)      25.7846037
+                                  pufa          Total polyunsaturated fatty acid intake from food - g - (D)      14.6572967
+                                  freesugars    Total free sugars, g/d                                           51.0478095
+                                  sodium        Sodium intake from food sources - mg - (D)                          2687.77
+                                  energy        Energy intake from food sources in kilocalories - (D)               1855.01
+
+                    1     2696    vf            Vegetables and fruits, RA/d                                       2.8505125
+                                  wg            Whole grain foods, RA/d                                           0.6039246
+                                  rg            Refined grain foods, RA/d                                         2.1904332
+                                  pfab          Protein foods, animal-based, RA/d (excludes bev.)                 2.6146325
+                                  pfpb          Protein foods, plant-based, RA/d (excludes bev.)                  0.4651141
+                                  otherfoods    Other foods, RA/d                                                 5.3222356
+                                  water         Water and unsweetened beverages, g/d                                1456.96
+                                  milk          Unsweetened milk, g/d                                           123.4652260
+                                  plantbev      Unsweetened plant-based bev. with protein, g/d                            0
+                                  otherbevs     Other (sweetened) beverages, g/d                                628.3345104
+                                  sfa           Total saturated fatty acid intake from food - g - (D)            24.7560047
+                                  mufa          Total monounsaturated fatty acid intake from food - g - (D)      27.8366788
+                                  pufa          Total polyunsaturated fatty acid intake from food - g - (D)      15.4209758
+                                  freesugars    Total free sugars, g/d                                           63.9767225
+                                  sodium        Sodium intake from food sources - mg - (D)                          2942.21
+                                  energy        Energy intake from food sources in kilocalories - (D)               1986.58
+         ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                        Mean HEFI-2019 scores estimated using the population ratio method, by smoking status                       8
+                                        First 24-h recall, CCHS 2015 - Nutrition (n=20,103)    Wednesday, April 13, 2022 12:59:47 PM
+
+                                                                                    Non-
+                 Variable name            Component name                           smokers    Smokers    Difference
+
+                 HEFI2019C1_VF            HEFI2019 C1 Vegetables and fruits         10.1        7.8         -2.3   
+                 HEFI2019C2_WHOLEGR       HEFI2019 C2 Whole-grain foods              1.2        0.8         -0.4   
+                 HEFI2019C3_GRRATIO       HEFI2019 C3 Grain foods ratio              1.5        1.1         -0.5   
+                 HEFI2019C4_PROFOODS      HEFI2019 C4 Protein foods                  5.0        4.9         -0.1   
+                 HEFI2019C5_PLANTPRO      HEFI2019 C5 Plant-based protein foods      1.8        1.3         -0.4   
+                 HEFI2019C6_BEVERAGES     HEFI2019 C6 Beverages                      7.9        7.2         -0.7   
+                 HEFI2019C7_FATTYACID     HEFI2019 C7 Fatty acids ratio              2.4        2.2         -0.2   
+                 HEFI2019C8_SFAT          HEFI2019 C8 Saturated fats                 4.2        3.8         -0.4   
+                 HEFI2019C9_FREESUGARS    HEFI2019 C9 Free sugars                    9.0        7.1         -1.9   
+                 HEFI2019C10_SODIUM       HEFI2019 C10 Sodium                        5.0        4.7         -0.3   
+                 HEFI2019_TOTAL_SCORE     Total Healthy Eating Food Index (/80)     48.1       40.9         -7.2   
