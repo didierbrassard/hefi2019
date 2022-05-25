@@ -1,0 +1,439 @@
+                                 Distribution of HEFI-2019 food categories among selected CNF items                               26
+                                                                                               Wednesday, April 13, 2022 12:59:13 PM
+
+                                                         The FREQ Procedure
+
+                                                                                              Cumulative    Cumulative
+                                                   hefi2019subgrp    Frequency     Percent     Frequency      Percent
+              ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+              1-Vegetables and fruits                                    1114       15.82          1114        15.82  
+              2-Whole-grain foods                                         361        5.13          1475        20.95  
+              3-Non-whole grain foods                                     593        8.42          2068        29.38  
+              4-Protein foods, animal-based                              1861       26.43          3929        55.81  
+              5-Protein foods, plant-based                                417        5.92          4346        61.73  
+              6-Other foods                                              1653       23.48          5999        85.21  
+              7-Water and other healthy beverages                          46        0.65          6045        85.87  
+              8-Milk, unsweetened                                          37        0.53          6082        86.39  
+              9-Plant-based beverages with proteins, unsweetened            2        0.03          6084        86.42  
+              10-Other beverages                                          373        5.30          6457        91.72  
+              99-Not considered (e.g., herbs, spices, fats, oils)         583        8.28          7040       100.00  
+                                     Some characteristics of CCHS 2015 - Nutrition respondents                                    27
+                                                                                               Wednesday, April 13, 2022 12:59:14 PM
+
+                                                      The SURVEYFREQ Procedure
+
+                                                            Data Summary
+
+                                                Number of Observations         20115
+                                                Sum of Weights              34171317
+
+
+                                     Age/sex groupings - Dietary Reference Intakes (DRIs) - (D)
+ 
+                                                                  Weighted    Std Err of                Std Err of
+                  drig                             Frequency     Frequency      Wgt Freq     Percent       Percent
+                  ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                  2 TO 3 YEARS                           952        807679         55044      2.3636        0.1621
+                  4 TO 8 YEARS                          1233       1902899         90531      5.5687        0.2663
+                  MALE, 9 TO 13 YEARS                   1047        930541         46670      2.7232        0.1404
+                  FEMALE, 9 TO 13 YEARS                  969        884165         48937      2.5874        0.1460
+                  MALE, 14 TO 18 YEARS                   960       1002434         55478      2.9336        0.1650
+                  FEMALE, 14 TO 18 YEARS                1035        948073         51987      2.7745        0.1549
+                  MALE, 19 TO 30 YEARS                   882       2436374        188326      7.1299        0.5238
+                  FEMALE, 19 TO 30 YEARS                1019       2215526        157588      6.4836        0.4435
+                  MALE, 31 TO 50 YEARS                  2077       5193052        233930     15.1971        0.6227
+                  FEMALE, 31 TO 50 YEARS                2469       5410389        221541     15.8331        0.5949
+                  MALE, 51 TO 70 YEARS                  2249       4511211        188772     13.2017        0.5210
+                  FEMALE, 51 TO 70 YEARS                2421       4605284        179872     13.4770        0.5011
+                  MALE, 71 OR OLDER                     1246       1469135         68216      4.2993        0.2038
+                  FEMALE, 71 OR OLDER                   1556       1854555         80271      5.4272        0.2394
+
+                  Total                                20115      34171317        461287    100.0000              
+                  ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+
+
+                                                                Sex
+ 
+                                                       Weighted    Std Err of                Std Err of
+                             sex        Frequency     Frequency      Wgt Freq     Percent       Percent
+                             ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                             Male            9561      16859319        359847     49.3376        0.7622
+                             Female         10554      17311998        335138     50.6624        0.7622
+
+                             Total          20115      34171317        461287    100.0000              
+                             ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+
+
+                                        Highest level of education (resp.) from roster - (G)
+ 
+                                                                 Weighted    Std Err of                Std Err of
+                   education                      Frequency     Frequency      Wgt Freq     Percent       Percent
+                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                   No diploma                          8028       9231585        189293     27.1786        0.5754
+                   Highschool                          3966       7533861        240309     22.1804        0.6380
+                   Trade school, some college          4629       9365270        286587     27.5722        0.7169
+                   University                          3381       7835635        281314     23.0688        0.7128
+
+                   Total                              20004      33966351        460136    100.0000              
+                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                      Frequency Missing = 111
+                                     Some characteristics of CCHS 2015 - Nutrition respondents                                    28
+                                                                                               Wednesday, April 13, 2022 12:59:14 PM
+
+                                                      The SURVEYFREQ Procedure
+
+                                                           Type of smoker
+ 
+                                                              Weighted    Std Err of                Std Err of
+                      smoking                  Frequency     Frequency      Wgt Freq     Percent       Percent
+                      ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                      Not smoking                  13809      25136776        414632     82.9289        0.6437
+                      Occasionally smoking           692       1274577        101921      4.2050        0.3308
+                      Daily smoking                 2152       3899891        187245     12.8662        0.5805
+
+                      Total                        16653      30311244        448496    100.0000              
+                      ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                      Frequency Missing = 3462
+                     HEFI-2019 categories distribution among reported dietary intakes in CCHS 2015 - Nutrition                    29
+                                                                                               Wednesday, April 13, 2022 12:59:21 PM
+
+                                                         The FREQ Procedure
+
+                                                                                              Cumulative    Cumulative
+                                                   hefi2019subgrp    Frequency     Percent     Frequency      Percent
+              ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+              1-Vegetables and fruits                                  146866       20.81        146866        20.81  
+              2-Whole-grain foods                                       24971        3.54        171837        24.35  
+              3-Non-whole grain foods                                   63625        9.02        235462        33.37  
+              4-Protein foods, animal-based                             84258       11.94        319720        45.30  
+              5-Protein foods, plant-based                              13848        1.96        333568        47.27  
+              6-Other foods                                             98864       14.01        432432        61.28  
+              7-Water and other healthy beverages                       88721       12.57        521153        73.85  
+              8-Milk, unsweetened                                       35439        5.02        556592        78.87  
+              9-Plant-based beverages with proteins, unsweetened            1        0.00        556593        78.87  
+              10-Other beverages                                        35904        5.09        592497        83.96  
+              99-Not considered (e.g., herbs, spices, fats, oils)      113218       16.04        705715       100.00  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                                            Frequencies do not reflect unique respondent
+                                                         Food sum overview                 Wednesday, April 13, 2022 12:59:22 PM  30
+
+             Obs    ADM_RNO    SUPPID      _NAME_         vf         wg         rg        pfab       pfpb     otherfoods
+
+               1       1          1      sum_ra_qty    0.00000    1.05455    0.90000    1.19584    5.83980      45.0667 
+               2       2          1      sum_ra_qty    2.21385    0.00000    1.23529    4.44972    0.00000      12.3461 
+               3       3          1      sum_ra_qty    0.49412    1.18770    0.00000    3.26613    0.00000       2.3964 
+               4       3          2      sum_ra_qty    3.37878    1.60500    0.00000    0.00000    0.33505       1.8485 
+               5       4          1      sum_ra_qty    2.11254    0.47667    1.45282    1.08307    0.00000       3.2733 
+                                                         Food sum overview                 Wednesday, April 13, 2022 12:59:22 PM  31
+
+                                                         The FREQ Procedure
+
+                                                 24-hour dietary recall identifier
+ 
+                                                                       Cumulative    Cumulative
+                                    SUPPID    Frequency     Percent     Frequency      Percent
+                                    ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                         1       20461       72.93         20461        72.93  
+                                         2        7595       27.07         28056       100.00  
+                                                         Food sum overview                 Wednesday, April 13, 2022 12:59:22 PM  32
+
+                                                        The MEANS Procedure
+
+                    24-hour
+                    dietary
+                     recall                                        N
+                 identifier    N Obs    Variable          N     Miss            Mean         Minimum         Maximum
+               ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                          1    20461    vf            20461        0        3.096756               0       33.060900
+                                        wg            20461        0        0.827438               0       27.293333
+                                        rg            20461        0        2.084557               0       28.000000
+                                        pfab          20461        0        2.271666               0       27.393955
+                                        pfpb          20461        0        0.478453               0       38.486933
+                                        otherfoods    20461        0        4.263954               0      204.158915
+
+                          2     7595    vf             7595        0        2.886704               0       24.089108
+                                        wg             7595        0        0.785214               0       16.374829
+                                        rg             7595        0        1.975060               0       24.421772
+                                        pfab           7595        0        2.107086               0       26.754456
+                                        pfpb           7595        0        0.388779               0       17.800037
+                                        otherfoods     7595        0        3.806164               0      111.542566
+               ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                       Beverages sum overview              Wednesday, April 13, 2022 12:59:23 PM  33
+
+             Obs    ADM_RNO    SUPPID     _NAME_            _LABEL_             water       milk    plantbev    otherbevs
+
+               1       1          1      sum_grams    Food amount in grams    1917.02      0.000        0           0.00 
+               2       2          1      sum_grams    Food amount in grams       0.00      0.000        0        2124.95 
+               3       3          1      sum_grams    Food amount in grams     813.18    121.995        0           0.00 
+               4       3          2      sum_grams    Food amount in grams    2383.89    121.995        0           0.00 
+               5       4          1      sum_grams    Food amount in grams    1872.60     11.447        0         685.00 
+                                                       Beverages sum overview              Wednesday, April 13, 2022 12:59:23 PM  34
+
+                                                         The FREQ Procedure
+
+                                                 24-hour dietary recall identifier
+ 
+                                                                       Cumulative    Cumulative
+                                    SUPPID    Frequency     Percent     Frequency      Percent
+                                    ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                         1       20461       72.91         20461        72.91  
+                                         2        7601       27.09         28062       100.00  
+                                                       Beverages sum overview              Wednesday, April 13, 2022 12:59:23 PM  35
+
+                                                        The MEANS Procedure
+
+                     24-hour
+                     dietary
+                      recall                                       N
+                  identifier    N Obs    Variable         N     Miss            Mean         Minimum         Maximum
+                ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                           1    20461    water        20461        0     1157.322702               0     9570.295968
+                                         milk         20461        0      177.258541               0     3681.669600
+                                         plantbev     20461        0        0.003108               0       63.595881
+                                         otherbevs    20461        0      405.674773               0     9671.516400
+
+                           2     7601    water         7601        0      985.084628               0     9300.146412
+                                         milk          7601        0      184.077992               0     2413.195200
+                                         plantbev      7601        0               0               0               0
+                                         otherbevs     7601        0      340.420403               0     8054.000000
+                ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                      Free sugars sum overview             Wednesday, April 13, 2022 12:59:23 PM  36
+
+                                      Obs    ADM_RNO    SUPPID    _TYPE_    _FREQ_    freesugars
+
+                                        1       1          1         0        17        108.613 
+                                        2       2          1         0        12         70.898 
+                                        3       3          1         0        13         11.252 
+                                        4       3          2         0        14         12.121 
+                                        5       4          1         0        27         30.178 
+                                                      Free sugars sum overview             Wednesday, April 13, 2022 12:59:23 PM  37
+
+                                                         The FREQ Procedure
+
+                                                 24-hour dietary recall identifier
+ 
+                                                                       Cumulative    Cumulative
+                                    SUPPID    Frequency     Percent     Frequency      Percent
+                                    ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                         1       20483       72.92         20483        72.92  
+                                         2        7608       27.08         28091       100.00  
+                                                      Free sugars sum overview             Wednesday, April 13, 2022 12:59:23 PM  38
+
+                                                        The MEANS Procedure
+
+                                                  Analysis Variable : freesugars 
+ 
+                           24-hour
+                           dietary
+                            recall                          N
+                        identifier    N Obs        N     Miss            Mean         Minimum         Maximum
+                      ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                 1    20483    20482        1       59.304062               0      890.650538
+
+                                 2     7608     7608        0       53.841653               0      632.557912
+                      ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                                                                           Wednesday, April 13, 2022 12:59:23 PM  39
+
+                                                         The FREQ Procedure
+
+                                                    Vegetables and fruits, RA/d
+ 
+                                                                        Cumulative    Cumulative
+                                         vf    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero             880        4.38           880         4.38  
+                                   Non-zero       19223       95.62         20103       100.00  
+
+
+                                                      Whole grain foods, RA/d
+ 
+                                                                        Cumulative    Cumulative
+                                         wg    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero            8753       43.54          8753        43.54  
+                                   Non-zero       11350       56.46         20103       100.00  
+
+
+                                                     Refined grain foods, RA/d
+ 
+                                                                        Cumulative    Cumulative
+                                         rg    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero            1895        9.43          1895         9.43  
+                                   Non-zero       18208       90.57         20103       100.00  
+
+
+                                         Protein foods, animal-based, RA/d (excludes bev.)
+ 
+                                                                        Cumulative    Cumulative
+                                       pfab    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero            1034        5.14          1034         5.14  
+                                   Non-zero       19069       94.86         20103       100.00  
+
+
+                                          Protein foods, plant-based, RA/d (excludes bev.)
+ 
+                                                                        Cumulative    Cumulative
+                                       pfpb    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero           13473       67.02         13473        67.02  
+                                   Non-zero        6630       32.98         20103       100.00  
+
+
+                                                         Other foods, RA/d
+ 
+                                                                         Cumulative    Cumulative
+                                  otherfoods    Frequency     Percent     Frequency      Percent
+                                  ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                    Zero            1337        6.65          1337         6.65  
+                                    Non-zero       18766       93.35         20103       100.00  
+                                                                                           Wednesday, April 13, 2022 12:59:23 PM  40
+
+                                                         The FREQ Procedure
+
+                                                Water and unsweetened beverages, g/d
+ 
+                                                                        Cumulative    Cumulative
+                                      water    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero             811        4.03           811         4.03  
+                                   Non-zero       19292       95.97         20103       100.00  
+
+
+                                                       Unsweetened milk, g/d
+ 
+                                                                        Cumulative    Cumulative
+                                       milk    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero            6797       33.81          6797        33.81  
+                                   Non-zero       13306       66.19         20103       100.00  
+
+
+                                           Unsweetened plant-based bev. with protein, g/d
+ 
+                                                                        Cumulative    Cumulative
+                                   plantbev    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero           20102      100.00         20102       100.00  
+                                   Non-zero           1        0.00         20103       100.00  
+
+
+                                                  Other (sweetened) beverages, g/d
+ 
+                                                                         Cumulative    Cumulative
+                                   otherbevs    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                    Zero            5880       29.25          5880        29.25  
+                                    Non-zero       14223       70.75         20103       100.00  
+
+
+                                       Total saturated fatty acid intake from food - g - (D)
+ 
+                                                                        Cumulative    Cumulative
+                                        sfa    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero               4        0.02             4         0.02  
+                                   Non-zero       20099       99.98         20103       100.00  
+
+
+                                    Total monounsaturated fatty acid intake from food - g - (D)
+ 
+                                                                        Cumulative    Cumulative
+                                       mufa    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero               5        0.02             5         0.02  
+                                   Non-zero       20098       99.98         20103       100.00  
+                                                                                           Wednesday, April 13, 2022 12:59:23 PM  41
+
+                                                         The FREQ Procedure
+
+                                    Total polyunsaturated fatty acid intake from food - g - (D)
+ 
+                                                                        Cumulative    Cumulative
+                                       pufa    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Zero               5        0.02             5         0.02  
+                                   Non-zero       20098       99.98         20103       100.00  
+
+
+                                                       Total free sugars, g/d
+ 
+                                                                         Cumulative    Cumulative
+                                  freesugars    Frequency     Percent     Frequency      Percent
+                                  ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                    Zero              97        0.48            97         0.48  
+                                    Non-zero       20006       99.52         20103       100.00  
+
+
+                                             Sodium intake from food sources - mg - (D)
+ 
+                                                                        Cumulative    Cumulative
+                                     sodium    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Non-zero       20103      100.00         20103       100.00  
+
+
+                                       Energy intake from food sources in kilocalories - (D)
+ 
+                                                                        Cumulative    Cumulative
+                                     energy    Frequency     Percent     Frequency      Percent
+                                   ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+                                   Non-zero       20103      100.00         20103       100.00  
+       Proportion of zero intake among HEFI-2019 dietary constituents for first 24-h recall, CCHS 2015 - Nutrition (n=20,103)     42
+                                                                                               Wednesday, April 13, 2022 12:59:23 PM
+
+                                              Table               Frequency    Percent
+
+                                              Table pfpb             13473      67.02 
+                                              Table wg                8753      43.54 
+                                              Table milk              6797      33.81 
+                                              Table otherbevs         5880      29.25 
+                                              Table rg                1895       9.43 
+                                              Table otherfoods        1337       6.65 
+                                              Table pfab              1034       5.14 
+                                              Table vf                 880       4.38 
+                                              Table water              811       4.03 
+                                              Table freesugars          97       0.48 
+                                              Table mufa                 5       0.02 
+                                              Table pufa                 5       0.02 
+                                              Table sfa                  4       0.02 
