@@ -8,3 +8,6 @@ SAS/.DS_Store
 *.html
 *.docx
 references.bib
+Example_SAS_cchs/NCI/MCMC/Model/*
+Example_SAS_cchs/NCI/MCMC/Markovchains/*
+Example_SAS_cchs/Temp/*
