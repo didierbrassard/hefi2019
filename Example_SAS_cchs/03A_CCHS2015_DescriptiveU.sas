@@ -35,14 +35,7 @@
 	%let path = C:/Users/DIBRA22/Documents/hefi2019/ ;
 	
 /* TO DO: update file location to save trace plots output from the <multivar_mcmc> macro.
-	See parameter <traceplots_method2_file_pdf> around lines 972 and 1861 */
-	
-/* TO DO: indicate location of cchs files (could be the same as <path>) */
-	%let pathCCHS = C:/Users/DIBRA22/Documents/CCHS_Nutrition_2015_PUMF/;
-	
-	/* note: data pertaining to the 2015 Canadian Community Health Survey -
-		Nutrition (Public Use Microdata Files) are available upon request to
-		Statistics Canada online: https://www150.statcan.gc.ca/n1/en/catalogue/82M0024X2018001 */	
+	See parameter <traceplots_method2_file_pdf> around lines 972 and 1861 */	
 
 /* AUTOMATIC: library to retrieve files in project folder */
 	options dlcreatedir;
