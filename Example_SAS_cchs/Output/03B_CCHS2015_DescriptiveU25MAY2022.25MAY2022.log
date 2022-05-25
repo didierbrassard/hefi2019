@@ -1,0 +1,1131 @@
+# Session Information: SYSSCP=WIN SYSSCPL=X64_DSRV19 SYSVER=9.4 SYSVLONG=9.04.01M7P080520 (25MAY2022)
+83         
+84         /* !! PLEASE NOTE THAT THIS EXAMPLE CODE IS PROVIDED `AS IS`, WITHOUT
+85         	WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. THIS CODE INVOLVES THE SOLE
+86         	RESPONSABILITY OF THE AUTHOR AND IS NOT ENDORSED BY STATISTICS CANADA
+87         	OR HEALTH CANADA. !! */
+88         
+89          /*************************************************************************/
+90          /*                                                                       */
+91          /*                     CCHS 2015 - Nutrition (PUMF)                      */
+92          /*                                                                       */
+93          /*       Obtain usual intakes based on the NCI multivariate method       */
+94          /*                                                                       */
+95          /*                        Author: Didier Brassard                        */
+96          /*                                                                       */
+97          /*                               Version 1                               */
+98          /*                               25MAY2022                               */
+99          /*                                                                       */
+100         /* NOTE: This code assumes that <01_CCHS2015_Data_preparation.sas> and   */
+101         /* <03A_CCHS2015_DescriptiveU> were executed beforehand.                 */
+102         /*                                                                       */
+103         /*************************************************************************/
+104        
+105        /* Objective: dietary intake data measured using the 24-h recall are
+106        	affected by (within-indiviudal) random errors which can cause under-
+107        	or over-estimation of intakes in a given distribution. The National
+108        	Cancer Institute Method can be used to mitigate random errors when
+109        	interested in multivariate distribution. */
+110        
+111         /*************************************************************************/
+112         /*                                                                       */
+113         /*             General set-up: location of files, libraries              */
+114         /*                                                                       */
+115         /*************************************************************************/
+116        
+117        /* TO DO: indicate location of project folder */
+118        	%let path = C:/Users/DIBRA22/Documents/hefi2019/ ;	
+119        
+120        /* AUTOMATIC: Create a temporary folder to save large files */
+121        	options dlcreatedir;
+122        	libname temp "&path./Example_SAS_cchs/Temp/";
+NOTE: Libref TEMP was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\DIBRA22\Documents\hefi2019\\Example_SAS_cchs\Temp
+123        
+124        /* AUTOMATIC: Folder tree for the NCI multivariate method*/
+125        	libname baselib "&path./Example_SAS_cchs/NCI/MCMC/Model/";
+NOTE: Libref BASELIB was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\DIBRA22\Documents\hefi2019\\Example_SAS_cchs\NCI\MCMC\Model
+126        	libname reslib "&path./Example_SAS_cchs/NCI/MCMC/Results/";
+NOTE: Libref RESLIB was successfully assigned as follows: 
+      Engine:        V9 
+2                                                          The SAS System                        Wednesday, May 25, 2022 01:12:01 PM
+
+      Physical Name: C:\Users\DIBRA22\Documents\hefi2019\\Example_SAS_cchs\NCI\MCMC\Results
+127        	
+128        /* AUTOMATIC: load the HEFI-2019 scoring algorithm (update path if macro is stored elsewhere) */
+129        	%include "&path./SAS/hefi2019.scoring.macro.sas" ;
+560        	
+561        /* AUTOMATIC load macro needed to apply the NCI method */
+562        	/* percentiles*/ %include "&path./SAS/NCI/percentiles_survey.macro.v1.1.sas";
+726        
+727        	/* Available at:
+727      ! https://prevention.cancer.gov/research-groups/biometry/measurement-error-impact/software-measurement-error/several-regula
+727      ! rly-consumed-or-0 */
+728        
+729         /*************************************************************************/
+730         /*                                                                       */
+731         /*           Format output of <multivar_distrib> for analysis            */
+732         /*                                                                       */
+733         /*************************************************************************/
+734        
+735        	
+735      !  data temp.mc_t_distrib_out0;
+736        		set baselib.mc_t_distrib_out0 ;
+737        	
+738        	* rename variable names to avoid errors;
+739        		array generic_name(*) mc_t1 - mc_t15;
+740        		array actual_name (*) wg pfpb otherbevs milk vf rg pfab otherfoods water sfa mufa pufa freesugars sodium energy;
+741        		
+742        		/* note: episodic variables are always before daily variables. Otherwise, the variables
+743        			order is the same as written in the <std_cov_boxcox24hr_conday_minamt> macro */
+744        	
+745        		do i=1 to dim(generic_name);
+746        			actual_name(i) = generic_name(i);
+747        		end;
+748        		
+749        		drop i mc_t1 - mc_t15;
+750        	
+751        	* divide the weight variable by the number of pseudo-individuals ;
+752        	
+753        		weight_nw_sumw_div = weight_nw_sumw / 100 ;
+754        	
+755        		/* note: the denominator must be consistent with the value of the
+756        			<set_number_monte_carlo_rand_obs> parameter in the <multivar_distrib> macro */
+757        	
+758        	run;
+
+NOTE: There were 619500 observations read from the data set BASELIB.MC_T_DISTRIB_OUT0.
+NOTE: The data set TEMP.MC_T_DISTRIB_OUT0 has 619500 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.26 seconds
+      cpu time            0.26 seconds
+      
+
+759        
+760        
+761         /*************************************************************************/
+762         /*                                                                       */
+763         /*           Calculate HEFI-2019 scores based on usual intakes           */
+764         /*                                                                       */
+765         /*************************************************************************/
+3                                                          The SAS System                        Wednesday, May 25, 2022 01:12:01 PM
+
+766        
+767        /* scores are calculated using the HEFI-2019 scoring algorithm */
+768        
+769        	%HEFI2019(indata          = temp.mc_t_distrib_out0,
+770        			  vegfruits       = vf,
+771        			  wholegrfoods	  = wg,
+772        			  nonwholegrfoods = rg,
+773        			  profoodsanimal  = pfab,
+774        			  profoodsplant	  = pfpb,
+775        			  otherfoods	  = otherfoods,
+776        			  waterhealthybev = water,
+777        			  unsweetmilk	  = milk,
+778        			  unsweetplantbevpro = 0, /* not reported in the current sample */
+779        			  otherbeverages  = otherbevs,
+780        			  mufat			  = mufa,
+781        			  pufat			  = pufa,
+782        			  satfat		  = sfa,
+783        			  freesugars	  = freesugars,
+784        			  sodium		  = sodium,
+785        			  energy		  = energy,
+786        			  outdata         = temp.mc_t_distrib_out0
+787        		  	);
+# Healthy Eating Food Index-2019 Scoring Algorithm SAS version 2.1
+
+NOTE: There were 619500 observations read from the data set TEMP.MC_T_DISTRIB_OUT0.
+NOTE: The data set TEMP.MC_T_DISTRIB_OUT0 has 619500 observations and 43 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.29 seconds
+      cpu time            0.29 seconds
+      
+
+788        
+789         /*************************************************************************/
+790         /*                                                                       */
+791         /*       Examine correlation between scores based on usual intakes       */
+792         /*                                                                       */
+793         /*************************************************************************/
+794        
+795        	title1 "Pearson correlation among HEFI-2019 component scores in teenagers and children from the CCHS 2015 - Nutrition";
+796        	
+796      !  proc corr data=temp.mc_t_distrib_out0 alpha ;
+797        	var HEFI2019C1_VF HEFI2019C2_WHOLEGR HEFI2019C3_GRRATIO HEFI2019C4_PROFOODS
+798        		HEFI2019C5_PLANTPRO HEFI2019C6_BEVERAGES HEFI2019C7_FATTYACID HEFI2019C8_SFAT
+799        		HEFI2019C9_FREESUGARS HEFI2019C10_SODIUM;
+800        	weight weight_nw_sumw_div;
+801        	run;
+
+NOTE: The PROCEDURE CORR printed pages 1-3.
+NOTE: PROCEDURE CORR used (Total process time):
+      real time           0.66 seconds
+      cpu time            0.56 seconds
+      
+
+802        	title1;
+803        	
+804        	title1 "Pearson correlation between the total HEFI-2019 score and energy intake in teenagers and children from the CCHS
+804      ! 2015 - Nutrition";
+805        	
+4                                                          The SAS System                        Wednesday, May 25, 2022 01:12:02 PM
+
+805      !  proc corr data=temp.mc_t_distrib_out0 ;
+806        	var HEFI2019_TOTAL_SCORE ;
+807        	with energy;
+808        	weight weight_nw_sumw_div;
+809        	run;
+
+NOTE: The PROCEDURE CORR printed page 4.
+NOTE: PROCEDURE CORR used (Total process time):
+      real time           0.10 seconds
+      cpu time            0.09 seconds
+      
+
+810        	title1;	
+811        
+812         /*************************************************************************/
+813         /*                                                                       */
+814         /*      Examine distribution of total score based on usual intakes       */
+815         /*                                                                       */
+816         /*************************************************************************/
+817        
+818        /* Distribution of scores based on usual intakes can be obtained using the
+819        	<Percentiles_Survey> macro */
+820        	
+821        	%percentiles_Survey(data      = temp.mc_t_distrib_out0,
+822        	                    byvar     = ,
+823        	                    var       = HEFI2019_TOTAL_SCORE,
+824        	                    weight    = weight_nw_sumw_div,
+825        	                    cutpoints = 42.9, /* Look at Pr(X<43), the average score in CCHS 2015 - Nutrition */
+826        	                    print     = n,
+827        	                    ntitle    = 1
+828        	                    );
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.79 seconds
+      cpu time            0.79 seconds
+      
+
+
+NOTE: There were 619500 observations read from the data set TEMP.MC_T_DISTRIB_OUT0.
+NOTE: The data set TEMP.MC_T_DISTRIB_OUT0 has 619500 observations and 44 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.20 seconds
+      
+
+
+NOTE: There were 619500 observations read from the data set TEMP.MC_T_DISTRIB_OUT0.
+NOTE: The data set WORK._PROB has 1 observations and 1 variables.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.12 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: There were 1 observations read from the data set WORK._PROB.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 105 variables.
+5                                                          The SAS System                        Wednesday, May 25, 2022 01:12:04 PM
+
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 105 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 105 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+829        
+830        /* Save output data for further analysis */
+831        	
+831      !  data reslib.distrib_total_w0;
+832        	retain replicate drig group;
+833        		set _percentiles;
+834        	length group $ 8 ;
+835        	replicate =0;
+836        	group     = "all";
+837        	drig      = .;
+838        	run;
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set RESLIB.DISTRIB_TOTAL_W0 has 1 observations and 108 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+839        
+840        	
+840      !  data reslib.distrib_total_t0;
+841        	retain replicate drig group;
+842        		set _percentiles2;
+843        	length group $ 8 ;
+844        	replicate =0;
+845        	group     = "all";
+846        	drig      = .;
+847        	* add percentile values;
+848        	if index(Statistic,'Pctile')>0 then
+849        		p = input( compress(Statistic,,'a'), 10.) ;
+850        	else p=.;
+851        	run;
+
+NOTE: There were 105 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set RESLIB.DISTRIB_TOTAL_T0 has 105 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+6                                                          The SAS System                        Wednesday, May 25, 2022 01:12:04 PM
+
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+852        
+853        /* Show some values of the distribution */
+854        
+855        	title1 "Distribution of total HEFI-2019 score based on usual intakes in teenagers and children from the CCHS 2015 -
+855      ! Nutrition";
+856        	
+857        	
+857      !  proc print data=reslib.distrib_total_w0;
+858        	format Mean StdDev Pctile1 Pctile25 Pctile50 Pctile75 Pctile95 Pctile99 NUM4.1;
+859        	id replicate group;
+860        	var Mean StdDev Pctile1 Pctile25 Pctile50 Pctile75 Pctile95 Pctile99 ;
+861        	run;
+
+NOTE: There were 1 observations read from the data set RESLIB.DISTRIB_TOTAL_W0.
+NOTE: The PROCEDURE PRINT printed page 5.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+862        	
+863        	title1;
+864        
+865        /* Plot the distribution */
+866        	title1 "Distribution of total HEFI-2019 score based on usual intakes in teenagers and children from the CCHS 2015 -
+866      ! Nutrition";
+867        	
+868        	
+868      !  proc sgplot data=reslib.distrib_total_t0;
+869        	where not missing(p) ; /* to show use only percentile*/
+870        	histogram value;
+871        	density value ;
+872        	density value / type=kernel;
+873        	xaxis label="Total HEFI-2019 score (/80), pts" ;
+874        	run;
+
+874      !      	
+NOTE: PROCEDURE SGPLOT used (Total process time):
+      real time           7.30 seconds
+      cpu time            0.20 seconds
+      
+NOTE: Listing image output written to C:\Users\DIBRA22\SGPlot.png.
+NOTE: There were 99 observations read from the data set RESLIB.DISTRIB_TOTAL_T0.
+      WHERE not MISSING(p);
+
+875        	
+876        	
+876      !  proc sgplot data=reslib.distrib_total_t0;
+877        	where not missing(p) ; /* to show use only percentile*/
+878        	series x=value y=p ;
+879        	xaxis label="Total HEFI-2019 score (/80), pts" ;
+880        	yaxis label="Percentiles";
+881        	run;
+
+7                                                          The SAS System                        Wednesday, May 25, 2022 01:12:11 PM
+
+NOTE: PROCEDURE SGPLOT used (Total process time):
+      real time           0.38 seconds
+      cpu time            0.14 seconds
+      
+NOTE: Listing image output written to C:\Users\DIBRA22\SGPlot1.png.
+NOTE: There were 99 observations read from the data set RESLIB.DISTRIB_TOTAL_T0.
+      WHERE not MISSING(p);
+
+882        
+883        	title1;
+884        
+885         /*************************************************************************/
+886         /*                                                                       */
+887         /*  Examine distribution of total score based on usual intakes, by DRI   */
+888         /*                                                                       */
+889         /*************************************************************************/
+890        
+891        /* Distribution of scores based on usual intakes can be obtained using the
+892        	<Percentiles_Survey> macro */
+893        	
+894        	%percentiles_Survey(data      = temp.mc_t_distrib_out0,
+895        	                    byvar     = drig,
+896        	                    var       = HEFI2019_TOTAL_SCORE,
+897        	                    weight    = weight_nw_sumw_div,
+898        	                    cutpoints = 42.9, /* Look at Pr(X<43), the average score in CCHS 2015 - Nutrition */
+899        	                    print     = n,
+900        	                    ntitle    = 1
+901        	                    );
+
+NOTE: There were 619500 observations read from the data set TEMP.MC_T_DISTRIB_OUT0.
+NOTE: The data set TEMP.MC_T_DISTRIB_OUT0 has 619500 observations and 44 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.34 seconds
+      cpu time            0.51 seconds
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 6 observations and 105 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.62 seconds
+      cpu time            0.59 seconds
+      
+
+
+NOTE: There were 619500 observations read from the data set TEMP.MC_T_DISTRIB_OUT0.
+NOTE: The data set TEMP.MC_T_DISTRIB_OUT0 has 619500 observations and 44 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.28 seconds
+      cpu time            0.21 seconds
+      
+
+
+NOTE: There were 619500 observations read from the data set TEMP.MC_T_DISTRIB_OUT0.
+NOTE: The data set WORK._PROB has 6 observations and 2 variables.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.15 seconds
+      cpu time            0.14 seconds
+      
+8                                                          The SAS System                        Wednesday, May 25, 2022 01:12:13 PM
+
+
+
+NOTE: There were 6 observations read from the data set WORK._PERCENTILES.
+NOTE: There were 6 observations read from the data set WORK._PROB.
+NOTE: The data set WORK._PERCENTILES has 6 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 6 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 6 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 6 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 630 observations and 3 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+902        
+903        /* Save output data for further analysis */
+904        	
+904      !  data reslib.distrib_total_drig_w0;
+905        	retain replicate drig group;
+906        		set _percentiles;
+907        	length group $ 8 ;
+908        	replicate =0;
+909        	group     = "drig";
+910        	run;
+
+NOTE: There were 6 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set RESLIB.DISTRIB_TOTAL_DRIG_W0 has 6 observations and 108 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+911        
+912        	
+912      !  data reslib.distrib_total_drig_t0;
+913        	retain replicate drig group;
+914        		set _percentiles2;
+915        	length group $ 8 ;
+916        	replicate =0;
+917        	group     = "drig";
+918        	* add percentile values;
+919        	if index(Statistic,'Pctile')>0 then
+920        		p = input( compress(Statistic,,'a'), 10.) ;
+921        	else p=.;
+922        	run;
+
+9                                                          The SAS System                        Wednesday, May 25, 2022 01:12:13 PM
+
+NOTE: There were 630 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set RESLIB.DISTRIB_TOTAL_DRIG_T0 has 630 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+923        
+924        /* Define format for the DRI groups */
+925        	
+925      !  proc format;
+926        	
+926      !  value drigfmt
+927        	2 = "2 TO 3 YEARS"
+928        	3 = "4 TO 8 YEARS"
+929        	4 = "MALE, 9 TO 13 YEARS"
+930        	5 = "FEMALE, 9 TO 13 YEARS"
+931        	6 = "MALE, 14 TO 18 YEARS"
+932        	7 = "FEMALE, 14 TO 18 YEARS";
+NOTE: Format DRIGFMT has been output.
+933        	run;
+
+NOTE: PROCEDURE FORMAT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+934        
+935        /* Show some values of the distribution */
+936        	title1 "Distribution of total HEFI-2019 score based on usual intakes in teenagers and children from the CCHS 2015 -
+936      ! Nutrition";
+937        	
+938        	
+938      !  proc print data=reslib.distrib_total_drig_w0;
+939        	format drig drigfmt. Mean StdDev Pctile1 Pctile25 Pctile50 Pctile75 Pctile95 Pctile99 NUM4.1;
+940        	id replicate drig;
+941        	var Mean StdDev Pctile1 Pctile25 Pctile50 Pctile75 Pctile95 Pctile99 ;
+942        	run;
+
+NOTE: There were 6 observations read from the data set RESLIB.DISTRIB_TOTAL_DRIG_W0.
+NOTE: The PROCEDURE PRINT printed page 6.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+943        	
+944        	title1;
+945        
+946        /* Plot the distributions */
+947        	title1 "Distribution of total HEFI-2019 score based on usual intakes in teenagers and children from the CCHS 2015 -
+947      ! Nutrition";
+948        	title2 "by DRI groups";
+949        	
+949      !  proc sgplot data=reslib.distrib_total_drig_t0;
+950        	format drig drigfmt. ;
+951        	where not missing(p) ; /* to show use only percentile*/
+952        	series x=value y=p / group=drig;
+10                                                         The SAS System                        Wednesday, May 25, 2022 01:12:13 PM
+
+953        	xaxis label="Total HEFI-2019 score (/80), pts" ;
+954        	yaxis label="Percentiles";
+955        	run;
+
+NOTE: PROCEDURE SGPLOT used (Total process time):
+      real time           0.53 seconds
+      cpu time            0.09 seconds
+      
+NOTE: Listing image output written to C:\Users\DIBRA22\SGPlot2.png.
+NOTE: There were 594 observations read from the data set RESLIB.DISTRIB_TOTAL_DRIG_T0.
+      WHERE not MISSING(p);
+
+956        	title1;
+957        	title2;
+958        
+959         /*************************************************************************/
+960         /*                                                                       */
+961         /*    Examine distribution of component scores based on usual intakes    */
+962         /*                                                                       */
+963         /*************************************************************************/
+964        
+965        /* To facilitate analysis, a short macro is used to loop through hefi components */
+966        	%macro loop(list);
+967        		%do ith=1 %to %sysfunc(countw(&list)) ;
+968        		
+969        		%let component = %scan(&list, &ith);
+970        	
+971        		%percentiles_Survey(data      = temp.mc_t_distrib_out0,
+972        		                    byvar     = ,
+973        		                    var       = &component ,
+974        		                    weight    = weight_nw_sumw_div,
+975        		                    cutpoints = ,
+976        		                    print     = n,
+977        		                    ntitle    = 1
+978        		                    );
+979        	
+980        		data c_w&ith.;
+981        			set _percentiles;
+982        		length varname $ 32;
+983        		varname = "&component";
+984        		id = &ith ;
+985        		run;
+986        		
+987        		data c_t&ith.;
+988        			set _percentiles2;
+989        		length varname $ 32;
+990        		varname = "&component";
+991        		id = &ith ;
+992        		run;
+993        		
+994        		%end; /* end of loop */
+995        	
+996        	%mend loop;
+997        
+998        /* Now, call the loop using the names of all HEFI-2019 components */
+999        	%loop(list=HEFI2019C1_VF HEFI2019C2_WHOLEGR HEFI2019C3_GRRATIO HEFI2019C4_PROFOODS
+1000       		HEFI2019C5_PLANTPRO HEFI2019C6_BEVERAGES HEFI2019C7_FATTYACID HEFI2019C8_SFAT
+1001       		HEFI2019C9_FREESUGARS HEFI2019C10_SODIUM) ;
+11                                                         The SAS System                        Wednesday, May 25, 2022 01:12:13 PM
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.79 seconds
+      cpu time            0.79 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W1 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T1 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.80 seconds
+      cpu time            0.79 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+12                                                         The SAS System                        Wednesday, May 25, 2022 01:12:15 PM
+
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W2 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T2 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.79 seconds
+      cpu time            0.79 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W3 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T3 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+13                                                         The SAS System                        Wednesday, May 25, 2022 01:12:16 PM
+
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.50 seconds
+      cpu time            0.50 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W4 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T4 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.83 seconds
+      cpu time            0.82 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+14                                                         The SAS System                        Wednesday, May 25, 2022 01:12:17 PM
+
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W5 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T5 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.80 seconds
+      cpu time            0.79 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W6 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T6 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+15                                                         The SAS System                        Wednesday, May 25, 2022 01:12:18 PM
+
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.73 seconds
+      cpu time            0.73 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W7 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T7 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.58 seconds
+      cpu time            0.57 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+16                                                         The SAS System                        Wednesday, May 25, 2022 01:12:20 PM
+
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W8 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T8 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.55 seconds
+      cpu time            0.54 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W9 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T9 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+17                                                         The SAS System                        Wednesday, May 25, 2022 01:12:20 PM
+
+      cpu time            0.01 seconds
+      
+
+
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.73 seconds
+      cpu time            0.73 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES has 1 observations and 104 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK._PERCENTILES2 has 104 observations and 2 variables.
+NOTE: PROCEDURE TRANSPOSE used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 1 observations read from the data set WORK._PERCENTILES.
+NOTE: The data set WORK.C_W10 has 1 observations and 106 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK._PERCENTILES2.
+NOTE: The data set WORK.C_T10 has 104 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+1002       		
+1003       /* Save output data for further analysis */
+1004       	
+1004     !  data reslib.distrib_sub_w0;
+1005       	retain replicate drig group id varname;
+1006       		set c_w1-c_w10;
+1007       	length group $ 8 ;
+1008       	replicate =0;
+1009       	drig      = .;
+1010       	group     = "all";
+1011       	run;
+
+NOTE: There were 1 observations read from the data set WORK.C_W1.
+NOTE: There were 1 observations read from the data set WORK.C_W2.
+NOTE: There were 1 observations read from the data set WORK.C_W3.
+NOTE: There were 1 observations read from the data set WORK.C_W4.
+18                                                         The SAS System                        Wednesday, May 25, 2022 01:12:21 PM
+
+NOTE: There were 1 observations read from the data set WORK.C_W5.
+NOTE: There were 1 observations read from the data set WORK.C_W6.
+NOTE: There were 1 observations read from the data set WORK.C_W7.
+NOTE: There were 1 observations read from the data set WORK.C_W8.
+NOTE: There were 1 observations read from the data set WORK.C_W9.
+NOTE: There were 1 observations read from the data set WORK.C_W10.
+NOTE: The data set RESLIB.DISTRIB_SUB_W0 has 10 observations and 109 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.00 seconds
+      
+
+1012       
+1013       	
+1013     !  data reslib.distrib_sub_t0;
+1014       	retain replicate drig group id varname;
+1015       		set c_t1-c_t10;
+1016       	length group $ 8 ;
+1017       	replicate =0;
+1018       	drig      = .;
+1019       	group     = "all";
+1020       	* add percentile values;
+1021       	if index(Statistic,'Pctile')>0 then
+1022       		p = input( compress(Statistic,,'a'), 10.) ;
+1023       	else p=.;
+1024       	run;
+
+NOTE: There were 104 observations read from the data set WORK.C_T1.
+NOTE: There were 104 observations read from the data set WORK.C_T2.
+NOTE: There were 104 observations read from the data set WORK.C_T3.
+NOTE: There were 104 observations read from the data set WORK.C_T4.
+NOTE: There were 104 observations read from the data set WORK.C_T5.
+NOTE: There were 104 observations read from the data set WORK.C_T6.
+NOTE: There were 104 observations read from the data set WORK.C_T7.
+NOTE: There were 104 observations read from the data set WORK.C_T8.
+NOTE: There were 104 observations read from the data set WORK.C_T9.
+NOTE: There were 104 observations read from the data set WORK.C_T10.
+NOTE: The data set RESLIB.DISTRIB_SUB_T0 has 1040 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.00 seconds
+      
+
+1025       
+1026       /* clean temporary data */
+1027       	
+1027     !  proc datasets lib=work nolist nodetails;
+1028       	delete c_w1-c_w10 c_t1-c_t10;
+1029       	run;
+
+NOTE: Deleting WORK.C_W1 (memtype=DATA).
+NOTE: Deleting WORK.C_W2 (memtype=DATA).
+NOTE: Deleting WORK.C_W3 (memtype=DATA).
+NOTE: Deleting WORK.C_W4 (memtype=DATA).
+NOTE: Deleting WORK.C_W5 (memtype=DATA).
+NOTE: Deleting WORK.C_W6 (memtype=DATA).
+NOTE: Deleting WORK.C_W7 (memtype=DATA).
+NOTE: Deleting WORK.C_W8 (memtype=DATA).
+19                                                         The SAS System                        Wednesday, May 25, 2022 01:12:21 PM
+
+NOTE: Deleting WORK.C_W9 (memtype=DATA).
+NOTE: Deleting WORK.C_W10 (memtype=DATA).
+NOTE: Deleting WORK.C_T1 (memtype=DATA).
+NOTE: Deleting WORK.C_T2 (memtype=DATA).
+NOTE: Deleting WORK.C_T3 (memtype=DATA).
+NOTE: Deleting WORK.C_T4 (memtype=DATA).
+NOTE: Deleting WORK.C_T5 (memtype=DATA).
+NOTE: Deleting WORK.C_T6 (memtype=DATA).
+NOTE: Deleting WORK.C_T7 (memtype=DATA).
+NOTE: Deleting WORK.C_T8 (memtype=DATA).
+NOTE: Deleting WORK.C_T9 (memtype=DATA).
+NOTE: Deleting WORK.C_T10 (memtype=DATA).
+1030       	
+1031       
+1032       /* Show some values of the distribution */
+1033       	title1 "Distribution of HEFI-2019 component scores based on usual intakes in teenagers and children from the CCHS 2015 -
+1033     !  Nutrition";
+1034       	
+1035       	
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+1035     !  proc print data=reslib.distrib_sub_w0;
+1036       	format Mean StdDev Pctile1 Pctile25 Pctile50 Pctile75 Pctile95 Pctile99 NUM4.1;
+1037       	id replicate id varname;
+1038       	var Mean StdDev Pctile1 Pctile25 Pctile50 Pctile75 Pctile95 Pctile99 ;
+1039       	run;
+
+NOTE: There were 10 observations read from the data set RESLIB.DISTRIB_SUB_W0.
+NOTE: The PROCEDURE PRINT printed page 7.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+1040       	
+1041       	title1;
+1042       	
+1043       /* Many more results can be obtained based on the <mc_t_distrib_out> data! */
+1044       
+1045       	/* note: confidence interval for all data above can be estimated
+1046       		by looping code <03A_CCHS2015_DescriptiveU.sas> through the 500 bootstrap
+1047       		weight replicates, and calculating the standard deviation of the resulting
+1048       		sampling distribution (i.e., `bootstrap` standard errors) for each statistics .*/
+1049       
+1050        /*************************************************************************/
+1051        /*                                                                       */
+1052        /*                      End of results demontration                      */
+1053        /*                                                                       */
+1054        /*************************************************************************/
+1055       
+1056       PROC PRINTTO;RUN;
+
