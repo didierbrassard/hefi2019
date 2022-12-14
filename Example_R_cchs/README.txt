@@ -1,0 +1,1 @@
+This folder contains data (<nutrients-1173784-supplementary.xlsx>) obtained from Rana H, Mallet M-C, Gonzalez A, Verreault M-F, St-Pierre S. Free Sugars Consumption in Canada. Nutrients. 2021; 13(5):1471. https://doi.org/10.3390/nu13051471. Available at https://www.mdpi.com/article/10.3390/nu13051471/s1 
