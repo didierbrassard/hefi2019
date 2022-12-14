@@ -561,4 +561,7 @@ food_sum_t <-
 # clean temporary
   rm(intake_per24hr_nonzero)
 
+# Session info
+  sessionInfo()
+
 # end of code 01
