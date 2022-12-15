@@ -308,13 +308,13 @@ table(is.na(cchs24hr_detailed$hefi2019subgrp_f))
 cchs24hr_detailed |>
   dplyr::group_by(hefi2019subgrp_f) |>
   dplyr::summarise(freq=n()) |>
-  dplyr::mutate(percent=freq/sum(freq)) |>
-  gt() |>
-  gt::fmt_percent(percent,decimals=1) |>
-  gt::fmt_number(freq,decimals = 0) |>
-  gt::tab_header(title=paste0("Repartition of all foods and drinks reported in CCHS 2015 - Nutrition (total=",
-                              scales::number(nrow(cchs24hr_detailed),big.mark=','),')')
-                 )
+  dplyr::mutate(percent=freq/sum(freq),
+                freq=scales::number(freq,big.mark=","),
+                percent=scales::percent(percent,accuracy=0.1)) |>
+  knitr::kable(
+    caption = paste0("Repartition of all foods and drinks reported in CCHS 2015 - Nutrition (total=",
+                     scales::number(nrow(cchs24hr_detailed),big.mark=','),')')
+  )
 
 # Save / clean temporary
 save(cchs24hr_detailed,
