@@ -149,7 +149,7 @@ freesugars <-
   readxl::read_xlsx(file.path(sas_dir,"nutrients-1173784-supplementary.xlsx"),
                     .name_repair = "universal")
 
-# prepare free sugars data to merge with other cchs files
+# 2) prepare free sugars data to merge with other cchs files
 freesugars <-
   freesugars |>
   filter(is.na(Code)==FALSE) |>
@@ -374,7 +374,8 @@ food_sum_t <-
     by = "SUPPID",
     statistic = list(c("vf","wg", "rg", "pfab","pfpb","otherfoods") ~ "{mean} [{min} to {max}]"),
   ) |>
-    modify_caption("**Mean HEFI-2019 food categories and range (CCHS 2015 - Nutrition), by 24-h dietary recall**")
+    modify_caption("Mean HEFI-2019 food categories and range (CCHS 2015 - Nutrition), by 24-h dietary recall") |>
+    as_kable()
 
 
 # 2) Calculate total beverage intake (grams) per respondent, recall and category
@@ -418,7 +419,8 @@ food_sum_t <-
     by = "SUPPID",
     statistic = list(c("water","milk", "otherbevs") ~ "{mean} [{min} to {max}]")
   ) |>
-    modify_caption("**Mean HEFI-2019 beverage categories and range (CCHS 2015 - Nutrition), by 24-h dietary recall**")
+    modify_caption("Mean HEFI-2019 beverage categories and range (CCHS 2015 - Nutrition), by 24-h dietary recall") |>
+    as_kable()
 
 # 3) Calculate total free sugars (grams) per respondent, recall and category
 
@@ -445,7 +447,8 @@ food_sum_t <-
     freesug_sum[,-1],
     by = "SUPPID",
     statistic = "freesugars" ~ "{mean} [{min} to {max}]") |>
-    modify_caption("**Mean free sugars intake and range (CCHS 2015 - Nutrition), by 24-h dietary recall**")
+    modify_caption("Mean free sugars intake and range (CCHS 2015 - Nutrition), by 24-h dietary recall") |>
+    as_kable()
 
   rm(cchs24hr_detailed)
 
@@ -529,7 +532,8 @@ food_sum_t <-
       by="SUPPID",
       statistic = all_of(hefi2019_vars[-10]) ~ "{mean} [{min} to {max}]"
     ) |>
-    modify_caption("**Mean HEFI-2019 dietary constituents and range (CCHS 2015 - Nutrition), by 24-h dietary recall**")
+    modify_caption("Mean HEFI-2019 dietary constituents and range (CCHS 2015 - Nutrition), by 24-h dietary recall")  |>
+    as_kable()
 
   intake_per24hr_nonzero <-
     intake_per24hr |>
@@ -559,7 +563,8 @@ food_sum_t <-
     gtsummary::tbl_summary(
       by="SUPPID"
     ) |>
-    modify_caption("**Proportion of zero for HEFI-2019 dietary constituents (CCHS 2015 - Nutrition), by 24-h dietary recall**")
+    modify_caption("Proportion of zero for HEFI-2019 dietary constituents (CCHS 2015 - Nutrition), by 24-h dietary recall")  |>
+    as_kable()
 
 # clean temporary
   rm(intake_per24hr_nonzero)
