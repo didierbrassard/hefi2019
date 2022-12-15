@@ -341,7 +341,8 @@ food_sum_t <-
   # 1.2) group data
   group_by(ADM_RNO, SUPPID, hefi2019subgrp) |>
   # 1.3) sum RA per participant, recall and hefi categories
-  summarise(sum_ra_qty=sum(ra_qty)) |>
+  summarise(sum_ra_qty=sum(ra_qty,na.rm = TRUE)) |>
+    # note: na.rm=TRUE required to obtain sum when respondents reported foods with missing RAs
   # 1.4) transpose summed intakes (long->wide)
   pivot_wider(
     values_from = sum_ra_qty,
@@ -386,7 +387,8 @@ food_sum_t <-
     # 2.2) group data
     group_by(ADM_RNO, SUPPID, hefi2019subgrp) |>
     # 2.3) sum FID_WTG per participant, recall and hefi categories
-    summarise(sum_grams=sum(FID_WTG)) |>
+    summarise(sum_grams=sum(FID_WTG,na.rm = TRUE)) |>
+      # note: na.rm=TRUE required to obtain sum when respondents reported foods with missing FID_WTG
     # 2.4) transpose summed intakes (long->wide)
     pivot_wider(
       values_from = sum_grams,
@@ -424,8 +426,9 @@ food_sum_t <-
     cchs24hr_detailed |>
     # 3.1) group data
     group_by(ADM_RNO, SUPPID) |>
-    # 3.2) sum FID_WTG per participant, recall and hefi categories
-    summarise(freesugars=sum(freesugars)) |>
+    # 3.2) sum freesugars per participant, recall and hefi categories
+    summarise(freesugars=sum(freesugars,na.rm=TRUE)) |>
+      # note: na.rm=TRUE required to obtain sum when respondents reported foods with missing free sugars value
     # 3.3) format output
     mutate(
       freesugars = ifelse(is.na(freesugars),0,freesugars)
