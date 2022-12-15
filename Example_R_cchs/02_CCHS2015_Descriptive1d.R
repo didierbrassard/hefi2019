@@ -290,3 +290,18 @@ options(scipen = 9999)
       caption = "Mean HEFI-2019 scores estimated using the population ratio method, by smoking status (CCHS 2015 - Nutrition)"
     )
 
+# *********************************************************************** #
+#                                                                         #
+#          Variance estimation for the population ratio method            #
+#                                                                         #
+# *********************************************************************** #
+
+# .... to add
+
+
+
+# Session info
+sessionInfo()
+
+# end of code 02
+
