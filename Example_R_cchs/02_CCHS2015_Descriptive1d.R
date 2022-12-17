@@ -59,22 +59,23 @@ external_drive <- file.path("","Volumes","SANDISK DID")
   temp_dir <- file.path(cd, "Temp")
 
 # Packages
-library(data.table)
-library(parallel)
-library(survey)
-library(haven)
-library(tidyverse)
-library(tidylog)
-library(gtsummary)
-library(gt)
-library(labelled)
+  library(data.table)
+  library(haven)
+  library(tidyverse)
+  library(tidylog)
+  library(gtsummary)
+  library(gt)
+  library(parallel)
+  library(furrr)
+  library(purrr)
+  library(tictoc)
 
 # HEFI-2019 scoring algorithm
   #if not installed: devtools::install_github("didierbrassard/hefi2019")
   library(hefi2019)
 
 # suppress scientific notation
-options(scipen = 9999)
+  options(scipen = 9999)
 
 
 # *********************************************************************** #
@@ -296,12 +297,203 @@ options(scipen = 9999)
 #                                                                         #
 # *********************************************************************** #
 
-# .... to add
+  # note: there are different approaches to estimate variance of population ratio
+  # mean with survey data. Perhaps the simplest approach (albeit not the most efficient)
+  # is to iteratively loop the analysis through all bootstrap replicate weights
+  # (i.e., obtain new mean estimates for each bootstrap weight) and estimate
+  # confidence intervals based on the sampling distribution.
 
+# 1) Load and prepare bootstrap replicate weights
 
+  bsw <-
+    data.table::fread(file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Bootstrap",
+                                "Data_Donnee","b5.txt"),
+                      stringsAsFactors = F, data.table= F, header=F,
+                      col.names = c("ADM_RNO","WTS_P",paste0("BSW",seq(1,500)))) |>
+    # keep only respondents in <intake_and_sociodeom>
+    right_join(intake_and_sociodeom[,"ADM_RNO"]) |>
+    # rename sampling weights
+    rename(BSW0=WTS_P)
+
+# 2) Generate function to calculate mean intakes of hefi-2019 dietary constituents and difference
+
+  mean_n_diff <-
+    function(bsw_number,indata,inbsw,bsw_suffix="BSW"){
+      # indata = input data set
+      # inbsw  = data set with bootstrap replicate weight
+      # bsw_number = number from 0 to 500 where 0 = original estimate and 1, 2, 3 ... 500 = bsw
+
+      # note: 'ADM_RNO', 'smoking' and  'hefi2019_vars' are hardcoded in this function
+
+      # 1) Create weights variable
+      weights <- paste0(bsw_suffix,bsw_number)
+
+      # 2) calculate mean
+      suppressMessages(
+      estimate <-
+        # combine weight value with indata
+        dplyr::left_join(indata,inbsw |> select(ADM_RNO,!!weights)) |>
+        # rename weights for use with weighted.mean
+        dplyr::rename(CURRENT_BSW= !!weights ) |>
+        # remove missing values
+        dplyr::filter(is.na(smoking)==FALSE) |>
+        # group by smoking status
+        dplyr::group_by(smoking) |>
+        # calculate weighted mean
+        dplyr::summarise(
+          across(.cols=all_of(hefi2019_vars),
+                 function(x) weighted.mean(x,w=CURRENT_BSW),
+                 .names ="{col}_MEAN" )
+          # note: suffix <_MEAN> added for labeling population-level values (vs. respondent-level)
+          ) |>
+        # Apply the HEFI-2019 scoring algorithm
+        hefi2019::hefi2019(#indata             = .,
+          vegfruits          = vf_MEAN,
+          wholegrfoods       = wg_MEAN,
+          nonwholegrfoods    = rg_MEAN,
+          profoodsanimal     = pfab_MEAN,
+          profoodsplant      = pfpb_MEAN,
+          otherfoods         = otherfoods_MEAN,
+          waterhealthybev    = water_MEAN,
+          unsweetmilk        = milk_MEAN,
+          unsweetplantbevpro = plantbev_MEAN,
+          otherbeverages     = otherbevs_MEAN ,
+          mufat              = mufa_MEAN ,
+          pufat              = pufa_MEAN ,
+          satfat             = sfa_MEAN ,
+          freesugars         = freesugars_MEAN,
+          sodium             = sodium_MEAN,
+          energy             = energy_MEAN)
+      ) # end of suppress message
+
+      # 3) Calculate difference
+      estimate_diff <-
+        estimate |>
+        dplyr::select(smoking,starts_with("HEFI")) |>
+        tidyr::pivot_longer(
+          cols = starts_with("HEFI"),
+          names_to = "HEFI2019_components"
+        ) |>
+        tidyr::pivot_wider(
+          names_from = "smoking",
+          names_prefix = "SMK_"
+        ) |>
+        dplyr::mutate(
+          DIFF = SMK_1 - SMK_0,
+          # add BSW id
+          replicate = bsw_number
+        )
+      rm(estimate)
+      rm(weights)
+      return(estimate_diff)
+    }
+
+  # 2.1) Run for estimate and difference in original sample
+
+  mean_n_diff(bsw_number = 0,
+              indata = intake_and_sociodeom,
+              inbsw  = bsw)
+
+# 3) Run function over all BSW (<furrr::future_map_dfr> may be faster on some machines)
+
+  # Sequential execution
+  # hefi2019_smk <-
+  #   purrr::map_dfr(seq(0,500), mean_n_diff,
+  #                  indata = intake_and_sociodeom,
+  #                  inbsw  = bsw)
+
+  # 3.1) Parallel execution
+
+  future::plan(multicore,workers=parallel::detectCores()-1)
+  message("Number of parallel workers: ", nbrOfWorkers())
+
+  tictoc::tic()
+  hefi2019_smk <-
+    furrr::future_map_dfr(seq(0,500), mean_n_diff,
+                   indata = intake_and_sociodeom,
+                   inbsw  = bsw)
+  tictoc::toc()
+
+  # 3.2) save for later use
+
+  # note: useful to save output of bootstrap analysis as it can take some time to compete
+  save(hefi2019_smk,
+       file = file.path(temp_dir,"hefi2019_smk_bootstrap.rdata"))
+
+# 4) Calculate bootstrap variance
+
+  # note: different options possible, including normal approximation or percentile.
+  # For simplicity, the normal approximation is shown below.
+
+# 4.1) Separate 'original' sample estimates from 'bootstrap' estimates
+
+  hefi2019_smk0 <- hefi2019_smk |> filter(replicate==0)
+  hefi2019_smkbs <- hefi2019_smk |> filter(replicate>0)
+
+# 4.2) Check bootstrap estimates normality
+
+  hefi2019_smkbs |>
+    # focus on difference for this example
+    ggplot(aes(x=DIFF)) +
+    geom_density(fill="gray",alpha=0.3) +
+    labs(title="Bootstrap estimates distribution of HEFI-2019 score difference (CCHS 2015 - Nutrition)",
+         subtitle = "Should be approximately normal to use normal approximation",
+         y="Density",x="Difference, points") +
+    facet_wrap(~HEFI2019_components,scales="free") +
+    theme_bw() +
+    theme( panel.grid.major.y = element_blank(),
+           legend.title = element_blank(),
+           legend.position = "top")
+
+# 4.3) Calculate standard deviation of the sampling distribution (i.e., bootstrap Standard Error)
+
+  hefi2019_smkbs_se <-
+    hefi2019_smkbs |>
+    group_by(HEFI2019_components) |>
+    summarise(
+      across(c("SMK_0","SMK_1","DIFF"), function(x) sd(x))
+    )
+
+# 4.4) Merge original sample estimates with bootstrap Standard Error, calculate 95CI
+
+  # 4.4.1) Transpose base estimates (wide->long)
+  hefi2019_smk0_long <-
+    hefi2019_smk0 |>
+    select(-replicate) |>
+    pivot_longer(cols=c("SMK_0","SMK_1","DIFF"),
+                 values_to="estimate")
+
+  # 4.4.2) Transpose bootstraps Standard Error (wide->long)
+  hefi2019_smkbs_se_long <-
+    hefi2019_smkbs_se |>
+    pivot_longer(cols=c("SMK_0","SMK_1","DIFF"),
+                 values_to="se")
+
+  # 4.4.3) Merge both data and calculate 95%CI using normal approximation
+  hefi2019_smkf <-
+    full_join(hefi2019_smk0_long,hefi2019_smkbs_se_long) |>
+    mutate(
+      # Calculate 95%CI
+      nboot  = 500,
+      alpha  = 0.05,
+      tvalue = qt(1-(alpha/2),nboot-2),
+      lcl    = estimate - (se * tvalue),
+      ucl    = estimate + (se * tvalue)
+    )
+
+  rm(list=c("hefi2019_smk0","hefi2019_smkbs",
+            "hefi2019_smkbs_se","hefi2019_smk0_long",
+            "hefi2019_smkbs_se_long"))
+
+# 5) Show results in a table
+  hefi2019_smkf |>
+    select(HEFI2019_components,name,estimate,lcl,ucl) |>
+    knitr::kable(
+      digits  = 1,
+      caption = "Mean HEFI-2019 scores in Smokers (SMK_1) vs. Non-Smokers (SMK_0) and difference aged 19y+ (CCHS 2015 - Nutrition)"
+    )
 
 # Session info
 sessionInfo()
 
 # end of code 02
-
