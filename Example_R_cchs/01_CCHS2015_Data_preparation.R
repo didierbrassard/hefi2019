@@ -13,8 +13,8 @@
 #                                                                         #
 #                        Author: Didier Brassard                          #
 #                                                                         #
-#                               Version 1                                 #
-#                               2022-11-07                                #
+#                              Version 1.1                                #
+#                               2023-04-28                                #
 #                                                                         #
 # *********************************************************************** #
 
@@ -39,21 +39,11 @@
     cchs_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Data_Donnee")
     boot_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Bootstrap","Data_Donnee")
 
-# TO DO: define current directory (cd)
-
-  ## For R script execution (full repository):
-  cd <- file.path(".","Example_R_cchs")
-  sas_dir <- file.path(".","Example_SAS_cchs")
-
-  ## For Markdown execution (self-contained):
-  cd <- '.'
-  sas_dir <- cd
-
 # Automatic: create shortcuts for project directory tree
 
   ## Common directory
-  data_dir <- file.path(cd, "Fmtdata")
-  temp_dir <- file.path(cd, "Temp")
+  data_dir <- here::here("Example_R_cchs","Fmtdata")
+  temp_dir <- here::here("Example_R_cchs","Temp")
 
 # Packages
   library(haven)
@@ -76,7 +66,7 @@ options(scipen = 9999)
 
 # 1) Import Excel sheet with hefi2019 classification
 hefifoodcat <-
-  readxl::read_xlsx(file.path(sas_dir,"HEFI2019_foodcat_2022-03.xlsx"),
+  readxl::read_xlsx(here::here("Example_R_cchs","HEFI2019_foodcat_2022-03.xlsx"),
                     sheet="CAT")
 
 # 2) prepare classification to merge with other cchs files
@@ -138,15 +128,12 @@ save(hefifoodcat,
 #                                                                         #
 # *********************************************************************** #
 
-  # note 1: data on free sugars is available at
+  # note: data on free sugars is available at
   # https://www.mdpi.com/article/10.3390/nu13051471/s1 (Rana et al. Nutrients 2021)
-
-  # note 2: note: assuming the file is at the <path> location,
-  # in a folder named <Example_SAS_cchs>
 
 # 1) Import Excel sheet with free sugars data
 freesugars <-
-  readxl::read_xlsx(file.path(sas_dir,"nutrients-1173784-supplementary.xlsx"),
+  readxl::read_xlsx(here::here("Example_R_cchs","nutrients-1173784-supplementary.xlsx"),
                     .name_repair = "universal")
 
 # 2) prepare free sugars data to merge with other cchs files

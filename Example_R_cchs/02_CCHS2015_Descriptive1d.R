@@ -13,8 +13,8 @@
 #                                                                         #
 #                        Author: Didier Brassard                          #
 #                                                                         #
-#                               Version 1                                 #
-#                               2022-12-15                                #
+#                              Version 1.1                                #
+#                               2023-04-28                                #
 #                                                                         #
 # NOTE: This code assumes that <01_CCHS2015_Data_preparation.r            #
 # was executed beforehand.                                                #
@@ -42,21 +42,11 @@ external_drive <- file.path("","Volumes","SANDISK DID")
   cchs_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Data_Donnee")
   boot_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Bootstrap","Data_Donnee")
 
-# TO DO: define current directory (cd)
-
-  ## For R script execution (full repository):
-  cd <- file.path(".","Example_R_cchs")
-  sas_dir <- file.path(".","Example_SAS_cchs")
-
-  ## For Markdown execution (self-contained):
-  cd <- '.'
-  sas_dir <- cd
-
 # Automatic: create shortcuts for project directory tree
 
   ## Common directory
-  data_dir <- file.path(cd, "Fmtdata")
-  temp_dir <- file.path(cd, "Temp")
+  data_dir <- here::here("Example_R_cchs","Fmtdata")
+  temp_dir <- here::here("Example_R_cchs","Temp")
 
 # Packages
   library(data.table)
@@ -139,7 +129,6 @@ external_drive <- file.path("","Volumes","SANDISK DID")
     mutate(drig=0)
 
   # 2.4) Repeat for DRI groups
-
   popratio_scored_drig <-
     intake_and_sociodeom |>
     group_by(drig) |>
@@ -317,13 +306,15 @@ external_drive <- file.path("","Volumes","SANDISK DID")
 
 # 2) Generate function to calculate mean intakes of hefi-2019 dietary constituents and difference
 
+  # note: 'ADM_RNO', 'smoking' and  'hefi2019_vars' are hardcoded in the function below
+
   mean_n_diff <-
     function(bsw_number,indata,inbsw,bsw_suffix="BSW"){
+      # Parameters:
+      # bsw_number = number from 0 to 500 where 0 = original estimate and 1, 2, 3 ... 500 = bsw
       # indata = input data set
       # inbsw  = data set with bootstrap replicate weight
-      # bsw_number = number from 0 to 500 where 0 = original estimate and 1, 2, 3 ... 500 = bsw
-
-      # note: 'ADM_RNO', 'smoking' and  'hefi2019_vars' are hardcoded in this function
+      # bsw_suffix = common suffix to all variables representing sampling and bootstrap weights
 
       # 1) Create weights variable
       weights <- paste0(bsw_suffix,bsw_number)
@@ -332,22 +323,22 @@ external_drive <- file.path("","Volumes","SANDISK DID")
       suppressMessages(
       estimate <-
         # combine weight value with indata
-        dplyr::left_join(indata,inbsw |> select(ADM_RNO,!!weights)) |>
+        dplyr::left_join(indata,inbsw |> select(ADM_RNO,{{weights}})) |>
         # rename weights for use with weighted.mean
-        dplyr::rename(CURRENT_BSW= !!weights ) |>
+        dplyr::rename(CURRENT_BSW= {{weights}} ) |>
         # remove missing values
         dplyr::filter(is.na(smoking)==FALSE) |>
         # group by smoking status
         dplyr::group_by(smoking) |>
         # calculate weighted mean
         dplyr::summarise(
-          across(.cols=all_of(hefi2019_vars),
+          across(.cols = all_of(hefi2019_vars),
                  function(x) weighted.mean(x,w=CURRENT_BSW),
-                 .names ="{col}_MEAN" )
+                 .names = "{col}_MEAN" )
           # note: suffix <_MEAN> added for labeling population-level values (vs. respondent-level)
           ) |>
         # Apply the HEFI-2019 scoring algorithm
-        hefi2019::hefi2019(#indata             = .,
+        hefi2019::hefi2019(#indata  = .,
           vegfruits          = vf_MEAN,
           wholegrfoods       = wg_MEAN,
           nonwholegrfoods    = rg_MEAN,
@@ -383,8 +374,6 @@ external_drive <- file.path("","Volumes","SANDISK DID")
           # add BSW id
           replicate = bsw_number
         )
-      rm(estimate)
-      rm(weights)
       return(estimate_diff)
     }
 

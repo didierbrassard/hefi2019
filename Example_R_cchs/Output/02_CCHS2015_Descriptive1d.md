@@ -2,7 +2,7 @@ Descriptive statistics based on a single 24-h recall: mean HEFI-2019
 scores
 ================
 Didier Brassard
-2022-12-17
+2023-04-28
 
 ``` r
 # *********************************************************************** #
@@ -13,8 +13,8 @@ Didier Brassard
 #                                                                         #
 #                        Author: Didier Brassard                          #
 #                                                                         #
-#                               Version 1                                 #
-#                               2022-12-15                                #
+#                              Version 1.1                                #
+#                               2023-04-28                                #
 #                                                                         #
 # NOTE: This code assumes that <01_CCHS2015_Data_preparation.r            #
 # was executed beforehand.                                                #
@@ -42,21 +42,11 @@ external_drive <- file.path("","Volumes","SANDISK DID")
   cchs_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Data_Donnee")
   boot_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Bootstrap","Data_Donnee")
 
-# TO DO: define current directory (cd)
-
-  ## For R script execution (full repository):
-  cd <- file.path(".","Example_R_cchs")
-  sas_dir <- file.path(".","Example_SAS_cchs")
-
-  ## For Markdown execution (self-contained):
-  cd <- '.'
-  sas_dir <- cd
-
 # Automatic: create shortcuts for project directory tree
 
   ## Common directory
-  data_dir <- file.path(cd, "Fmtdata")
-  temp_dir <- file.path(cd, "Temp")
+  data_dir <- here::here("Example_R_cchs","Fmtdata")
+  temp_dir <- here::here("Example_R_cchs","Temp")
 
 # Packages
   library(data.table)
@@ -101,13 +91,20 @@ external_drive <- file.path("","Volumes","SANDISK DID")
     filter(energy>0 & SUPPID==1)
 ```
 
-    ## Joining, by = c("ADM_RNO", "SUPPID")
+    ## Joining with `by = join_by(ADM_RNO, SUPPID)`
+
     ## inner_join: added 5 columns (WTS_P, drig, sex, age, smoking)
-    ## > rows only in x ( 0)
-    ## > rows only in y ( 0)
-    ## > matched rows 27,544
-    ## > ========
-    ## > rows total 27,544
+
+    ##             > rows only in x  (     0)
+
+    ##             > rows only in y  (     0)
+
+    ##             > matched rows     27,544
+
+    ##             >                 ========
+
+    ##             > rows total       27,544
+
     ## filter: removed 7,441 rows (27%), 20,103 rows remaining
 
 ``` r
@@ -122,8 +119,9 @@ external_drive <- file.path("","Volumes","SANDISK DID")
   hefi2019_vars
 ```
 
-    ##  [1] "wg"         "rg"         "pfab"       "pfpb"       "otherfoods" "vf"         "water"      "otherbevs" 
-    ##  [9] "milk"       "plantbev"   "freesugars" "energy"     "sfa"        "mufa"       "pufa"       "sodium"
+    ##  [1] "wg"         "rg"         "pfab"       "pfpb"       "otherfoods" "vf"        
+    ##  [7] "water"      "otherbevs"  "milk"       "plantbev"   "freesugars" "energy"    
+    ## [13] "sfa"        "mufa"       "pufa"       "sodium"
 
 ``` r
   # 2.2) Calculate mean intakes of HEFI-2019 dietary constituents, weighted using sampling weights
@@ -155,12 +153,12 @@ external_drive <- file.path("","Volumes","SANDISK DID")
     mutate(drig=0)
 ```
 
-    ## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.2
+    ## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.3
+
     ## summarise: now one row and 16 columns, ungrouped
 
 ``` r
   # 2.4) Repeat for DRI groups
-
   popratio_scored_drig <-
     intake_and_sociodeom |>
     group_by(drig) |>
@@ -189,8 +187,10 @@ external_drive <- file.path("","Volumes","SANDISK DID")
     )
 ```
 
-    ## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.2
+    ## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.3
+
     ## group_by: one grouping variable (drig)
+
     ## summarise: now 14 rows and 17 columns, ungrouped
 
 ``` r
@@ -278,13 +278,20 @@ Mean HEFI-2019 score among Canadians 2y+ (CCHS 2015 - Nutrition)
     )
 ```
 
-    ## Joining, by = c("ADM_RNO", "SUPPID")
+    ## Joining with `by = join_by(ADM_RNO, SUPPID)`
+
     ## inner_join: added 5 columns (WTS_P, drig, sex, age, smoking)
-    ## > rows only in x ( 0)
-    ## > rows only in y ( 0)
-    ## > matched rows 27,544
-    ## > ========
-    ## > rows total 27,544
+
+    ##             > rows only in x  (     0)
+
+    ##             > rows only in y  (     0)
+
+    ##             > matched rows     27,544
+
+    ##             >                 ========
+
+    ##             > rows total       27,544
+
     ## filter: removed 13,636 rows (50%), 13,908 rows remaining
 
 ``` r
@@ -297,8 +304,9 @@ Mean HEFI-2019 score among Canadians 2y+ (CCHS 2015 - Nutrition)
   hefi2019_vars
 ```
 
-    ##  [1] "wg"         "rg"         "pfab"       "pfpb"       "otherfoods" "vf"         "water"      "otherbevs" 
-    ##  [9] "milk"       "plantbev"   "freesugars" "energy"     "sfa"        "mufa"       "pufa"       "sodium"
+    ##  [1] "wg"         "rg"         "pfab"       "pfpb"       "otherfoods" "vf"        
+    ##  [7] "water"      "otherbevs"  "milk"       "plantbev"   "freesugars" "energy"    
+    ## [13] "sfa"        "mufa"       "pufa"       "sodium"
 
 ``` r
   # 2.2) Calculate mean intakes of HEFI-2019 dietary constituents, weighted using sampling weights, by smoking
@@ -332,9 +340,12 @@ Mean HEFI-2019 score among Canadians 2y+ (CCHS 2015 - Nutrition)
     )
 ```
 
-    ## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.2
+    ## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.3
+
     ## filter: removed 29 rows (<1%), 13,879 rows remaining
+
     ## group_by: one grouping variable (smoking)
+
     ## summarise: now 2 rows and 17 columns, ungrouped
 
 ``` r
@@ -357,6 +368,7 @@ Mean HEFI-2019 score among Canadians 2y+ (CCHS 2015 - Nutrition)
 ```
 
     ## pivot_longer: reorganized (HEFI2019C1_VF, HEFI2019C2_WHOLEGR, HEFI2019C3_GRRATIO, HEFI2019C4_PROFOODS, HEFI2019C5_PLANTPRO, …) into (HEFI2019_components, value) [was 2x12, now 22x3]
+
     ## pivot_wider: reorganized (smoking, value) into (SMK_0, SMK_1) [was 22x3, now 11x3]
 
 ``` r
@@ -412,25 +424,34 @@ smoking status (CCHS 2015 - Nutrition)
     rename(BSW0=WTS_P)
 ```
 
-    ## Joining, by = "ADM_RNO"
+    ## Joining with `by = join_by(ADM_RNO)`
+
     ## right_join: added no columns
-    ## > rows only in x ( 6,579)
-    ## > rows only in y 0
-    ## > matched rows 13,908
-    ## > ========
-    ## > rows total 13,908
+
+    ##             > rows only in x  ( 6,579)
+
+    ##             > rows only in y        0
+
+    ##             > matched rows     13,908
+
+    ##             >                 ========
+
+    ##             > rows total       13,908
+
     ## rename: renamed one variable (BSW0)
 
 ``` r
 # 2) Generate function to calculate mean intakes of hefi-2019 dietary constituents and difference
 
+  # note: 'ADM_RNO', 'smoking' and  'hefi2019_vars' are hardcoded in the function below
+
   mean_n_diff <-
     function(bsw_number,indata,inbsw,bsw_suffix="BSW"){
+      # Parameters:
+      # bsw_number = number from 0 to 500 where 0 = original estimate and 1, 2, 3 ... 500 = bsw
       # indata = input data set
       # inbsw  = data set with bootstrap replicate weight
-      # bsw_number = number from 0 to 500 where 0 = original estimate and 1, 2, 3 ... 500 = bsw
-
-      # note: 'ADM_RNO', 'smoking' and  'hefi2019_vars' are hardcoded in this function
+      # bsw_suffix = common suffix to all variables representing sampling and bootstrap weights
 
       # 1) Create weights variable
       weights <- paste0(bsw_suffix,bsw_number)
@@ -439,22 +460,22 @@ smoking status (CCHS 2015 - Nutrition)
       suppressMessages(
       estimate <-
         # combine weight value with indata
-        dplyr::left_join(indata,inbsw |> select(ADM_RNO,!!weights)) |>
+        dplyr::left_join(indata,inbsw |> select(ADM_RNO,{{weights}})) |>
         # rename weights for use with weighted.mean
-        dplyr::rename(CURRENT_BSW= !!weights ) |>
+        dplyr::rename(CURRENT_BSW= {{weights}} ) |>
         # remove missing values
         dplyr::filter(is.na(smoking)==FALSE) |>
         # group by smoking status
         dplyr::group_by(smoking) |>
         # calculate weighted mean
         dplyr::summarise(
-          across(.cols=all_of(hefi2019_vars),
+          across(.cols = all_of(hefi2019_vars),
                  function(x) weighted.mean(x,w=CURRENT_BSW),
-                 .names ="{col}_MEAN" )
+                 .names = "{col}_MEAN" )
           # note: suffix <_MEAN> added for labeling population-level values (vs. respondent-level)
           ) |>
         # Apply the HEFI-2019 scoring algorithm
-        hefi2019::hefi2019(#indata             = .,
+        hefi2019::hefi2019(#indata  = .,
           vegfruits          = vf_MEAN,
           wholegrfoods       = wg_MEAN,
           nonwholegrfoods    = rg_MEAN,
@@ -490,8 +511,6 @@ smoking status (CCHS 2015 - Nutrition)
           # add BSW id
           replicate = bsw_number
         )
-      rm(estimate)
-      rm(weights)
       return(estimate_diff)
     }
 
@@ -543,7 +562,7 @@ smoking status (CCHS 2015 - Nutrition)
   tictoc::toc()
 ```
 
-    ## 47.848 sec elapsed
+    ## 43.877 sec elapsed
 
 ``` r
   # 3.2) save for later use
@@ -601,6 +620,7 @@ smoking status (CCHS 2015 - Nutrition)
 ```
 
     ## group_by: one grouping variable (HEFI2019_components)
+
     ## summarise: now 11 rows and 4 columns, ungrouped
 
 ``` r
@@ -640,13 +660,19 @@ smoking status (CCHS 2015 - Nutrition)
     )
 ```
 
-    ## Joining, by = c("HEFI2019_components", "name")
+    ## Joining with `by = join_by(HEFI2019_components, name)`
+
     ## full_join: added one column (se)
-    ## > rows only in x 0
-    ## > rows only in y 0
-    ## > matched rows 33
-    ## > ====
-    ## > rows total 33
+
+    ##            > rows only in x    0
+
+    ##            > rows only in y    0
+
+    ##            > matched rows     33
+
+    ##            >                 ====
+
+    ##            > rows total       33
 
 ``` r
   rm(list=c("hefi2019_smk0","hefi2019_smkbs",
@@ -708,45 +734,37 @@ sessionInfo()
 
     ## R version 4.2.2 (2022-10-31)
     ## Platform: x86_64-apple-darwin17.0 (64-bit)
-    ## Running under: macOS Big Sur 11.7.1
+    ## Running under: macOS Ventura 13.3.1
     ## 
     ## Matrix products: default
     ## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
     ## 
     ## locale:
-    ## [1] en_CA.UTF-8/en_CA.UTF-8/en_CA.UTF-8/C/en_CA.UTF-8/en_CA.UTF-8
+    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
     ## 
     ## attached base packages:
-    ## [1] grid      parallel  stats     graphics  grDevices utils     datasets  methods   base     
+    ## [1] parallel  stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] tictoc_1.1        scales_1.2.1      glue_1.6.2        furrr_0.3.1       future_1.29.0    
-    ##  [6] hefi2019_0.0.1.2  labelled_2.10.0   gt_0.8.0          gtsummary_1.6.2   tidylog_1.0.2    
-    ## [11] forcats_0.5.2     stringr_1.4.1     dplyr_1.0.10      purrr_0.3.5       readr_2.1.3      
-    ## [16] tidyr_1.2.1       tibble_3.1.8      ggplot2_3.4.0     tidyverse_1.3.2   haven_2.5.1      
-    ## [21] survey_4.1-1      survival_3.4-0    Matrix_1.5-3      data.table_1.14.6
+    ##  [1] hefi2019_0.0.1.3  tictoc_1.1        furrr_0.3.1       future_1.32.0     data.table_1.14.8
+    ##  [6] labelled_2.11.0   gt_0.9.0          gtsummary_1.7.0   readxl_1.4.2      tidylog_1.0.2    
+    ## [11] lubridate_1.9.2   forcats_1.0.0     stringr_1.5.0     dplyr_1.1.2       purrr_1.0.1      
+    ## [16] readr_2.1.4       tidyr_1.3.0       tibble_3.2.1      ggplot2_3.4.2     tidyverse_2.0.0  
+    ## [21] haven_2.5.2      
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] fs_1.5.2             lubridate_1.9.0      bit64_4.0.5          httr_1.4.4          
-    ##  [5] tools_4.2.2          backports_1.4.1      utf8_1.2.2           R6_2.5.1            
-    ##  [9] DBI_1.1.3            colorspace_2.0-3     withr_2.5.0          tidyselect_1.2.0    
-    ## [13] bit_4.0.5            compiler_4.2.2       cli_3.4.1            rvest_1.0.3         
-    ## [17] flextable_0.8.3      xml2_1.3.3           officer_0.4.4        labeling_0.4.2      
-    ## [21] systemfonts_1.0.4    digest_0.6.30        rmarkdown_2.18       base64enc_0.1-3     
-    ## [25] pkgconfig_2.0.3      htmltools_0.5.3      parallelly_1.32.1    dbplyr_2.2.1        
-    ## [29] fastmap_1.1.0        highr_0.9            rlang_1.0.6          readxl_1.4.1        
-    ## [33] rstudioapi_0.14      generics_0.1.3       farver_2.1.1         jsonlite_1.8.3      
-    ## [37] vroom_1.6.0          zip_2.2.2            googlesheets4_1.0.1  magrittr_2.0.3      
-    ## [41] Rcpp_1.0.9           munsell_0.5.0        fansi_1.0.3          gdtools_0.2.4       
-    ## [45] MetBrewer_0.2.0      lifecycle_1.0.3      stringi_1.7.8        yaml_2.3.6          
-    ## [49] MASS_7.3-58.1        listenv_0.8.0        crayon_1.5.2         lattice_0.20-45     
-    ## [53] splines_4.2.2        hms_1.1.2            knitr_1.41           pillar_1.8.1        
-    ## [57] uuid_1.1-0           boot_1.3-28.1        codetools_0.2-18     clisymbols_1.2.0    
-    ## [61] reprex_2.0.2         evaluate_0.18        mitools_2.4          broom.helpers_1.10.0
-    ## [65] modelr_0.1.10        vctrs_0.5.1          tzdb_0.3.0           cellranger_1.1.0    
-    ## [69] gtable_0.3.1         assertthat_0.2.1     xfun_0.35            broom_1.0.1         
-    ## [73] googledrive_2.0.0    gargle_1.2.1         timechange_0.1.1     globals_0.16.2      
-    ## [77] ellipsis_0.3.2
+    ##  [1] clisymbols_1.2.0     tidyselect_1.2.0     xfun_0.39            listenv_0.9.0       
+    ##  [5] colorspace_2.1-0     vctrs_0.6.2          generics_0.1.3       htmltools_0.5.5     
+    ##  [9] yaml_2.3.7           utf8_1.2.3           rlang_1.1.0          pillar_1.9.0        
+    ## [13] glue_1.6.2           withr_2.5.0          lifecycle_1.0.3      munsell_0.5.0       
+    ## [17] gtable_0.3.3         cellranger_1.1.0     codetools_0.2-19     evaluate_0.20       
+    ## [21] labeling_0.4.2       knitr_1.42           tzdb_0.3.0           fastmap_1.1.1       
+    ## [25] fansi_1.0.4          scales_1.2.1         farver_2.1.1         parallelly_1.35.0   
+    ## [29] hms_1.1.3            digest_0.6.31        stringi_1.7.12       rprojroot_2.0.3     
+    ## [33] grid_4.2.2           here_1.0.1           cli_3.6.1            tools_4.2.2         
+    ## [37] magrittr_2.0.3       pkgconfig_2.0.3      broom.helpers_1.13.0 xml2_1.3.3          
+    ## [41] timechange_0.2.0     rmarkdown_2.21       rstudioapi_0.14      R6_2.5.1            
+    ## [45] globals_0.16.2       compiler_4.2.2
 
 ``` r
 # end of code 02

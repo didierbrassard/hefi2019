@@ -2,7 +2,7 @@ Prepare data suitable to apply the HEFI-2019 scoring algorithm (CCHS
 2015 - Nutrition)
 ================
 Didier Brassard
-2022-12-15
+2023-04-28
 
 ``` r
 # *********************************************************************** #
@@ -13,8 +13,8 @@ Didier Brassard
 #                                                                         #
 #                        Author: Didier Brassard                          #
 #                                                                         #
-#                               Version 1                                 #
-#                               2022-11-07                                #
+#                              Version 1.1                                #
+#                               2023-04-28                                #
 #                                                                         #
 # *********************************************************************** #
 
@@ -39,21 +39,11 @@ Didier Brassard
     cchs_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Data_Donnee")
     boot_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Bootstrap","Data_Donnee")
 
-# TO DO: define current directory (cd)
-
-  ## For R script execution (full repository):
-  cd <- file.path(".","Example_R_cchs")
-  sas_dir <- file.path(".","Example_SAS_cchs")
-
-  ## For Markdown execution (self-contained):
-  cd <- '.'
-  sas_dir <- cd
-
 # Automatic: create shortcuts for project directory tree
 
   ## Common directory
-  data_dir <- file.path(cd, "Fmtdata")
-  temp_dir <- file.path(cd, "Temp")
+  data_dir <- here::here("Example_R_cchs","Fmtdata")
+  temp_dir <- here::here("Example_R_cchs","Temp")
 
 # Packages
   library(haven)
@@ -76,7 +66,7 @@ options(scipen = 9999)
 
 # 1) Import Excel sheet with hefi2019 classification
 hefifoodcat <-
-  readxl::read_xlsx(file.path(sas_dir,"HEFI2019_foodcat_2022-03.xlsx"),
+  readxl::read_xlsx(here::here("Example_R_cchs","HEFI2019_foodcat_2022-03.xlsx"),
                     sheet="CAT")
 ```
 
@@ -112,7 +102,10 @@ hefifoodcat <-
   arrange(FID_CDE)
 ```
 
-    ## Warning in ifelse(RA_g == "NA", NA, as.numeric(RA_g)): NAs introduced by coercion
+    ## Warning: There was 1 warning in `mutate()`.
+    ## ℹ In argument: `grams_for_1RA = ifelse(RA_g == "NA", NA, as.numeric(RA_g))`.
+    ## Caused by warning in `ifelse()`:
+    ## ! NAs introduced by coercion
 
     ## rename: renamed 2 variables (FID_CDE, FDC_DEN_foodcat)
 
@@ -140,16 +133,26 @@ hefifoodcat <-
 ```
 
     ## 
-    ##                             1-Vegetables and fruits                                 2-Whole-grain foods 
-    ##                                         15.82386364                                          5.12784091 
-    ##                             3-Non-whole grain foods                       4-Protein foods, animal-based 
-    ##                                          8.42329545                                         26.42045455 
-    ##                        5-Protein foods, plant-based                                       6-Other foods 
-    ##                                          5.92329545                                         23.49431818 
-    ##                 7-Water and other healthy beverages                                 8-Milk, unsweetened 
-    ##                                          0.65340909                                          0.52556818 
-    ##  9-Plant-based beverages with proteins, unsweetened                                  10-Other beverages 
-    ##                                          0.02840909                                          5.29829545 
+    ##                             1-Vegetables and fruits 
+    ##                                         15.82386364 
+    ##                                 2-Whole-grain foods 
+    ##                                          5.12784091 
+    ##                             3-Non-whole grain foods 
+    ##                                          8.42329545 
+    ##                       4-Protein foods, animal-based 
+    ##                                         26.42045455 
+    ##                        5-Protein foods, plant-based 
+    ##                                          5.92329545 
+    ##                                       6-Other foods 
+    ##                                         23.49431818 
+    ##                 7-Water and other healthy beverages 
+    ##                                          0.65340909 
+    ##                                 8-Milk, unsweetened 
+    ##                                          0.52556818 
+    ##  9-Plant-based beverages with proteins, unsweetened 
+    ##                                          0.02840909 
+    ##                                  10-Other beverages 
+    ##                                          5.29829545 
     ## 99-Not considered (e.g., herbs, spices, fats, oils) 
     ##                                          8.28125000
 
@@ -164,15 +167,12 @@ save(hefifoodcat,
 #                                                                         #
 # *********************************************************************** #
 
-  # note 1: data on free sugars is available at
+  # note: data on free sugars is available at
   # https://www.mdpi.com/article/10.3390/nu13051471/s1 (Rana et al. Nutrients 2021)
-
-  # note 2: note: assuming the file is at the <path> location,
-  # in a folder named <Example_SAS_cchs>
 
 # 1) Import Excel sheet with free sugars data
 freesugars <-
-  readxl::read_xlsx(file.path(sas_dir,"nutrients-1173784-supplementary.xlsx"),
+  readxl::read_xlsx(here::here("Example_R_cchs","nutrients-1173784-supplementary.xlsx"),
                     .name_repair = "universal")
 ```
 
@@ -187,7 +187,8 @@ freesugars <-
     ## Warning: Expecting numeric in B6141 / R6141C2: got '501762 '
 
     ## New names:
-    ## • `Reported in CCHS-Nutrition 2015 0=No 1=yes` -> `Reported.in.CCHS.Nutrition.2015..0.No.1.yes`
+    ## • `Reported in CCHS-Nutrition 2015 0=No 1=yes` ->
+    ##   `Reported.in.CCHS.Nutrition.2015..0.No.1.yes`
     ## • `Name English` -> `Name.English`
     ## • `Name French` -> `Name.French`
     ## • `Estimate free sugar amount (g/100g)` -> `Estimate.free.sugar.amount..g.100g.`
@@ -209,7 +210,6 @@ freesugars <-
 ```
 
     ## filter: removed 2 rows (<1%), 7,039 rows remaining
-
     ## rename: renamed one variable (Name_English)
 
 ``` r
@@ -257,7 +257,6 @@ hs_nci <-
 ```
 
     ## filter: removed 551 rows (2%), 27,544 rows remaining
-
     ## rename: renamed 14 variables (r24_day, r24_month, r24_nfoods, province, age, …)
 
 ``` r
@@ -339,19 +338,13 @@ fidfrl_cfg <-
   )
 ```
 
-    ## Joining, by = c("VERDATE", "ADM_RNO", "SUPPID", "SEQID")
-
+    ## Joining with `by = join_by(VERDATE, ADM_RNO, SUPPID, SEQID)`
     ## right_join: added 3 columns (CFGSBGRP, PRTSZ123, PRTSIZE4)
-
-    ##             > rows only in x  (446,750)
-
-    ##             > rows only in y         0
-
-    ##             > matched rows     705,715
-
-    ##             >                 =========
-
-    ##             > rows total       705,715
+    ## > rows only in x (446,750)
+    ## > rows only in y 0
+    ## > matched rows 705,715
+    ## > =========
+    ## > rows total 705,715
 
 ``` r
 save(fidfrl_cfg,
@@ -387,21 +380,14 @@ cchs24hr_detailed <-
   )
 ```
 
-    ## Joining, by = "FID_CDE"
-
+    ## Joining with `by = join_by(FID_CDE)`
     ## left_join: added 4 columns (FDC_DEN_foodcat, grams_for_1RA, hefi2019subgrp, hefi2019subgrp_f)
-
-    ##            > rows only in x         0
-
-    ##            > rows only in y  (  3,490)
-
-    ##            > matched rows     705,715
-
-    ##            >                 =========
-
-    ##            > rows total       705,715
-
-    ## Joining, by = "FID_CDE"
+    ## > rows only in x 0
+    ## > rows only in y ( 3,490)
+    ## > matched rows 705,715
+    ## > =========
+    ## > rows total 705,715
+    ## Joining with `by = join_by(FID_CDE)`
     ## left_join: added 2 columns (freesugars_per_g, Name_English)
     ## > rows only in x 0
     ## > rows only in y ( 3,489)
@@ -728,21 +714,21 @@ dietary recall
     ungroup()
 ```
 
-    ## Joining, by = c("ADM_RNO", "SUPPID")
+    ## Joining with `by = join_by(ADM_RNO, SUPPID)`
     ## full_join: added 4 columns (water, otherbevs, milk, plantbev)
     ## > rows only in x 29
     ## > rows only in y 35
     ## > matched rows 28,027
     ## > ========
     ## > rows total 28,091
-    ## Joining, by = c("ADM_RNO", "SUPPID")
+    ## Joining with `by = join_by(ADM_RNO, SUPPID)`
     ## full_join: added one column (freesugars)
     ## > rows only in x 0
     ## > rows only in y 0
     ## > matched rows 28,091
     ## > ========
     ## > rows total 28,091
-    ## Joining, by = c("ADM_RNO", "SUPPID")
+    ## Joining with `by = join_by(ADM_RNO, SUPPID)`
     ## right_join: added 5 columns (energy, sfa, mufa, pufa, sodium)
     ## > rows only in x ( 551)
     ## > rows only in y 4
@@ -899,48 +885,37 @@ Nutrition), by 24-h dietary recall
 
     ## R version 4.2.2 (2022-10-31)
     ## Platform: x86_64-apple-darwin17.0 (64-bit)
-    ## Running under: macOS Big Sur 11.7.1
+    ## Running under: macOS Ventura 13.3.1
     ## 
     ## Matrix products: default
     ## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
     ## 
     ## locale:
-    ## [1] en_CA.UTF-8/en_CA.UTF-8/en_CA.UTF-8/C/en_CA.UTF-8/en_CA.UTF-8
+    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
     ## 
     ## attached base packages:
-    ## [1] parallel  stats     graphics  grDevices utils     datasets  methods   base     
+    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] hefi2019_0.0.1.2  data.table_1.14.6 labelled_2.10.0   gt_0.8.0          gtsummary_1.6.2   readxl_1.4.1     
-    ##  [7] tidylog_1.0.2     forcats_0.5.2     stringr_1.4.1     dplyr_1.0.10      purrr_0.3.5       readr_2.1.3      
-    ## [13] tidyr_1.2.1       tibble_3.1.8      ggplot2_3.4.0     tidyverse_1.3.2   haven_2.5.1      
+    ##  [1] labelled_2.11.0 gt_0.9.0        gtsummary_1.7.0 readxl_1.4.2    tidylog_1.0.2  
+    ##  [6] lubridate_1.9.2 forcats_1.0.0   stringr_1.5.0   dplyr_1.1.2     purrr_1.0.1    
+    ## [11] readr_2.1.4     tidyr_1.3.0     tibble_3.2.1    ggplot2_3.4.2   tidyverse_2.0.0
+    ## [16] haven_2.5.2    
     ## 
     ## loaded via a namespace (and not attached):
-    ##   [1] TH.data_1.1-1         googledrive_2.0.0     colorspace_2.0-3      ellipsis_0.3.2        rprojroot_2.0.3      
-    ##   [6] rsconnect_0.8.28      flextable_0.8.3       estimability_1.4.1    base64enc_0.1-3       parameters_0.20.0    
-    ##  [11] fs_1.5.2              rstudioapi_0.14       remotes_2.4.2         fansi_1.0.3           mvtnorm_1.1-3        
-    ##  [16] lubridate_1.9.0       xml2_1.3.3            codetools_0.2-18      splines_4.2.2         cachem_1.0.6         
-    ##  [21] knitr_1.41            pkgload_1.3.2         jsonlite_1.8.3        broom_1.0.1           dbplyr_2.2.1         
-    ##  [26] shiny_1.7.3           DiagrammeR_1.0.9      compiler_4.2.2        httr_1.4.4            tictoc_1.1           
-    ##  [31] emmeans_1.8.2         backports_1.4.1       assertthat_0.2.1      Matrix_1.5-3          fastmap_1.1.0        
-    ##  [36] gargle_1.2.1          survey_4.1-1          cli_3.4.1             later_1.3.0           prettyunits_1.1.1    
-    ##  [41] visNetwork_2.1.2      htmltools_0.5.3       tools_4.2.2           coda_0.19-4           gtable_0.3.1         
-    ##  [46] glue_1.6.2            rsvg_2.4.0            V8_4.2.2              Rcpp_1.0.9            cellranger_1.1.0     
-    ##  [51] vctrs_0.5.1           broom.helpers_1.10.0  DiagrammeRsvg_0.1     insight_0.18.8        xfun_0.35            
-    ##  [56] ps_1.7.2              rvest_1.0.3           mime_0.12             timechange_0.1.1      miniUI_0.1.1.1       
-    ##  [61] lifecycle_1.0.3       devtools_2.4.5        googlesheets4_1.0.1   MASS_7.3-58.1         zoo_1.8-11           
-    ##  [66] scales_1.2.1          promises_1.2.0.1      clisymbols_1.2.0      hms_1.1.2             sandwich_3.0-2       
-    ##  [71] RColorBrewer_1.1-3    yaml_2.3.6            curl_4.3.3            memoise_2.0.1         gdtools_0.2.4        
-    ##  [76] sass_0.4.4            stringi_1.7.8         highr_0.9             bayestestR_0.13.0     desc_1.4.2           
-    ##  [81] zip_2.2.2             boot_1.3-28.1         pkgbuild_1.4.0        systemfonts_1.0.4     rlang_1.0.6          
-    ##  [86] pkgconfig_2.0.3       commonmark_1.8.1      evaluate_0.18         lattice_0.20-45       htmlwidgets_1.5.4    
-    ##  [91] marginaleffects_0.8.1 processx_3.8.0        tidyselect_1.2.0      magrittr_2.0.3        R6_2.5.1             
-    ##  [96] profvis_0.3.7         generics_0.1.3        multcomp_1.4-20       DBI_1.1.3             pillar_1.8.1         
-    ## [101] withr_2.5.0           survival_3.4-0        datawizard_0.6.4      modelr_0.1.10         crayon_1.5.2         
-    ## [106] MetBrewer_0.2.0       uuid_1.1-0            utf8_1.2.2            officer_0.4.4         urlchecker_1.0.1     
-    ## [111] tzdb_0.3.0            rmarkdown_2.18        usethis_2.1.6         grid_4.2.2            callr_3.7.3          
-    ## [116] fmsb_0.7.4            reprex_2.0.2          digest_0.6.30         xtable_1.8-4          httpuv_1.6.6         
-    ## [121] munsell_0.5.0         mitools_2.4           sessioninfo_1.2.2
+    ##  [1] clisymbols_1.2.0     tidyselect_1.2.0     xfun_0.39            listenv_0.9.0       
+    ##  [5] colorspace_2.1-0     vctrs_0.6.2          generics_0.1.3       htmltools_0.5.5     
+    ##  [9] yaml_2.3.7           utf8_1.2.3           rlang_1.1.0          pillar_1.9.0        
+    ## [13] glue_1.6.2           withr_2.5.0          lifecycle_1.0.3      tictoc_1.1          
+    ## [17] munsell_0.5.0        gtable_0.3.3         cellranger_1.1.0     future_1.32.0       
+    ## [21] codetools_0.2-19     evaluate_0.20        knitr_1.42           tzdb_0.3.0          
+    ## [25] fastmap_1.1.1        parallel_4.2.2       fansi_1.0.4          furrr_0.3.1         
+    ## [29] scales_1.2.1         parallelly_1.35.0    hms_1.1.3            digest_0.6.31       
+    ## [33] stringi_1.7.12       rprojroot_2.0.3      grid_4.2.2           here_1.0.1          
+    ## [37] cli_3.6.1            tools_4.2.2          magrittr_2.0.3       pkgconfig_2.0.3     
+    ## [41] broom.helpers_1.13.0 data.table_1.14.8    xml2_1.3.3           timechange_0.2.0    
+    ## [45] rmarkdown_2.21       rstudioapi_0.14      hefi2019_0.0.1.3     R6_2.5.1            
+    ## [49] globals_0.16.2       compiler_4.2.2
 
 ``` r
 # end of code 01
