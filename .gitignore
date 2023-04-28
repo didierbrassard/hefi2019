@@ -1,10 +1,7 @@
 .Rproj.user
 inst/doc
-README.md
-README.md
 SAS/.DS_Store
 .DS_Store
-*.png
 *.docx
 references.bib
 Example_SAS_cchs/NCI/MCMC/Model/*
@@ -12,3 +9,4 @@ Example_SAS_cchs/NCI/MCMC/Markovchains/*
 Example_SAS_cchs/Temp/*
 Example_R_cchs/Temp/*
 Example_R_cchs/Temp/*
+README.Rmd
