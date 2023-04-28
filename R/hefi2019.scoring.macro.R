@@ -40,8 +40,13 @@
 #' @param freesugars Grams of free sugars
 #' @param sodium Milligrams of sodium
 #' @param energy Total energy intake, kcal
+#'
+#' @references Brassard et al. Appl Physiol Nutr Metab. 2022. Development of the Healthy Eating Food Index (HEFI)-2019 measuring adherence to Canada's Food Guide 2019 recommendations on healthy food choices
+#'
 #' @return Input data set (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total and component scores
+#'
 #' @export
+#'
 
 hefi2019 <-
   function(indata,
@@ -63,84 +68,57 @@ hefi2019 <-
            energy) {
 
     # general message
-    message("Healthy Eating Food Index-2019 Scoring Algorithm R version 1.2")
-
-    # create quosure
-    vegfruits <- dplyr::enquo(vegfruits)
-    wholegrfoods <- dplyr::enquo(wholegrfoods)
-    nonwholegrfoods <- dplyr::enquo(nonwholegrfoods)
-    profoodsanimal <- dplyr::enquo(profoodsanimal)
-    profoodsplant <- dplyr::enquo(profoodsplant)
-    otherfoods <- dplyr::enquo(otherfoods)
-    mufat <- dplyr::enquo(mufat)
-    pufat <- dplyr::enquo(pufat)
-    satfat <- dplyr::enquo(satfat)
-    freesugars <- dplyr::enquo(freesugars)
-    energy <- dplyr::enquo(energy)
-    sodium <- dplyr::enquo(sodium)
-    waterhealthybev <- dplyr::enquo(waterhealthybev)
-    unsweetmilk <- dplyr::enquo(unsweetmilk)
-    unsweetplantbevpro <- dplyr::enquo(unsweetplantbevpro)
-    otherbeverages <- dplyr::enquo(otherbeverages)
+    message("Healthy Eating Food Index-2019 Scoring Algorithm R version 1.3")
 
     # assign scores based on input data
     return(
-      indata %>%
+      indata |>
         dplyr::mutate(
-          .,
           # Indicate gram per RA for unsweetened milk and unsweetened plant-based beverages with sufficient protein
           probev_gram_per_RA = 258 ,
 
           # calculate reference amounts from unsweetened milk and unsweetened plant-based beverages protein foods,
-          unsweetmilk_RA = (!!unsweetmilk / probev_gram_per_RA),
-          unsweetplantbevpro_RA = (!!unsweetplantbevpro / probev_gram_per_RA),
+          unsweetmilk_RA = ({{unsweetmilk}} / probev_gram_per_RA),
+          unsweetplantbevpro_RA = ({{unsweetplantbevpro}} / probev_gram_per_RA),
 
           # sum total reference amounts from foods and protein beverages
-          totfoodsRA = (!!vegfruits + !!wholegrfoods + !!nonwholegrfoods + !!profoodsanimal + !!profoodsplant + !!otherfoods +
+          totfoodsRA = ({{vegfruits}} + {{wholegrfoods}} + {{nonwholegrfoods}} + {{profoodsanimal}} + {{profoodsplant}} + {{otherfoods}} +
             unsweetmilk_RA + unsweetplantbevpro_RA),
 
-          # ********************************************
-          # * Component 1 - Vegetables and fruits      *
-          # ********************************************
+          # Component 1 - Vegetables and fruits
 
           # ratio
-          RATIO_VF = ifelse(totfoodsRA > 0, (!!vegfruits / totfoodsRA), NA),
+          RATIO_VF = ifelse(totfoodsRA > 0, ({{vegfruits}} / totfoodsRA), NA),
 
           # score
           HEFI2019C1_VF = ifelse(totfoodsRA > 0, (20 * (RATIO_VF / 0.50)), 0),
           HEFI2019C1_VF = ifelse(HEFI2019C1_VF > 20, 20, HEFI2019C1_VF),
 
-          # ********************************************
-          # * Component 2 - Whole-grain foods          *
-          # ********************************************
+          # Component 2 - Whole-grain foods
 
           # ratio
-          RATIO_WGTOT = ifelse(totfoodsRA > 0, (!!wholegrfoods / totfoodsRA), NA),
+          RATIO_WGTOT = ifelse(totfoodsRA > 0, ({{wholegrfoods}} / totfoodsRA), NA),
 
           # score
           HEFI2019C2_WHOLEGR = ifelse(totfoodsRA > 0, (5 * (RATIO_WGTOT / 0.25)), 0),
           HEFI2019C2_WHOLEGR = ifelse(HEFI2019C2_WHOLEGR > 5, 5, HEFI2019C2_WHOLEGR),
 
-          # ********************************************
-          # * Component 3 - Grain foods ratio          *
-          # ********************************************
+          # Component 3 - Grain foods ratio
 
           # total
-          totgrain = (!!wholegrfoods + !!nonwholegrfoods),
+          totgrain = ({{wholegrfoods}} + {{nonwholegrfoods}}),
 
           # ratio
-          RATIO_WGGR = ifelse(totgrain > 0, (!!wholegrfoods / totgrain), NA),
+          RATIO_WGGR = ifelse(totgrain > 0, ({{wholegrfoods}} / totgrain), NA),
 
           # score
           HEFI2019C3_GRRATIO = ifelse(totgrain > 0, (5 * (RATIO_WGGR)), 0),
           HEFI2019C3_GRRATIO = ifelse(HEFI2019C3_GRRATIO > 5, 5, HEFI2019C3_GRRATIO),
 
-          # ********************************************
-          # * Component 4 - Protein foods              *
-          # ********************************************
+          # Component 4 - Protein foods
 
           # total
-          totpro = (!!profoodsanimal + !!profoodsplant + unsweetmilk_RA + unsweetplantbevpro_RA),
+          totpro = ({{profoodsanimal}} + {{profoodsplant}} + unsweetmilk_RA + unsweetplantbevpro_RA),
 
           # ratio
           RATIO_PRO = ifelse(totpro > 0, (totpro / totfoodsRA), NA),
@@ -149,47 +127,41 @@ hefi2019 <-
           HEFI2019C4_PROFOODS = ifelse(totpro > 0, (5 * (RATIO_PRO / 0.25)), 0),
           HEFI2019C4_PROFOODS = ifelse(HEFI2019C4_PROFOODS > 5, 5, HEFI2019C4_PROFOODS),
 
-          # ********************************************
-          # * Component 5 - Plant-based protein foods  *
-          # ********************************************
+          # Component 5 - Plant-based protein foods
 
           # ratio
-          RATIO_PLANT = ifelse(totpro > 0, (!!profoodsplant / totpro), NA),
+          RATIO_PLANT = ifelse(totpro > 0, ({{profoodsplant}} / totpro), NA),
 
           # score
           HEFI2019C5_PLANTPRO = ifelse(totpro > 0, (5 * (RATIO_PLANT / 0.50000001)), 0),
           HEFI2019C5_PLANTPRO = ifelse(HEFI2019C5_PLANTPRO > 5, 5, HEFI2019C5_PLANTPRO),
 
-          # ********************************************
-          # * Component 6 - Beverages                  *
-          # ********************************************
+          # Component 6 - Beverages
 
           # total
-          totbev = (!!waterhealthybev + !!unsweetmilk + !!unsweetplantbevpro + !!otherbeverages),
+          totbev = ({{waterhealthybev}} + {{unsweetmilk}} + {{unsweetplantbevpro}} + {{otherbeverages}}),
 
           # ratio
-          RATIO_BEV = ifelse(totbev > 0, ((!!waterhealthybev + !!unsweetmilk + !!unsweetplantbevpro) / totbev), NA),
+          RATIO_BEV = ifelse(totbev > 0, (({{waterhealthybev}} + {{unsweetmilk}} + {{unsweetplantbevpro}}) / totbev), NA),
 
           # score
           HEFI2019C6_BEVERAGES = ifelse(totbev > 0, (10 * (RATIO_BEV)), 0),
           HEFI2019C6_BEVERAGES = ifelse(HEFI2019C6_BEVERAGES > 10, NA, HEFI2019C6_BEVERAGES), # > 10 indicates that more bev were consumed than total bev (impossible)
 
-          # ********************************************
-          # * Component 7 - Ratio of unsaturated fats  *
-          # ********************************************
+          # Component 7 - Fatty acids ratio
 
           # input limits
           FATmin = 1.1,
           FATmax = 2.6,
 
           # sum
-          unsatfat = (!!mufat + !!pufat),
+          unsatfat = ({{mufat}} + {{pufat}}),
 
           # ratio
-          RATIO_FA = ifelse(!!satfat > 0, ((!!mufat + !!pufat) / !!satfat), NA),
+          RATIO_FA = ifelse({{satfat}} > 0, (({{mufat}} + {{pufat}}) / {{satfat}}), NA),
 
           # score
-          HEFI2019C7_FATTYACID = ifelse(!!satfat == 0,
+          HEFI2019C7_FATTYACID = ifelse({{satfat}} == 0,
             ifelse(unsatfat > 0, 5, 0),
             5 * ((RATIO_FA - FATmin) / (FATmax - FATmin))
           ),
@@ -199,69 +171,61 @@ hefi2019 <-
             )
           ),
 
-          # ********************************************
-          # * Component 8 - Saturated fats             *
-          # ********************************************
+          # Component 8 - Saturated fats
 
           # input limits
           SFAmin = 10,
           SFAmax = 15,
 
           # ratio
-          SFA_PERC = ifelse((!!energy > 0), 100 * (!!satfat * 9 / !!energy), NA),
+          SFA_PERC = ifelse(({{energy}} > 0), 100 * ({{satfat}} * 9 / {{energy}}), NA),
 
           # score
-          HEFI2019C8_SFAT = ifelse((!!energy == 0), 0,
+          HEFI2019C8_SFAT = ifelse(({{energy}} == 0), 0,
             5 - (5 * (SFA_PERC - SFAmin) / (SFAmax - SFAmin))
           ),
           HEFI2019C8_SFAT = ifelse((SFA_PERC < SFAmin), 5, HEFI2019C8_SFAT),
           HEFI2019C8_SFAT = ifelse((SFA_PERC >= SFAmax), 0, HEFI2019C8_SFAT),
 
-          # *******************************************
-          # * Component 9 - Free sugars               *
-          # *******************************************
+          # Component 9 - Free sugars
 
           # input limits
           SUGmin = 10,
           SUGmax = 20,
 
           # ratio
-          SUG_PERC = ifelse((!!energy > 0), 100 * (!!freesugars * 4 / !!energy), NA),
+          SUG_PERC = ifelse(({{energy}} > 0), 100 * ({{freesugars}} * 4 / {{energy}}), NA),
 
           # score
-          HEFI2019C9_FREESUGARS = ifelse((!!energy == 0), 0,
+          HEFI2019C9_FREESUGARS = ifelse(({{energy}} == 0), 0,
             10 - (10 * (SUG_PERC - SUGmin) / (SUGmax - SUGmin))
           ),
           HEFI2019C9_FREESUGARS = ifelse((SUG_PERC < SUGmin), 10, HEFI2019C9_FREESUGARS),
           HEFI2019C9_FREESUGARS = ifelse((SUG_PERC >= SUGmax), 0, HEFI2019C9_FREESUGARS),
 
-          # ********************************************
-          # * Component 10 - Sodium                   *
-          # ********************************************
+          # Component 10 - Sodium
 
           # input limits
           SODmin = 0.9,
           SODmax = 2.0,
 
           # ratio
-          SODDEN = ifelse(!!energy > 0, (!!sodium / !!energy), NA),
+          SODDEN = ifelse({{energy}} > 0, ({{sodium}} / {{energy}}), NA),
 
           # score
-          HEFI2019C10_SODIUM = ifelse((!!energy == 0), 0,
+          HEFI2019C10_SODIUM = ifelse(({{energy}} == 0), 0,
             10 - (10 * (SODDEN - SODmin) / (SODmax - SODmin))
           ),
           HEFI2019C10_SODIUM = ifelse((SODDEN < SODmin), 10, HEFI2019C10_SODIUM),
           HEFI2019C10_SODIUM = ifelse((SODDEN >= SODmax), 0, HEFI2019C10_SODIUM),
 
-          # **************************************************************
-          # * Total score: the sum of the HEFI2019 component scores      *
-          # **************************************************************
+          # Total score: the sum of the HEFI2019 component scores
 
           HEFI2019_TOTAL_SCORE = (HEFI2019C1_VF + HEFI2019C2_WHOLEGR + HEFI2019C3_GRRATIO + HEFI2019C4_PROFOODS +
             HEFI2019C5_PLANTPRO + HEFI2019C6_BEVERAGES + HEFI2019C7_FATTYACID + HEFI2019C8_SFAT +
             HEFI2019C9_FREESUGARS + HEFI2019C10_SODIUM)
-        ) %>% # end of mutate
-        dplyr::select(., -c(
+        ) |> # end of mutate
+        dplyr::select( -c(
           "probev_gram_per_RA", "unsweetmilk_RA", "unsweetplantbevpro_RA", "totgrain", "totpro",
           "unsatfat", "FATmin", "FATmax", "totbev", "SFAmin", "SFAmax", "SUGmin", "SUGmax", "SODmin", "SODmax"
         )) # end of select, temporary variables are cleared

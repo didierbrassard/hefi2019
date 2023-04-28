@@ -87,3 +87,6 @@ Caution:  variable names "unsweetmilk_RA", "unsweetplantbevpro_RA",
 "SODDEN", "FATmin", "FATmax", "SFAmin", "SFAmax", "SUGmin",
 "SUGmax", "SODmin", "SODmax" are reserved for this function.
 }
+\references{
+Brassard et al. Appl Physiol Nutr Metab. 2022. Development of the Healthy Eating Food Index (HEFI)-2019 measuring adherence to Canada's Food Guide 2019 recommendations on healthy food choices
+}

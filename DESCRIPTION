@@ -1,19 +1,17 @@
 Package: hefi2019
-Title: Healthy Eating Food Index-2019 Scoring Algorithm R version
-Version: 0.0.1.2
+Title: Healthy Eating Food Index-2019 Scoring Algorithm R Version
+Version: 0.0.1.3
 Authors@R: 
     person(given = "Didier",
            family = "Brassard",
            role = c("aut", "cre"),
-           email = "didier.brassard.1@ulaval.ca",
+           email = "didierbrassard.dtp@gmail.com",
            comment = c(ORCID = "0000-0002-7064-3066"))
 Description: This function scores dietary constituents provided in the input dataset according to the Healthy Eating Food Index (HEFI)-2019 scoring algorithm (Brassard et al., Appl Physiol Nutr Metab 2022; PMID: 35030038. http://doi.org/10.1139/apnm-2021-0415). The original variables are kept in the output data. New variables include density of intakes (i.e., ratios of dietary constituents), HEFI-2019 component scores and the total HEFI-2019 score.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+License: MIT + file LICENCE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
-Suggests: 
-    dplyr, magrittr
-VignetteBuilder: knitr
+RoxygenNote: 7.2.3
+Imports: 
+    dplyr
