@@ -1,10 +1,23 @@
-
 # Healthy Eating Food Index-2019
 
-<!-- badges: start -->
-<!-- badges: end -->
+- [Background](#background)
+- [Scoring Algorithm](#scoring-algorithm)
+  - [Suggested Layout for the Input
+    Dataset](#suggested-layout-for-the-input-dataset)
+  - [SAS Version](#sas-version)
+  - [R Version](#r-version)
+    - [Installation](#installation)
+    - [Basic example](#basic-example)
+  - [Other resources](#other-resources)
+- [Scoring Algorithm Output](#scoring-algorithm-output)
+  - [Density of intakes](#density-of-intakes)
+  - [Total HEFI-2019 and its
+    components](#total-hefi-2019-and-its-components)
+- [Selected Publications: Research Uses of the
+  HEFI-2019](#selected-publications-research-uses-of-the-hefi-2019)
+- [References](#references)
 
-## Background
+# Background
 
 [Canada’s Food Guide (CFG) 2019](https://food-guide.canada.ca/en/)
 includes dietary guidance both on healthy food choices and eating
@@ -15,7 +28,7 @@ choices in CFG (Brassard, Elvidge Munene, St-Pierre, Guenther, et al.
 intake of foods, 1 on beverages, and 4 on nutrients. The total HEFI-2019
 score has a maximum of 80 points.
 
-## Scoring algorithm
+# Scoring Algorithm
 
 The goal of the `hefi2019` code is to apply the HEFI-2019 scoring
 algorithm to dietary constituents in the dataset provided by the user.
@@ -33,7 +46,7 @@ Gonzalez, et al. 2022). Of note, when no foods, beverages or energy is
 reported, ratios are not calculated and a score of 0 is assigned to the
 corresponding components.
 
-### Suggested layout for the input dataset
+## Suggested Layout for the Input Dataset
 
 The scoring algorithm should ideally be applied to a dataset in the
 “long” format, where observations are rows and dietary constituents are
@@ -50,21 +63,55 @@ columns. Other layouts are also possible.
 [SAS](./SAS/hefi2019.scoring.macro.sas) and
 [R](./R/hefi2019.scoring.macro.R) versions of the scoring algorithm are
 available. Both versions will yield the same HEFI-2019 scores and output
-when applied to the same data. An example application for the R version
-is shown below.
+when applied to the same data.
+
+## SAS Version
+
+A detailed example application of the HEFI-2019 for the *Canadian
+Community Health Survey 2015 - Nutrition* is presented in the
+[Example_SAS_cchs](https://github.com/didierbrassard/hefi2019/tree/master/Example_SAS_cchs)
+folder.
+
+The SAS code illustrates how to prepare data and how to calculate
+HEFI-2019 scores according to the population ratio method (Freedman et
+al. 2008) as well as based on measurement error-corrected dietary
+intakes using the National Cancer Institute multivariate method (Zhang
+et al. 2011).
+
+- [01_CCHS2015_Data_preparation.sas](https://github.com/didierbrassard/hefi2019/blob/master/Example_SAS_cchs/01_CCHS2015_Data_preparation.sas):
+  preparation of data files
+- [02_CCHS2015_Descriptive1d.sas](https://github.com/didierbrassard/hefi2019/blob/master/Example_SAS_cchs/02_CCHS2015_Descriptive1d.sas):
+  population ratio method
+- [03A_CCHS2015_DescriptiveU.sas](https://github.com/didierbrassard/hefi2019/blob/master/Example_SAS_cchs/03A_CCHS2015_DescriptiveU.sas):
+  measurement error correction with the multivariate method
+- [03B_CCHS2015_DescriptiveU.sas](https://github.com/didierbrassard/hefi2019/blob/master/Example_SAS_cchs/03B_CCHS2015_DescriptiveU.sas):
+  estimation of usual intake distribution
 
 ## R Version
+
+A detailed example application of the HEFI-2019 for the *Canadian
+Community Health Survey 2015 - Nutrition* is presented in the
+[Example_R_cchs](https://github.com/didierbrassard/hefi2019/tree/master/Example_R_cchs)
+folder.
+
+The R code illustrates how to prepare data and how to calculate
+HEFI-2019 scores according to the population ratio method.
+
+- [01_CCHS2015_Data_preparation.md](https://github.com/didierbrassard/hefi2019/blob/master/Example_R_cchs/Output/01_CCHS2015_Data_preparation.md)
+- [02_CCHS2015_Descriptive1d.md](https://github.com/didierbrassard/hefi2019/blob/master/Example_R_cchs/Output/02_CCHS2015_Descriptive1d.md)
+
+A simple application for the R version is shown below.
 
 ### Installation
 
 You can install the released version of the `hefi2019` from
-[GitHub](https://github.com) with:
+[GitHub](https://github.com/didierbrassard/hefi2019) with:
 
 ``` r
 devtools::install_github("didierbrassard/hefi2019")
 ```
 
-### Example application
+### Basic example
 
 The scoring algorithm is used by indicating the name of the input data
 set and the name of each variable representing dietary constituents of
@@ -73,8 +120,8 @@ reported in an entire sample, a 0 can be assigned to that variable. Upon
 execution, the title of the function is displayed.
 
 ``` r
-# Install the hefi2019 scoring algorithm from GitHub
-devtools::install_github("didierbrassard/hefi2019")
+# Install the hefi2019 scoring algorithm from GitHub, if not already one
+# devtools::install_github("didierbrassard/hefi2019")
 
 # Load library
 library(hefi2019)
@@ -99,18 +146,30 @@ mydata_scored <-
            sodium             = MG_sodium,
            energy             = energy
            )
-#> Healthy Eating Food Index-2019 Scoring Algorithm R version 1.2
+## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.3
 ```
 
-## Scoring Algorithm Output
+## Other resources
 
-### Density of intakes
+Health Canada has made available a series of resources and files to
+assist in the calculation of the HEFI-2019 scores. The data and other
+documents are available under the name [The Healthy Eating Food Index
+2019](https://open.canada.ca/data/en/dataset/29892c85-2ff5-484c-873c-f494ffba6e1b)
+on the Open Government data portal.
+
+These files are especially helpful to assist in the preliminary steps,
+i.e., the classification of foods and beverages, the addition of data on
+free sugars as well as data on reference amounts per gram of foods.
+
+# Scoring Algorithm Output
+
+## Density of intakes
 
 The scoring algorithm creates 10 variables for density of intakes:
 *RATIO_VF, RATIO_WGTOT, RATIO_WGGR, RATIO_PRO, RATIO_PLANT, RATIO_BEV,
 RATIO_UNSFAT, RATIO_FA, SFA_PERC, SUG_PERC, and SODDEN*.
 
-### Total HEFI-2019 and its components
+## Total HEFI-2019 and its components
 
 The variable corresponding to the total HEFI-2019 is
 *HEFI2019_TOTAL_SCORE* and the 10 variables corresponding to each
@@ -118,6 +177,56 @@ component of the HEFI-2019 are *HEFI2019C1_VF, HEFI2019C2_WHOLEGR,
 HEFI2019C3_GRRATIO, HEFI2019C4_PROFOODS, HEFI2019C5_PLANTPRO,
 HEFI2019C6_BEVERAGES, HEFI2019C7_FATTYACID, HEFI2019C8_SFAT,
 HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
+
+# Selected Publications: Research Uses of the HEFI-2019
+
+**Epidemiology & Health Outcomes Research**
+
+- Brassard, D., Manikpurage, H. D., Theriault, S., Arsenault, B. J., &
+  Lamarche, B. (2022). [Greater adherence to the 2019 Canada’s Food
+  Guide recommendations on healthy food choices reduces the risk of
+  cardiovascular disease in adults: a prospective analysis of UK Biobank
+  data](https://doi.org/10.1093/ajcn/nqac256). Am J Clin Nutr, 116(6),
+  1748-1758.
+
+**Nutrition Surveillance**
+
+- Brassard, D., & Chevalier, S. (2023). [Relationship between adherence
+  to the 2019 Canada’s Food Guide recommendations on healthy food
+  choices and nutrient intakes in older
+  adults](https://doi.org/10.1101/2023.02.13.23285868). medRxiv,
+  2023.2002.2013.23285868.
+
+**Sustainability**
+
+- Rochefort, G., Brassard, D., Desroches, S., Robitaille, J., Lemieux,
+  S., Provencher, V., & Lamarche, B. (2023). [Transitioning to
+  sustainable dietary patterns: learnings from animal-based and
+  plant-based dietary patterns in French Canadian
+  adults](https://doi.org/10.3389/fnut.2023.1148137). Frontiers in
+  Nutrition, 10.
+- Rochefort, G., Brassard, D., Paquette, M. C., Robitaille, J., Lemieux,
+  S., Provencher, V., & Lamarche, B. (2022). [Adhering to Canada’s Food
+  Guide Recommendations on Healthy Food Choices Increases the Daily Diet
+  Cost: Insights from the PREDISE
+  Study](https://doi.org/10.3390/nu14183818). Nutrients, 14(18).
+
+**Validation Research**
+
+- Hutchinson, J. M. H., Williams, T. E., Westaway, A. M., Bedard, A.,
+  Pitre, C., Lemieux, S., Dodd, K. W., Lamarche, B., Guenther, P. M.,
+  Haines, J., Wallace, A., Martin, A., Louzada, M. L., Jessri, M.,
+  Olstad, D. L., Prowse, R., Randall Simpson, J. A., Vena, J. E., &
+  Kirkpatrick, S. I. (2023). [Development of the Canadian Food Intake
+  Screener to assess alignment of adults’ dietary intake with the 2019
+  Canada’s Food Guide healthy food choices
+  recommendations](https://doi.org/10.1139/apnm-2023-0019). Appl Physiol
+  Nutr Metab.
+- Mercier, A. P., Rochefort, G., Fortier, J., Parent, G., Provencher,
+  V., Lemieux, S., & Lamarche, B. (2022). [Development and Validation of
+  a Short Questionnaire Assessing the Behavior of Local Food Procurement
+  in Quebec, Canada](https://doi.org/10.1093/cdn/nzac097). Curr Dev
+  Nutr, 6(9), nzac097.
 
 # References
 
@@ -140,6 +249,27 @@ Kirkpatrick, J. Slater, S. Lemieux, et al. 2022. “Development of the
 Healthy Eating Food Index (HEFI)-2019 Measuring Adherence to Canada’s
 Food Guide 2019 Recommendations on Healthy Food Choices.” Journal
 Article. <https://doi.org/10.1139/apnm-2021-0415>.
+
+</div>
+
+<div id="ref-Freedman2008" class="csl-entry">
+
+Freedman, L. S., P. M. Guenther, S. M. Krebs-Smith, and P. S. Kott.
+2008. “A Population’s Mean Healthy Eating Index-2005 Scores Are Best
+Estimated by the Score of the Population Ratio When One 24-Hour Recall
+Is Available.” Journal Article. *J Nutr* 138 (9): 1725–29.
+<https://doi.org/10.1093/jn/138.9.1725>.
+
+</div>
+
+<div id="ref-Zhang2011" class="csl-entry">
+
+Zhang, S., D. Midthune, P. M. Guenther, S. M. Krebs-Smith, V. Kipnis, K.
+W. Dodd, D. W. Buckman, J. A. Tooze, L. Freedman, and R. J. Carroll.
+2011. “A New Multivariate Measurement Error Model with Zero-Inflated
+Dietary Data, and Its Application to Dietary Assessment.” Journal
+Article. *Ann Appl Stat* 5 (2B): 1456–87.
+<https://doi.org/10.1214/10-AOAS446>.
 
 </div>
 
