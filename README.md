@@ -213,15 +213,15 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Validation Research**
 
-- Hutchinson, J. M. H., Williams, T. E., Westaway, A. M., Bedard, A.,
-  Pitre, C., Lemieux, S., Dodd, K. W., Lamarche, B., Guenther, P. M.,
-  Haines, J., Wallace, A., Martin, A., Louzada, M. L., Jessri, M.,
-  Olstad, D. L., Prowse, R., Randall Simpson, J. A., Vena, J. E., &
-  Kirkpatrick, S. I. (2023). [Development of the Canadian Food Intake
-  Screener to assess alignment of adults’ dietary intake with the 2019
-  Canada’s Food Guide healthy food choices
-  recommendations](https://doi.org/10.1139/apnm-2023-0019). Appl Physiol
-  Nutr Metab.
+- Hutchinson, J. M. H., Kevin, W. D., Patricia, M. G., Benoit, L., Jess,
+  H., Angela, W., Maude, P., Tabitha, E. W., Maria Laura da Costa, L.,
+  Mahsa, J., Simone, L., Dana Lee, O., Rachel, P., Janis Randall, S.,
+  Jennifer, E. V., Kathleen, S., & Sharon, I. K. (2022). [The Canadian
+  Food Intake Screener for assessing alignment of adults’ dietary intake
+  with the 2019 Canada’s Food Guide healthy food choices
+  recommendations: Scoring system and construct
+  validity](https://doi.org/10.1101/2022.12.19.22283575). medRxiv,
+  2022.2012.2019.22283575.
 - Mercier, A. P., Rochefort, G., Fortier, J., Parent, G., Provencher,
   V., Lemieux, S., & Lamarche, B. (2022). [Development and Validation of
   a Short Questionnaire Assessing the Behavior of Local Food Procurement
