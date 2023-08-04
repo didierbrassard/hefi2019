@@ -194,8 +194,9 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 - Brassard, D., & Chevalier, S. (2023). [Relationship between adherence
   to the 2019 Canada’s Food Guide recommendations on healthy food
   choices and nutrient intakes in older
-  adults](https://doi.org/10.1101/2023.02.13.23285868). medRxiv,
-  2023.2002.2013.23285868.
+  adults](https://doi.org/10.1016/j.tjnut.2023.07.005). J Nutr.
+  - [Pre-print version (freely
+    available)](https://doi.org/10.1101/2023.02.13.23285868)
 
 **Sustainability**
 
@@ -213,15 +214,16 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Validation Research**
 
-- Hutchinson, J. M. H., Kevin, W. D., Patricia, M. G., Benoit, L., Jess,
-  H., Angela, W., Maude, P., Tabitha, E. W., Maria Laura da Costa, L.,
-  Mahsa, J., Simone, L., Dana Lee, O., Rachel, P., Janis Randall, S.,
-  Jennifer, E. V., Kathleen, S., & Sharon, I. K. (2022). [The Canadian
-  Food Intake Screener for assessing alignment of adults’ dietary intake
-  with the 2019 Canada’s Food Guide healthy food choices
-  recommendations: Scoring system and construct
-  validity](https://doi.org/10.1101/2022.12.19.22283575). medRxiv,
-  2022.2012.2019.22283575.
+- Hutchinson, J. M., Dodd, K. W., Guenther, P. M., Lamarche, B., Haines,
+  J., Wallace, A., Perreault, M., Williams, T. E., Louzada, M., Jessri,
+  M., Lemieux, S., Olstad, D. L., Prowse, R., Simpson, J. R., Vena, J.
+  E., Szajbely, K. & Kirkpatrick, S. I. (2023). [The Canadian Food
+  Intake Screener for assessing alignment of adults’ dietary intake with
+  the 2019 Canada’s Food Guide healthy food choices recommendations:
+  scoring system and construct
+  validity](https://doi.org/10.1139/apnm-2023-0018). Appl Physiol Nutr
+  Metab, 48(8), 620-633.
+
 - Mercier, A. P., Rochefort, G., Fortier, J., Parent, G., Provencher,
   V., Lemieux, S., & Lamarche, B. (2022). [Development and Validation of
   a Short Questionnaire Assessing the Behavior of Local Food Procurement
