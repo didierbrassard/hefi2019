@@ -413,7 +413,7 @@ LABEL
          RATIO_BEV='Ratio of beverages over total beverages'
          SFA_PERC='Percent of calories from saturated fat'
          SUG_PERC='Percent of calories from free sugars'
-         SODDEN='Ratio of sodium per 1000 kcal'
+         SODDEN='Ratio of sodium over total energy'
          totfoodsRA='Total foods (RA/d)'
 ; 
 
