@@ -1,6 +1,7 @@
 # Healthy Eating Food Index-2019
 
 - [Background](#background)
+  - [Useful resources](#useful-resources)
 - [Scoring Algorithm](#scoring-algorithm)
   - [Suggested Layout for the Input
     Dataset](#suggested-layout-for-the-input-dataset)
@@ -8,7 +9,6 @@
   - [R Version](#r-version)
     - [Installation](#installation)
     - [Basic example](#basic-example)
-  - [Other resources](#other-resources)
 - [Scoring Algorithm Output](#scoring-algorithm-output)
   - [Density of intakes](#density-of-intakes)
   - [Total HEFI-2019 and its
@@ -27,6 +27,20 @@ choices in CFG (Brassard, Elvidge Munene, St-Pierre, Guenther, et al.
 2022). The HEFI-2019 has 10 components, of which 5 are based on the
 intake of foods, 1 on beverages, and 4 on nutrients. The total HEFI-2019
 score has a maximum of 80 points.
+
+## Useful resources
+
+Health Canada has a web page dedicated to [Canada’s Food Guide Research
+Tools](https://food-guide.canada.ca/en/research-tools/).  
+For the HEFI-2019, Health Canada has also made available a series of
+resources and files to assist in the calculation of scores. Notably, the
+data and other documents are available under the name [The Healthy
+Eating Food Index
+2019](https://open.canada.ca/data/en/dataset/29892c85-2ff5-484c-873c-f494ffba6e1b)
+on the Open Government data portal. These files are especially helpful
+to assist in the preliminary steps, i.e., the classification of foods
+and beverages, the addition of data on free sugars as well as data on
+reference amounts per gram of foods.
 
 # Scoring Algorithm
 
@@ -148,18 +162,6 @@ mydata_scored <-
            )
 ## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.3
 ```
-
-## Other resources
-
-Health Canada has made available a series of resources and files to
-assist in the calculation of the HEFI-2019 scores. The data and other
-documents are available under the name [The Healthy Eating Food Index
-2019](https://open.canada.ca/data/en/dataset/29892c85-2ff5-484c-873c-f494ffba6e1b)
-on the Open Government data portal.
-
-These files are especially helpful to assist in the preliminary steps,
-i.e., the classification of foods and beverages, the addition of data on
-free sugars as well as data on reference amounts per gram of foods.
 
 # Scoring Algorithm Output
 
