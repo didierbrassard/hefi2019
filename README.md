@@ -160,7 +160,7 @@ mydata_scored <-
            sodium             = MG_sodium,
            energy             = energy
            )
-## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.3
+## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.4
 ```
 
 # Scoring Algorithm Output
@@ -196,7 +196,8 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 - Brassard, D., & Chevalier, S. (2023). [Relationship between adherence
   to the 2019 Canada’s Food Guide recommendations on healthy food
   choices and nutrient intakes in older
-  adults](https://doi.org/10.1016/j.tjnut.2023.07.005). J Nutr.
+  adults](https://doi.org/10.1016/j.tjnut.2023.07.005). J Nutr, 153(9),
+  2699-2708.
   - [Pre-print version (freely
     available)](https://doi.org/10.1101/2023.02.13.23285868)
 
@@ -216,6 +217,12 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Validation Research**
 
+- Lee, J. J., Ahmed, M., Julia, C., Ng, A. P., Paper, L., Lou, W. Y., &
+  L’Abbe, M. R. (2023). [Examining the diet quality of Canadian adults
+  and the alignment of Canadian front-of-pack labelling regulations with
+  other front-of-pack labelling systems and dietary
+  guidelines](https://doi.org/10.3389/fpubh.2023.1168745). Front Public
+  Health, 11, 1168745.
 - Hutchinson, J. M., Dodd, K. W., Guenther, P. M., Lamarche, B., Haines,
   J., Wallace, A., Perreault, M., Williams, T. E., Louzada, M., Jessri,
   M., Lemieux, S., Olstad, D. L., Prowse, R., Simpson, J. R., Vena, J.
@@ -225,7 +232,6 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
   scoring system and construct
   validity](https://doi.org/10.1139/apnm-2023-0018). Appl Physiol Nutr
   Metab, 48(8), 620-633.
-
 - Mercier, A. P., Rochefort, G., Fortier, J., Parent, G., Provencher,
   V., Lemieux, S., & Lamarche, B. (2022). [Development and Validation of
   a Short Questionnaire Assessing the Behavior of Local Food Procurement
