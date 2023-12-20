@@ -43,6 +43,8 @@
 #'
 #' @references Brassard et al. Appl Physiol Nutr Metab. 2022. Development of the Healthy Eating Food Index (HEFI)-2019 measuring adherence to Canada's Food Guide 2019 recommendations on healthy food choices
 #'
+#' @import dplyr
+#'
 #' @return Input data set (\code{indata}) with additional variables including density of intakes (i.e., ratios of dietary constituents), total and component scores
 #'
 #' @export
@@ -68,10 +70,10 @@ hefi2019 <-
            energy) {
 
     # general message
-    message("Healthy Eating Food Index-2019 Scoring Algorithm R version 1.3")
+    message("Healthy Eating Food Index-2019 Scoring Algorithm R version 1.4")
 
     # assign scores based on input data
-    return(
+    outdata <-
       indata |>
         dplyr::mutate(
           # Indicate gram per RA for unsweetened milk and unsweetened plant-based beverages with sufficient protein
@@ -229,5 +231,35 @@ hefi2019 <-
           "probev_gram_per_RA", "unsweetmilk_RA", "unsweetplantbevpro_RA", "totgrain", "totpro",
           "unsatfat", "FATmin", "FATmax", "totbev", "SFAmin", "SFAmax", "SUGmin", "SUGmax", "SODmin", "SODmax"
         )) # end of select, temporary variables are cleared
-    ) # end of return
+
+    # define labels
+    labels <- list(
+        totfoodsRA            = 'Total foods (RA/d)',
+        RATIO_VF              = 'Ratio of vegetable and fruits over total foods',
+        RATIO_WGTOT           = 'Ratio of whole-grain foods over total foods',
+        RATIO_WGGR            = 'Ratio of whole-grain foods over total grains',
+        RATIO_PRO             = 'Ratio of protein foods over total foods',
+        RATIO_PLANT           = 'Ratio of plant-based over protein foods',
+        RATIO_BEV             = 'Ratio of beverages over total beverages',
+        RATIO_FA              = 'Ratio of unsaturated over saturated fats',
+        SUG_PERC              = 'Percent of calories from saturated fat',
+        SODDEN                = 'Ratio of sodium over total energy',
+        HEFI2019C1_VF         = 'HEFI2019 C1 Vegetables and fruits',
+        HEFI2019C2_WHOLEGR    = 'HEFI2019 C2 Whole-grain foods',
+        HEFI2019C3_GRRATIO    = 'HEFI2019 C3 Grain foods ratio',
+        HEFI2019C4_PROFOODS   = 'HEFI2019 C4 Protein foods',
+        HEFI2019C5_PLANTPRO   = 'HEFI2019 C5 Plant-based protein foods',
+        HEFI2019C6_BEVERAGES  = 'HEFI2019 C6 Beverages',
+        HEFI2019C7_FATTYACID  = 'HEFI2019 C7 Fatty acids ratio',
+        HEFI2019C8_SFAT       = 'HEFI2019 C8 Saturated fats',
+        HEFI2019C9_FREESUGARS = 'HEFI2019 C9 Free sugars',
+        HEFI2019C10_SODIUM    = 'HEFI2019 C10 Sodium',
+        HEFI2019_TOTAL_SCORE  = 'Total Healthy Eating Food Index (/80)')
+
+    # label the variables in <outdata>
+    for (var_name in names(outdata)) {
+      attr(outdata[[var_name]], "label") <- labels[[var_name]]
+    }
+
+    return(outdata ) # end of return
   }
