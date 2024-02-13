@@ -193,6 +193,12 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Nutrition Surveillance**
 
+- Lee, J. J., Ahmed, M., Julia, C., Ng, A. P., Paper, L., Lou, W. Y., &
+  L’Abbe, M. R. (2023). [Examining the diet quality of Canadian adults
+  and the alignment of Canadian front-of-pack labelling regulations with
+  other front-of-pack labelling systems and dietary
+  guidelines](https://doi.org/10.3389/fpubh.2023.1168745). Front Public
+  Health, 11, 1168745.
 - Brassard, D., & Chevalier, S. (2023). [Relationship between adherence
   to the 2019 Canada’s Food Guide recommendations on healthy food
   choices and nutrient intakes in older
@@ -200,6 +206,26 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
   2699-2708.
   - [Pre-print version (freely
     available)](https://doi.org/10.1101/2023.02.13.23285868)
+
+**Randomized controlled trials**
+
+- Bernier, E., Plante, A. S., Lemieux, P., Robitaille, J., Lemieux, S.,
+  Desroches, S., Belanger-Gravel, A., Maheux-Lacroix, S., Weisnagel, S.
+  J., Demers, S., Camirand Lemyre, F., Boulet, M., Baillargeon, J. P., &
+  Morisset, A. S. (2023). [Promoting healthy eating in early pregnancy
+  in individuals at risk of gestational diabetes mellitus: does it
+  improve glucose homeostasis? A study protocol for a randomized control
+  trial](https://doi.org/10.3389/fnut.2023.1336509). Front Nutr, 10,
+  1336509.
+- Olstad, D. L., Beall, R., Spackman, E., Dunn, S., Lipscombe, L. L.,
+  Williams, K., Oster, R., Scott, S., Zimmermann, G. L., McBrien, K. A.,
+  Steer, K. J. D., Chan, C. B., Tyminski, S., Berkowitz, S., Edwards, A.
+  L., Saunders-Smith, T., Tariq, S., Popeski, N., White, L., . . .
+  Campbell, D. J. T. (2022). [Healthy food prescription incentive
+  programme for adults with type 2 diabetes who are experiencing food
+  insecurity: protocol for a randomised controlled trial, modelling and
+  implementation studies](https://doi.org/10.1136/bmjopen-2021-050006).
+  BMJ Open, 12(2), e050006.
 
 **Sustainability**
 
