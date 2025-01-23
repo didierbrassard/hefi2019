@@ -1,5 +1,6 @@
 # Healthy Eating Food Index-2019
 
+
 - [Background](#background)
   - [Useful resources](#useful-resources)
 - [Scoring Algorithm](#scoring-algorithm)
@@ -193,12 +194,13 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Nutrition Surveillance**
 
-- Lee, J. J., Ahmed, M., Julia, C., Ng, A. P., Paper, L., Lou, W. Y., &
-  L’Abbe, M. R. (2023). [Examining the diet quality of Canadian adults
-  and the alignment of Canadian front-of-pack labelling regulations with
-  other front-of-pack labelling systems and dietary
-  guidelines](https://doi.org/10.3389/fpubh.2023.1168745). Front Public
-  Health, 11, 1168745.
+- Sebai, I., Ing, A., Nardocci Fusco, M., Fediuk, K., Sadik, T.,
+  Chan, H. M., & Batal, M. (2024). [Eating traditional foods enhances
+  diet quality among First Nations in Canada: an analysis using the
+  Healthy Eating Food Index-2019 (HEFI-2019) and the Canadian Healthy
+  Eating Index 2007 (C-HEI
+  2007)](https://doi.org/10.1139/apnm-2024-0220). Appl Physiol Nutr
+  Metab.  
 - Brassard, D., & Chevalier, S. (2023). [Relationship between adherence
   to the 2019 Canada’s Food Guide recommendations on healthy food
   choices and nutrient intakes in older
@@ -207,7 +209,7 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
   - [Pre-print version (freely
     available)](https://doi.org/10.1101/2023.02.13.23285868)
 
-**Randomized controlled trials**
+**Randomized Controlled Trials**
 
 - Bernier, E., Plante, A. S., Lemieux, P., Robitaille, J., Lemieux, S.,
   Desroches, S., Belanger-Gravel, A., Maheux-Lacroix, S., Weisnagel, S.
@@ -229,6 +231,18 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Sustainability**
 
+- Rochette, M., Rochefort, G., Laramee, C., Lapointe, A., Lemieux, S.,
+  Belanger-Gravel, A., Desroches, S., Provencher, V., & Lamarche, B.
+  (2024). [Local food procurement behavior and overall diet quality
+  among adults in Quebec: results from the NutriQuebec
+  project](https://doi.org/10.1186/s12937-024-01045-w). Nutr J, 23(1),
+  143.  
+- Rochefort, G., Robitaille, J., Lemieux, S., Provencher, V., &
+  Lamarche, B. (2024). [Are the 2019 Canada’s Food Guide Recommendations
+  on Healthy Food Choices Consistent with the EAT-Lancet Reference Diet
+  from Sustainable Food
+  Systems?](https://doi.org/10.1016/j.tjnut.2024.02.012) J Nutr, 154(4),
+  1368-1375.
 - Rochefort, G., Brassard, D., Desroches, S., Robitaille, J., Lemieux,
   S., Provencher, V., & Lamarche, B. (2023). [Transitioning to
   sustainable dietary patterns: learnings from animal-based and
@@ -241,8 +255,18 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
   Cost: Insights from the PREDISE
   Study](https://doi.org/10.3390/nu14183818). Nutrients, 14(18).
 
-**Validation Research**
+**Validation Research and Methods**
 
+- Brassard, D., Presse, N., & Chevalier, S. (2025). Estimating the
+  Effect of Adhering to the [Recommendations of the 2019 Canada’s Food
+  Guide on Health Outcomes in Older Adults: Protocol for a Target Trial
+  Emulation](https://doi.org/10.2196/65182). JMIR Res Protoc,
+  14:e65182.  
+- Panahimoghadam, S., Veugelers, P. J., Dabravolskaj, J., Tran, T., &
+  Maximova, K. (2024). [Comparing three summary indices to assess diet
+  quality of Canadian children: a call for
+  consensus](https://doi.org/10.3389/fnut.2024.1519829). Front Nutr, 11,
+  1519829.  
 - Lee, J. J., Ahmed, M., Julia, C., Ng, A. P., Paper, L., Lou, W. Y., &
   L’Abbe, M. R. (2023). [Examining the diet quality of Canadian adults
   and the alignment of Canadian front-of-pack labelling regulations with
@@ -266,7 +290,8 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 # References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 
 <div id="ref-RN1229" class="csl-entry">
 
