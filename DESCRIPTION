@@ -1,6 +1,6 @@
 Package: hefi2019
 Title: Healthy Eating Food Index-2019 Scoring Algorithm R Version
-Version: 0.0.1.4
+Version: 0.0.1.5
 Authors@R: 
     person(given = "Didier",
            family = "Brassard",
@@ -12,6 +12,4 @@ License: MIT + file LICENCE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-Imports: 
-    dplyr
+RoxygenNote: 7.3.2
