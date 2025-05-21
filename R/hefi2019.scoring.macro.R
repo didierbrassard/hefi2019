@@ -123,16 +123,16 @@ hefi2019 <-
           totpro = ({{profoodsanimal}} + {{profoodsplant}} + unsweetmilk_RA + unsweetplantbevpro_RA),
 
           # ratio
-          RATIO_PRO = ifelse(totpro > 0, (totpro / totfoodsRA), NA),
+          RATIO_PRO = ifelse(totfoodsRA > 0, (totpro / totfoodsRA), NA),
 
           # score
-          HEFI2019C4_PROFOODS = ifelse(totpro > 0, (5 * (RATIO_PRO / 0.25)), 0),
+          HEFI2019C4_PROFOODS = ifelse(totfoodsRA > 0, (5 * (RATIO_PRO / 0.25)), 0),
           HEFI2019C4_PROFOODS = ifelse(HEFI2019C4_PROFOODS > 5, 5, HEFI2019C4_PROFOODS),
 
           # Component 5 - Plant-based protein foods
 
           # ratio
-          RATIO_PLANT = ifelse(totpro > 0, ({{profoodsplant}} / totpro), NA),
+          RATIO_PLANT = ifelse(totpro > 0, (({{profoodsplant}}+unsweetplantbevpro_RA) / totpro), NA),
 
           # score
           HEFI2019C5_PLANTPRO = ifelse(totpro > 0, (5 * (RATIO_PLANT / 0.50000001)), 0),
@@ -242,7 +242,8 @@ hefi2019 <-
         RATIO_PLANT           = 'Ratio of plant-based over protein foods',
         RATIO_BEV             = 'Ratio of beverages over total beverages',
         RATIO_FA              = 'Ratio of unsaturated over saturated fats',
-        SUG_PERC              = 'Percent of calories from saturated fat',
+        SFA_PERC              = 'Percent of calories from saturated fat',
+        SUG_PERC              = 'Percent of calories from free sugars',
         SODDEN                = 'Ratio of sodium over total energy',
         HEFI2019C1_VF         = 'HEFI2019 C1 Vegetables and fruits',
         HEFI2019C2_WHOLEGR    = 'HEFI2019 C2 Whole-grain foods',
