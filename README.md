@@ -32,7 +32,8 @@ score has a maximum of 80 points.
 ## Useful resources
 
 Health Canada has a web page dedicated to [Canada’s Food Guide Research
-Tools](https://food-guide.canada.ca/en/research-tools/).  
+Tools](https://food-guide.canada.ca/en/research-tools/).
+
 For the HEFI-2019, Health Canada has also made available a series of
 resources and files to assist in the calculation of scores. Notably, the
 data and other documents are available under the name [The Healthy
@@ -75,10 +76,10 @@ columns. Other layouts are also possible.
 |            4 |     5 |     4 |     5 | …     |
 |            5 |     6 |     4 |     2 | …     |
 
-[SAS](./SAS/hefi2019.scoring.macro.sas) and
-[R](./R/hefi2019.scoring.macro.R) versions of the scoring algorithm are
-available. Both versions will yield the same HEFI-2019 scores and output
-when applied to the same data.
+[SAS](./SAS/hefi2019.scoring.macro.sas) and [R](./R/hefi2019.scoring.R)
+versions of the scoring algorithm are available. Both versions will
+yield the same HEFI-2019 scores and output when applied to the same
+data.
 
 ## SAS Version
 
@@ -131,12 +132,12 @@ devtools::install_github("didierbrassard/hefi2019")
 The scoring algorithm is used by indicating the name of the input data
 set and the name of each variable representing dietary constituents of
 the HEFI-2019. In the case where a given dietary constituents was not
-reported in an entire sample, a 0 can be assigned to that variable. Upon
-execution, the title of the function is displayed.
+reported in an entire sample, a `0` can be assigned to that variable.
+Upon execution, the title of the function is displayed.
 
 ``` r
-# Install the hefi2019 scoring algorithm from GitHub, if not already one
-# devtools::install_github("didierbrassard/hefi2019")
+# Install the hefi2019 scoring algorithm from GitHub, if not already done
+devtools::install_github("didierbrassard/hefi2019")
 
 # Load library
 library(hefi2019)
@@ -144,24 +145,24 @@ library(hefi2019)
 # Apply the scoring algorithm to user-provided data
 mydata_scored <- 
   hefi2019(indata             = mydata,
-           vegfruits          = RA_vegfruits,
-           wholegrfoods       = RA_wholegrfoods,
-           nonwholegrfoods    = RA_nonwgfoods,
-           profoodsanimal     = RA_profoodsanimal,
-           profoodsplant      = RA_profoodsplant,
-           otherfoods         = RA_otherfoods,
-           waterhealthybev    = G_waterhealthybev,
-           unsweetmilk        = G_milk,
-           unsweetplantbevpro = G_plantbevpro,
-           otherbeverages     = G_otherbeverages ,
-           mufat              = G_mufa ,
-           pufat              = G_pufa ,
-           satfat             = G_sfa ,
-           freesugars         = G_freesugars,
-           sodium             = MG_sodium,
-           energy             = energy
+           vegfruits          = "RA_vegfruits",
+           wholegrfoods       = "RA_wholegrfoods",
+           nonwholegrfoods    = "RA_nonwgfoods",
+           profoodsanimal     = "RA_profoodsanimal",
+           profoodsplant      = "RA_profoodsplant",
+           otherfoods         = "RA_otherfoods",
+           waterhealthybev    = "G_waterhealthybev",
+           unsweetmilk        = "G_milk",
+           unsweetplantbevpro = "G_plantbevpro",
+           otherbeverages     = "G_otherbeverages" ,
+           mufat              = "G_mufa" ,
+           pufat              = "G_pufa" ,
+           satfat             = "G_sfa" ,
+           freesugars         = "G_freesugars",
+           sodium             = "MG_sodium",
+           energy             = "energy"
            )
-## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.4
+## Healthy Eating Food Index-2019 Scoring Algorithm R version 1.5
 ```
 
 # Scoring Algorithm Output
