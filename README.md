@@ -195,20 +195,35 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Nutrition Surveillance**
 
+- Sebai, I., Nardocci, M., Ing, A., Fediuk, K., Chan, H. M., & Batal, M.
+  (2025). [Exploring the Association Between the Healthy Eating Food
+  Index-2019 (HEFI-2019), the Canadian Healthy Eating Index 2007
+  (C-HEI 2007) and Health Among First Nation Adults Across
+  Canada](https://doi.org/10.1139/apnm-2024-0422). Appl Physiol Nutr
+  Metab.  
+- Blais, A., Ahmed, M., L’Abbe, M. R., Sellen, D., & Malik, V. (2025).
+  [Evaluating the Nutritional Quality of School Food Programs in Canada
+  Compared to National Nutritional
+  Guidelines](https://doi.org/10.1139/apnm-2024-0540). Appl Physiol Nutr
+  Metab.  
+- Simpson, A., Fisher, M., Harrison, S., Morisset, A. S., Borghese, M.
+  M., Braun, J. M., Bouchard, M. F., Saha, T., Panagiotopoulos, C.,
+  Booij, L., Morrison, K., & Ashley-Martin, J. (2025). [Diet quality in
+  relation to serum perfluoroalkyl substance concentrations in Canadian
+  preadolescents](https://doi.org/10.1016/j.envres.2025.121790). Environ
+  Res, 279(Pt 2), 121790.
 - Sebai, I., Ing, A., Nardocci Fusco, M., Fediuk, K., Sadik, T.,
   Chan, H. M., & Batal, M. (2024). [Eating traditional foods enhances
   diet quality among First Nations in Canada: an analysis using the
   Healthy Eating Food Index-2019 (HEFI-2019) and the Canadian Healthy
   Eating Index 2007 (C-HEI
   2007)](https://doi.org/10.1139/apnm-2024-0220). Appl Physiol Nutr
-  Metab.  
+  Metab, 50, 1-13.  
 - Brassard, D., & Chevalier, S. (2023). [Relationship between adherence
   to the 2019 Canada’s Food Guide recommendations on healthy food
   choices and nutrient intakes in older
   adults](https://doi.org/10.1016/j.tjnut.2023.07.005). J Nutr, 153(9),
   2699-2708.
-  - [Pre-print version (freely
-    available)](https://doi.org/10.1101/2023.02.13.23285868)
 
 **Randomized Controlled Trials**
 
