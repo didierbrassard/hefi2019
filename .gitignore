@@ -7,7 +7,6 @@ references.bib
 Example_SAS_cchs/NCI/MCMC/Model/*
 Example_SAS_cchs/NCI/MCMC/Markovchains/*
 Example_SAS_cchs/Temp/*
-Example_R_cchs/Temp/*
-Example_R_cchs/Temp/*
+Example_R_cchs/data/*
 README.Rmd
 README.qmd
