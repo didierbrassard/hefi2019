@@ -599,7 +599,7 @@ percentile. For simplicity, the normal approximation is shown below.
            legend.position = "top")
 ```
 
-![](/Users/DidierBrassard/RStudio/hefi2019/Example_R_cchs/Output/02_CCHS2015_Descriptive1d_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](/Example_R_cchs/Output/02_CCHS2015_Descriptive1d_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 # 4.3) Calculate standard deviation of the sampling distribution (i.e., bootstrap Standard Error)
