@@ -38,7 +38,6 @@
 
   ## Automatic: create shortcuts for raw CCHS 2015 - Nutrition file location
     cchs_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Data_Donnee")
-    boot_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Bootstrap","Data_Donnee")
 
 # Automatic: create shortcuts for project directory tree
 

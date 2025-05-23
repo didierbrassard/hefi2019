@@ -16,7 +16,7 @@
 #                              Version 1.2                                #
 #                               2025-05-21                                #
 #                                                                         #
-# NOTE: This code assumes that <01_CCHS2015_Data_preparation.R            #
+# NOTE: This code assumes that <01_CCHS2015_Data_preparation.R>           #
 # was executed beforehand.                                                #
 #                                                                         #
 # *********************************************************************** #
@@ -40,7 +40,6 @@
 external_drive <- file.path("","Volumes","SANDISK DID")
 
   ## Automatic: create shortcuts for raw CCHS 2015 - Nutrition file location
-  cchs_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Data_Donnee")
   boot_dir <- file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Bootstrap","Data_Donnee")
 
 # Automatic: create shortcuts for project directory tree
@@ -314,8 +313,7 @@ if(!exists("CCHS2015_HS_NCI")) load(file.path(dir_processed,"CCHS2015_HS_NCI.rda
 
 # 1) Load and prepare bootstrap replicate weights
   bsw <-
-    data.table::fread(file.path(external_drive,"CCHS_Nutrition_2015_PUMF","Bootstrap",
-                                "Data_Donnee","b5.txt"),
+    data.table::fread(file.path(boot_dir,"b5.txt"),
                       stringsAsFactors = F, data.table= F, header=F,
                       col.names = c("ADM_RNO","WTS_P",paste0("BSW",seq(1,500)))) |>
     # keep only respondents in <intake_and_sociodeom>
