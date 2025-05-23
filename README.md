@@ -111,10 +111,20 @@ Community Health Survey 2015 - Nutrition* is presented in the
 folder.
 
 The R code illustrates how to prepare data and how to calculate
-HEFI-2019 scores according to the population ratio method.
+HEFI-2019 scores according to the population ratio method (Freedman et
+al. 2008) as well as based on measurement error-corrected dietary
+intakes using the National Cancer Institute multivariate method (Zhang
+et al. 2011).
 
-- [01_CCHS2015_Data_preparation.md](https://github.com/didierbrassard/hefi2019/blob/master/Example_R_cchs/Output/01_CCHS2015_Data_preparation.md)
-- [02_CCHS2015_Descriptive1d.md](https://github.com/didierbrassard/hefi2019/blob/master/Example_R_cchs/Output/02_CCHS2015_Descriptive1d.md)
+- [01_CCHS2015_Data_preparation.md](https://github.com/didierbrassard/hefi2019/blob/master/Example_R_cchs/Output/01_CCHS2015_Data_preparation.md):
+  preparation of data files
+- [02_CCHS2015_Descriptive1d.md](https://github.com/didierbrassard/hefi2019/blob/master/Example_R_cchs/Output/02_CCHS2015_Descriptive1d.md):
+  population ratio method
+- [03A_CCHS2015_DescriptiveU.md](https://github.com/didierbrassard/hefi2019/blob/master/Example_R_cchs/Output/03A_CCHS2015_DescriptiveU.md):
+  measurement error correction with the multivariate method
+- [03B_CCHS2015_DescriptiveU.md](https://github.com/didierbrassard/hefi2019/blob/master/Example_R_cchs/Output/03B_CCHS2015_DescriptiveU.md):
+  preparation of distribution estimates based on simulation data and
+  overview
 
 A simple application for the R version is shown below.
 
