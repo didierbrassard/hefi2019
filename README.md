@@ -134,7 +134,7 @@ You can install the released version of the `hefi2019` from
 [GitHub](https://github.com/didierbrassard/hefi2019) with:
 
 ``` r
-devtools::install_github("didierbrassard/hefi2019")
+pak::pak("didierbrassard/hefi2019")
 ```
 
 ### Basic example
@@ -147,7 +147,17 @@ Upon execution, the title of the function is displayed.
 
 ``` r
 # Install the hefi2019 scoring algorithm from GitHub, if not already done
-devtools::install_github("didierbrassard/hefi2019")
+pak::pak("didierbrassard/hefi2019")
+## → Package library at '/Library/Frameworks/R.framework/Versions/4.6/Resources/library'.
+## → Will install 1 package.
+## → Will download 1 package with unknown size.
+## + hefi2019   0.0.1.5 👷‍♂️🔧 ⬇ (GitHub: c62ebb0)
+## ℹ Getting 1 pkg with unknown size
+## ✔ Cached copy of hefi2019 0.0.1.5 (source) is the latest build
+## ℹ Building hefi2019 0.0.1.5
+## ✔ Built hefi2019 0.0.1.5 (647ms)
+## ✔ Installed hefi2019 0.0.1.5 (github::didierbrassard/hefi2019@c62ebb0) (26ms)
+## ✔ 1 pkg: added 1 [4.4s]
 
 # Load library
 library(hefi2019)
@@ -196,6 +206,16 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Epidemiology & Health Outcomes Research**
 
+- Jalali, S., Hu, X., Sobolev, B., & Jessri, M. [Dietary Guideline
+  Adherence and All-Cause Mortality: A Target Trial Emulation of
+  Universal and Equity-Targeted Strategies Among Canadian
+  Adults](https://doi.org/10.1016/j.amepre.2026.108575). American
+  Journal of Preventive Medicine.  
+- Yao, H., Zhang, C., & Xiao, S. (2026). [Associations of six dietary
+  patterns with all-cause and cause-specific mortality among individuals
+  with depression in the UK biobank: a prospective cohort
+  study](https://doi.org/10.1007/s00394-025-03808-5). Eur J Nutr, 65(2),
+  45.  
 - Brassard, D., Manikpurage, H. D., Theriault, S., Arsenault, B. J., &
   Lamarche, B. (2022). [Greater adherence to the 2019 Canada’s Food
   Guide recommendations on healthy food choices reduces the risk of
@@ -205,6 +225,12 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Nutrition Surveillance**
 
+- St-Laurent, A., Plante, A. S., Harrison, S., Lemieux, S., Robitaille,
+  J., Ruchat, S. M., & Morisset, A. S. (2025). [Dietary intakes, diet
+  quality and physical activity levels from preconception to late
+  pregnancy: Prospective assessment of changes and adherence to
+  recommendations](https://doi.org/10.1177/17455057251341999). Womens
+  Health (Lond), 21, 17455057251341999.  
 - Sebai, I., Nardocci, M., Ing, A., Fediuk, K., Chan, H. M., & Batal, M.
   (2025). [Exploring the Association Between the Healthy Eating Food
   Index-2019 (HEFI-2019), the Canadian Healthy Eating Index 2007
@@ -283,6 +309,16 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
 
 **Validation Research and Methods**
 
+- Alzeer, H. M., Almadani, F. A., Aldawsari, M., Aljuraiban, G. S., &
+  Alsukait, R. (2026). [Evaluation of the Saudi Healthy Eating
+  Index](https://doi.org/10.3389/fnut.2026.1814949). Front Nutr, 13,
+  1814949.  
+- Corriveau, A., Turcotte, M., Bergeron, A., Lemieux, S., &
+  Labonte, M. E. (2025). [Does the Inclusion of Free Sugars as Opposed
+  to Total Sugars in Nutrient Profiling Models Improve Their
+  Performance? A Cross-sectional Analysis From the PREDISE
+  Study](https://doi.org/10.1016/j.tjnut.2025.05.038). J Nutr, 155(7),
+  2459–2474.  
 - Brassard, D., Presse, N., & Chevalier, S. (2025). Estimating the
   Effect of Adhering to the [Recommendations of the 2019 Canada’s Food
   Guide on Health Outcomes in Older Adults: Protocol for a Target Trial
@@ -298,7 +334,7 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
   and the alignment of Canadian front-of-pack labelling regulations with
   other front-of-pack labelling systems and dietary
   guidelines](https://doi.org/10.3389/fpubh.2023.1168745). Front Public
-  Health, 11, 1168745.
+  Health, 11, 1168745.  
 - Hutchinson, J. M., Dodd, K. W., Guenther, P. M., Lamarche, B., Haines,
   J., Wallace, A., Perreault, M., Williams, T. E., Louzada, M., Jessri,
   M., Lemieux, S., Olstad, D. L., Prowse, R., Simpson, J. R., Vena, J.
@@ -307,7 +343,7 @@ HEFI2019C9_FREESUGARS, and HEFI2019C10_SODIUM*.
   the 2019 Canada’s Food Guide healthy food choices recommendations:
   scoring system and construct
   validity](https://doi.org/10.1139/apnm-2023-0018). Appl Physiol Nutr
-  Metab, 48(8), 620-633.
+  Metab, 48(8), 620-633.  
 - Mercier, A. P., Rochefort, G., Fortier, J., Parent, G., Provencher,
   V., Lemieux, S., & Lamarche, B. (2022). [Development and Validation of
   a Short Questionnaire Assessing the Behavior of Local Food Procurement
